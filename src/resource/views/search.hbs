@@ -1,0 +1,20 @@
+<div class="mt-4">
+    <form method="POST">
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Thanh tìm kiếm</label>
+            {{!-- <input type="text" name='name'>
+            <input type="text" name='age'> --}}
+            <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search" name="q">
+        </div>
+
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Giới tính</label>
+            <select  class="form-control me-2" name='gender' id='gender-input'>
+                <option value="NoMale">--Chọn giới tính--</option>
+                <option value="male">Nam</option>
+                <option value="fermale">Nữ</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+    </form>
+</div>
