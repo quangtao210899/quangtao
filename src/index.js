@@ -6,6 +6,7 @@ var methodOverride = require('method-override')
 
 const route = require('./router/indexRoute');
 const db    = require('./config/db/indexDB')
+const sortMiddleware = require('./app/middlewares/sortMiddleware')
 
 const app = express();
 const port = 3000;
@@ -13,6 +14,8 @@ const port = 3000;
 // Connect DB
 db.connect();
 
+// custom middleware
+app.use(sortMiddleware)
 // override with POST having ?_method=DELETE
 app.use(methodOverride('_method'))
 
@@ -25,6 +28,8 @@ app.use(
         extended: true,
     }),
 );
+
+// hiển thị json
 app.use(express.json());
 
 // HTTP logger
@@ -35,9 +40,7 @@ app.engine(
     '.hbs', 
     exphbs({ 
         extname: '.hbs' ,
-        helpers: {
-            sum: (a,b) => a+b,
-        }
+        helpers: require('./helpers/handlebar')
     })
 );
 app.set('view engine', '.hbs');

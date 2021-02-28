@@ -7,6 +7,8 @@ router.get('/create', courseController.create);
 router.post('/store', courseController.store);
 
 router.get('/:id/edit', courseController.edit);
+router.post('/handle-form-actions-store', courseController.handleFormActionsStore)
+router.post('/handle-form-actions-trash', courseController.handleFormActionsTrash)
 router.put('/:id', courseController.update);
 router.patch('/:id/restore', courseController.restore);
 

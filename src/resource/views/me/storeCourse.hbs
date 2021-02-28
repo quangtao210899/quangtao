@@ -1,27 +1,71 @@
-<div class="mt-4">
+<form class="mt-4" name="container-form" method="POST" action='/courses/handle-form-actions-store'>
     <div>
         <h3>Khóa học của tôi</h3>
         <a href="/me/trash/courses">Thùng rác ({{deleteCount}})</a>
+
+        <div class="mt-4 d-flex align-items-center" >
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                <label class="form-check-label" for="checkbox-all">
+                    Chọn tất cả
+                </label>
+            </div>
+
+            <select class="form-control form-control-sm" style='width:160px; margin: 0 16px;' name="action" required>
+                <option value="">--Hành Động--</option>
+                <option value="delete">Xóa</option>
+            </select>
+
+            <button class='btn btn-primary btn-sm btn-submit' disabled>Thực hiện</button>
+
+            <button class='btn btn-success btn-sm ml-auto btn-create-course' type="button"> 
+                <i class="fas fa-pencil-alt"></i>
+                <a href="/courses/create" style="color: white; text-decoration: none;"> &nbsp;Đăng khóa học</a> 
+            </button>
+
+        </div>
+
     </div>
     <table class="table mt-4">
         <thead>
             <tr>
+                <th></th>
                 <th scope="col">#</th>
-                <th scope="col">Tên khóa học</th>
-                <th scope="col">Trình độ</th>
-                <th scope="col">slug</th>
+                <th scope="col">
+                    Tên khóa học &nbsp;
+                    {{{sortable 'name' _sort}}}
+                </th>
+                <th scope="col">
+                    Trình độ&nbsp;
+                    {{{sortable 'level' _sort}}}
+                </th>
+                <th scope="col">
+                    slug&nbsp;
+                    {{{sortable 'slug' _sort}}}
+                </th>
                 <th scope="col">{{update}}</th>
             </tr>
         </thead>
             {{#each courses}}
                 <tr>
+                    <td>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courseIds[]">
+                        </div>                        
+                    </td>
                     <th scope="row">{{sum @index 1}}</th>
                     <td>{{this.name}}</td>
                     <td>{{this.level}}</td>
                     <td>{{this.slug}}</td>
                     <td>
-                        <a href='/courses/{{this._id}}/edit' class='btn btn-link'>Update</button>
-                        <a href='' class='btn btn-link' data-toggle="modal" data-target="#delete-course-modal" data-id="{{this._id}}">Delete</button>
+                        <a href='/courses/{{this._id}}/edit' class='btn btn-link' style="text-decoration: none;">
+                            <i class="fas fa-redo"></i>
+                            &nbsp;Update
+                        </a>
+                        <a href='' class='btn btn-link' data-toggle="modal" data-target="#delete-course-modal" data-id="{{this._id}}" style="text-decoration: none; color:red;">
+                           <i class="far fa-trash-alt"></i>
+                            Delete
+                        </a>
                     </td>
                 </tr>
             {{else}}
@@ -35,7 +79,7 @@
             {{/each}}
         </tbody>
     </table>
-</div>
+</form>
 
 
 {{!-- Confirm delete course --}}
@@ -60,24 +104,71 @@
     </div>
   </div>
 </div>
+
 {{!-- delete hiden form --}}
 <form method="POST" name='delete-form-hiden'></form>
 
 
 <script>
-    var courseID
-    var btnDeleteCourse = document.getElementById('btn-delete-course')
-    var deleteForm = document.forms['delete-form-hiden']
     // chờ đến khi load xong thư viện
     document.addEventListener('DOMContentLoaded', function(){
+        var courseID
+        var btnDeleteCourse = document.getElementById('btn-delete-course')
+        var deleteForm = document.forms['delete-form-hiden']
+        var checkboxAll = $('#checkbox-all') 
+        var courseItemCheckbox = $('input[name="courseIds[]"]')
+        var btnSubmit = $('.btn-submit') 
+        var btnCreateCourse = $('.btn-create-course')
+        // lấy ra courseID
         $('#delete-course-modal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             courseID = button.data('id') 
-        })        
+        })
+
+        // logic xử lý xóa khóa học
+        btnDeleteCourse.onclick = function(){
+            deleteForm.action = '/courses/' + courseID + "?_method=DELETE";
+            deleteForm.submit()
+        }
+
+        // checkox all changed
+        checkboxAll.change(function(){
+            var isCheckedAll = $(this).prop('checked')
+            courseItemCheckbox.prop('checked', isCheckedAll)
+            renderCheckAllSubmitBtn()
+        })
+
+        // course item checkox changed
+        courseItemCheckbox.change(function(){
+            var isCheckedAll = courseItemCheckbox.length=== $('input[name="courseIds[]"]:checked').length
+            checkboxAll.prop('checked',isCheckedAll)
+            renderCheckAllSubmitBtn()
+        })
+
+        // event submit btnSubmit
+        btnSubmit.click(function(e){
+            var isSubmitable = !$(this).hasClass('disabled')
+            if(!isSubmitable){
+                e.preventDefault();
+            }
+
+        })
+
+        // Re-render check all submit butoon
+        function renderCheckAllSubmitBtn(){
+            var checkedCount = $('input[name="courseIds[]"]:checked').length
+            if(checkedCount>0){
+                btnSubmit.attr('disabled', false)
+            }
+            else {
+                btnSubmit.attr('disabled', true)
+            }
+        }
+
+        btnCreateCourse.click(function(){
+            window.location = '/courses/create'
+        })
+
     })
 
-    btnDeleteCourse.onclick = function(){
-        deleteForm.action = '/courses/' + courseID + "?_method=DELETE";
-        deleteForm.submit()
-    }
 </script>
