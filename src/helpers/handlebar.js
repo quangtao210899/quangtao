@@ -1,4 +1,5 @@
-const Handlebars = require('handlebars')
+const Handlebars = require('handlebars');
+const { render } = require('node-sass');
 module.exports = {
     sum: (a,b) => a+b,
     sortable: (field, sort) =>{
@@ -25,5 +26,17 @@ module.exports = {
                             <span class="${icon}"></span> 
                         </a>`
         return new Handlebars.SafeString(output);
-    }
+    },
+    sender: (chats) =>{
+       return chats[chats.length-1].idPerson
+    },
+    textChat: (chat) =>{
+        if(chat.idPerson==chat.idUser){
+            return `<p style="text-align: right;">${chat.text} </p>`
+        }
+        else {
+            return `<p style="text-align: left;">${chat.text} </p>`
+        }
+        
+    },
 }

@@ -12,6 +12,7 @@ const User = new Schema({
     username: {type: String},
     password: { type: String},
     firstname: {type: String},
+    idPerson: {type: String},
     lastname: {type: String},
 }, {
     timestamps: true,

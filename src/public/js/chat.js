@@ -13,12 +13,19 @@ socket.on('connect',function(data){
 
 
 // listen thread event
-socket.on('thread', function(data){
-    let li = document.createElement("li");
-    let span = document.createElement("span");
+socket.on('thread', function(data, idUser){
+    let p = document.createElement("p");
+    // lấy idPerson
+    var idPerson = document.getElementById('idPerson')
+    idPerson = idPerson.value 
+    if(idPerson==idUser){
+        p.style.textAlign='right';
+    }
+    else {
+        p.style.textAlign='left';
+    }
     var messages = document.getElementById("messages");
-    messages.appendChild(li).append(data);
-    messages.appendChild(span).append("by " + "anonymous" + ": " + "just now");
+    messages.appendChild(p).append(data);
 })
 
 
@@ -27,8 +34,10 @@ $('form').submit(function(e){
     e.preventDefault()
     // lấy text trong input
     var message = $('#text').val()
+    var idPerson = document.getElementById('idPerson')
+    var id = idPerson.value 
     //gửi thông báo đến server
-    socket.emit('messages', message)
+    socket.emit('messages', message, id)
     this.reset()
     return false;
 })

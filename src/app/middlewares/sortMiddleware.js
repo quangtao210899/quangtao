@@ -1,5 +1,5 @@
 
-module.exports = function ssortMiddleware(req,res,next){
+module.exports = function sortMiddleware(req,res,next){
 
     res.locals._sort = {
         enabled : false,

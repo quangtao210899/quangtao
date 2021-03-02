@@ -3,6 +3,8 @@ const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override')
+var cookieSession = require('cookie-session')
+const cookieParser = require('cookie-parser')
 
 
 const route = require('./router/indexRoute');
@@ -17,12 +19,19 @@ const port = 3000;
 var  server = require('http').createServer(app)
 var io = require('socket.io')(server)
 
-// app.get('/chat',function(req,res,ext){
-//     res.sendFile(__dirname+'/resource/views/chat.hbs')
-// })
+
 
 // Connect DB
 db.connect();
+// session cookie
+app.set('trust proxy', 1)
+app.use(cookieSession({
+    name: 'session',
+    keys: ['key1', 'key2']
+}))
+
+//Khai báo sử dụng middleware cookieParse()
+app.use(cookieParser())
 
 // custom middleware
 app.use(sortMiddleware)
@@ -66,13 +75,13 @@ io.on('connection', function(client){
         console.log('Đã kết nối được với client')
     })
 
-    client.on('messages', function(data){
+    client.on('messages', function(data, idPerson){
         // thông báo cho client
-        client.emit('thread',data)
+        client.emit('thread', data, idPerson)
         // thông báo cho các client khác
-        client.broadcast.emit('thread',data)
+        client.broadcast.emit('thread', data, idPerson)
         //save chat to the database
-        let chatMessage = new Chat({text: data, idPerson: 'taonq'});
+        let chatMessage = new Chat({text: data, idPerson: idPerson});
         chatMessage.save();
     })
     

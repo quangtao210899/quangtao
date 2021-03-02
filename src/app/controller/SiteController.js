@@ -1,7 +1,6 @@
 
 const Course = require('../models/course')
 const User = require('../models/user')
-const {mutilMongooseToObject} = require('../../until/mongoose')
 class SiteController {
     // [GET] /home
     home(req, res, next) {
@@ -41,10 +40,19 @@ class SiteController {
                 .then(user=>{
                     if(user==null){
                         res.render('login', {
-                            messageLogin : 'tài khoản mật khẩu không đúng'
+                            layout: false,
+                            username: req.query.username,
+                            messageLogin : 'Tài khoản mật khẩu không đúng'
                         })
                     }
                     else {
+                        //lưu lại vào session
+                        req.session.username = req.query.username
+                        req.session.password = req.query.password
+                        // lưu vào cookie
+                        res.cookie('username', req.query.username,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
+                        res.cookie('password', req.query.password,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
+                        // console.log(req.cookie('username'))
                         res.redirect('/')
                     }
                 })

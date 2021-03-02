@@ -9,9 +9,9 @@
     </div>
     <ul id ="messages" class="messages">
         {{#each chats}}
-            <li>{{this.text}}</li>
-            <span>by {{this.idPerson}} just now</span>
+            {{{textChat this}}}
         {{/each}}
+        {{!-- <p style="text-align: center;">by {{{sender chats}}} just now</p> --}}
     </ul>
      
     <div class="bottom_wrapper clearfix">
@@ -23,6 +23,7 @@
             <button class="send_message">
                 Send
             </button>
+            <input type="hidden" id='idPerson' class='idPerson' name="idPerson" value={{user.idPerson}}>
         </form>
     </div>
 </div>
