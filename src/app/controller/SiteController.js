@@ -1,5 +1,6 @@
 
 const Course = require('../models/course')
+const User = require('../models/user')
 const {mutilMongooseToObject} = require('../../until/mongoose')
 class SiteController {
     // [GET] /home
@@ -21,7 +22,7 @@ class SiteController {
             .catch(next)
     }
 
-    // [GET] /Search
+    // [GET] /search
     search(req, res) {
         res.render('search');
     }
@@ -31,6 +32,29 @@ class SiteController {
         console.log(req.body);
         res.send('Đã gửi thành công!');
     }
+
+    // [GET] /login
+    login(req, res, next) {
+        if(req.query.username!=null&&req.query.password!=null){
+            User.findOne({username: req.query.username, password: req.query.password})
+                .lean()
+                .then(user=>{
+                    if(user==null){
+                        res.render('login', {
+                            messageLogin : 'tài khoản mật khẩu không đúng'
+                        })
+                    }
+                    else {
+                        res.redirect('/')
+                    }
+                })
+                .catch(next)
+        }
+        else {
+            res.render('login', {layout: false})
+        }
+    }
+
 }
 
 module.exports = new SiteController();

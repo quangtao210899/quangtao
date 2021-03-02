@@ -1,6 +1,7 @@
 
 const mongoose = require('../../until/mongoose')
 const Course = require('../models/course')
+const Chat = require('../models/chat')
 
 class CourseController {
     // [GET]  /courses/:slug
