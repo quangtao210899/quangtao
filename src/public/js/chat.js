@@ -38,6 +38,5 @@ $('form').submit(function(e){
     var id = idPerson.value 
     //gửi thông báo đến server
     socket.emit('messages', message, id)
-    this.reset()
     return false;
 })

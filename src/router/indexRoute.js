@@ -4,10 +4,11 @@ const courseRouter = require('./course');
 const meRouter = require('./me');
 const chatRouter = require('./chat');
 
+const checkSessionCookie = require('../app/middlewares/checkSessionCookie')
 function route(app) {
-    app.use('/chat', chatRouter);
-    app.use('/courses', courseRouter);
-    app.use('/me', meRouter);
+    app.use('/chat', checkSessionCookie, chatRouter);
+    app.use('/courses', checkSessionCookie, courseRouter);
+    app.use('/me', checkSessionCookie, meRouter);
     app.use('/', siteRouter); 
 }
 

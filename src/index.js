@@ -35,6 +35,7 @@ app.use(cookieParser())
 
 // custom middleware
 app.use(sortMiddleware)
+
 // override with POST having ?_method=DELETE
 app.use(methodOverride('_method'))
 
