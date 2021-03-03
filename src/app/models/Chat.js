@@ -11,8 +11,8 @@ const Chat = new Schema(
             type: String
         },
         idPerson: {
-            type: String
-        }
+            type: Object
+        },
     },
     {
         timestamps: true

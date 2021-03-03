@@ -39,4 +39,7 @@ module.exports = {
         }
         
     },
+    handleFullname: (firstname, lastname)=>{
+        return firstname + ' ' + lastname;
+    },
 }

@@ -4,20 +4,12 @@ const User = require('../models/user')
 class SiteController {
     // [GET] /home
     home(req, res, next) {
-        // callback
-        // Course.find({}, function(err, Courses){
-        //     if(!err){
-        //         res.json(Courses)
-        //     }
-        //     else {
-        //         next(err);
-        //     }
-        // })
-
-        // promise
-        Course.find({})
-            .lean()  // clean lại course trc khi render
-            .then(courses => res.render('home', {courses,}))
+        const username = req.session.username
+        const password = req.session.password
+        Promise.all([User.findOne({username: username, password : password}).lean(), Course.find({}).lean()])
+            .then(([user,courses]) =>{
+                res.render('home',{user,courses})
+            })
             .catch(next)
     }
 
@@ -63,6 +55,31 @@ class SiteController {
         else {
             res.render('login', {layout: false})
         }
+    }
+    // [get] /logout
+    logout(req, res, next) {
+        //xóa session
+        req.session.username = ''
+        req.session.password = ''
+        //xóa cookie
+        res.clearCookie('username')
+        res.clearCookie('password')
+        res.redirect('login')
+    }
+
+    // [get] /register
+    register(req, res, next) {
+        res.render('register', {layout: false} )
+    }
+
+    // [get] /register
+    saveRegister(req, res, next) {
+        console.log(res.query)
+        const user = new User(req.body)
+        user.save()
+            .then(()=>res.redirect('/'))
+            .catch(next)
+        
     }
 
 }

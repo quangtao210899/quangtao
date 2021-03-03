@@ -8,12 +8,14 @@ class ChatController {
         Promise.all([User.findOne({username: username, password : password}).lean(), Chat.find({}).lean()])
             .then(([user,chats]) =>{
                 for(var i = 0; i<chats.length;i++){
-                    chats[i].idUser = user.idPerson
+                    chats[i].idUser = user._id
                 }
                 res.render('chat',{user,chats})
             })
             .catch(next)
     }
+
+    // save chat ở file index.js
 }
 
 module.exports = new ChatController();
