@@ -33,10 +33,12 @@ $('form').submit(function(e){
     // bỏ sự kiện load lại trang
     e.preventDefault()
     // lấy text trong input
-    var message = $('#text').val()
+    var message =document.getElementById('text')
     var idPerson = document.getElementById('idPerson')
     var id = idPerson.value 
+
     //gửi thông báo đến server
-    socket.emit('messages', message, id)
+    socket.emit('messages', message.value, id)
+    message.value=''
     return false;
 })

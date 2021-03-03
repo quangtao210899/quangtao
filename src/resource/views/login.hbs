@@ -32,7 +32,7 @@
 	<div class="limiter">
 		<div class="container-login100" style="background-image: url('vendor/login/images/bg-01.jpg');">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" method="get">
+				<form class="login100-form validate-form" name="form-login" method="get">
 					<span class="login100-form-logo">
 						<i class="zmdi zmdi-landscape"></i>
 					</span>
@@ -52,7 +52,7 @@
 					</div>
 					<p style="color: red; text-align: center">{{messageLogin}}</p>
 					<div class="contact100-form-checkbox">
-						<input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+						<input class="input-checkbox100 cb-remember" id="ckb1" type="checkbox" name="remember" value="remember">
 						<label class="label-checkbox100" for="ckb1">
 							Remember me
 						</label>
@@ -94,6 +94,12 @@
 <!--===============================================================================================-->
 	<script src="vendor/login/js/main.js"></script>
 	
-
+	<script>
+	    // chờ đến khi load xong thư viện
+    	document.addEventListener('DOMContentLoaded', function(){	
+			var formLogin = document.forms['form-login']
+			var cbLogin = $('.cb-remember')
+		})
+	</script>
 </body>
 </html>

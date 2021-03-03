@@ -47,11 +47,13 @@ class SiteController {
                     }
                     else {
                         //lưu lại vào session
-                        // req.session.username = req.query.username
-                        // req.session.password = req.query.password
-                        // // lưu vào cookie
-                        // res.cookie('username', req.query.username,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
-                        // res.cookie('password', req.query.password,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
+                        req.session.username = req.query.username
+                        req.session.password = req.query.password
+                        if(req.query.remember=='remember'){
+                            // lưu vào cookie
+                            res.cookie('username', req.query.username,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
+                            res.cookie('password', req.query.password,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
+                        }
                         // console.log(req.cookie('username'))
                         res.redirect('/')
                     }
