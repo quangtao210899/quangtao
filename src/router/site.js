@@ -13,6 +13,7 @@ router.get('/login', checkLogin, siteController.login);
 router.get('/logout', siteController.logout);
 router.post('/search', checkSessionCookie, siteController.searchPost);
 router.get('/register', siteController.register);
+router.get('/forgot', siteController.forgotAccount);
 router.post('/register', siteController.saveRegister);
 
 //router.get('/:id', checkSessionCookie, siteController.home);

@@ -10,7 +10,7 @@ class ChatController {
                 for(var i = 0; i<chats.length;i++){
                     chats[i].idUser = user._id
                 }
-                res.render('chat',{user,chats})
+                res.render('chat',{user,chats,layout: false,})
             })
             .catch(next)
     }

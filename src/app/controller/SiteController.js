@@ -1,14 +1,20 @@
 
 const Course = require('../models/course')
+const Food = require('../models/food')
 const User = require('../models/user')
+var nodemailer = require('nodemailer');
 class SiteController {
     // [GET] /home
     home(req, res, next) {
         const username = req.session.username
         const password = req.session.password
-        Promise.all([User.findOne({username: username, password : password}).lean(), Course.find({}).lean()])
-            .then(([user,courses]) =>{
-                res.render('home',{user,courses})
+        Promise.all([
+                User.findOne({username: username, password : password}).lean(), 
+                Food.find({}).lean(),
+                Course.find({}).lean(),
+            ])
+            .then(([user, foods, courses]) =>{
+                res.render('home',{user, foods, courses})
             })
             .catch(next)
     }
@@ -41,6 +47,7 @@ class SiteController {
                         //lưu lại vào session
                         req.session.username = req.query.username
                         req.session.password = req.query.password
+                        req.session.fullname = user.firstname + ' ' + user.lastname
                         if(req.query.remember=='remember'){
                             // lưu vào cookie
                             res.cookie('username', req.query.username,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
@@ -72,7 +79,7 @@ class SiteController {
         res.render('register', {layout: false} )
     }
 
-    // [get] /register
+    // [POST] /register
     saveRegister(req, res, next) {
         console.log(res.query)
         const user = new User(req.body)
@@ -80,6 +87,91 @@ class SiteController {
             .then(()=>res.redirect('/'))
             .catch(next)
         
+    }
+
+
+    // [GET] /forgot/
+    forgotAccount(req, res, next) {
+        if(req.query.hasOwnProperty('username')){
+            User.findOne({username: req.query.username})
+            .then(user=>{
+                console.log('vao then')
+                if(user!=null){
+                    const option = {
+                        service: 'gmail',
+                        auth: {
+                            user: 'tao.nq173356@gmail.com', // email hoặc username
+                            pass: 'qtltcmmmhbbn' // password
+                        }
+                    };
+                    var transporter = nodemailer.createTransport(option);
+                    
+                    transporter.verify(function(error, success) {
+                        // Nếu có lỗi.
+                        if (error) {
+                            next
+                        } else { //Nếu thành công.
+                            var mail = {
+                                from: 'tao.nq173356@gmail.com', // Địa chỉ email của người gửi
+                                to: '', // Địa chỉ email của người gửi
+                                subject: 'Mail thông báo Mật Khẩu ', // Tiêu đề mail
+                                text: '', // Nội dung mail dạng text
+                            };
+                            // xác định lại giá trị của mail
+                            mail.to = user.username
+                            mail.text = 'Mật khẩu của bạn là: ' + user.password
+                            //Tiến hành gửi email
+                            transporter.sendMail(mail, function(error, info) {
+                                if (error) { // nếu có lỗi
+                                    next
+                                } else { //nếu thành công
+                                    res.redirect('login')
+                                }
+                            });
+                        }
+                    });               
+                }
+                else {
+                    console.log('khong co user')
+                    res.render('forgot',{layout: false, messageForgot: 'User không tồn tại'})
+                }
+            })
+            .catch(next)
+        }
+        else {
+            console.log('logic không sai')
+            res.render('forgot',{layout: false})
+        }
+        // const option = {
+        //     service: 'gmail',
+        //     auth: {
+        //         user: 'tao.nq173356@gmail.com', // email hoặc username
+        //         pass: 'qtltcmmmhbbn' // password
+        //     }
+        // };
+        // var transporter = nodemailer.createTransport(option);
+        
+        // transporter.verify(function(error, success) {
+        //     // Nếu có lỗi.
+        //     if (error) {
+        //         next
+        //     } else { //Nếu thành công.
+        //         var mail = {
+        //             from: 'tao.nq173356@gmail.com', // Địa chỉ email của người gửi
+        //             to: 'tao.nq173356@sis.hust.edu.vn', // Địa chỉ email của người gửi
+        //             subject: 'Thư được gửi bằng Node.js', // Tiêu đề mail
+        //             text: 'Chào bạn nhé', // Nội dung mail dạng text
+        //         };
+        //         //Tiến hành gửi email
+        //         transporter.sendMail(mail, function(error, info) {
+        //             if (error) { // nếu có lỗi
+        //                 next
+        //             } else { //nếu thành công
+        //                 res.redirect('login')
+        //             }
+        //         });
+        //     }
+        // });
     }
 
 }

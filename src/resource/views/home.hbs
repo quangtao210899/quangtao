@@ -1,20 +1,86 @@
 
-<div class="mt-4">
-    <div class="row">
-        {{!-- Lặp --}}
-        {{#each courses}}
-            <div class="col-lg-4">
-                <div class="card card-course-item">
-                    <a href="/courses/{{this.slug}}">
-                        <img src="{{this.image}}" class="card-img-top fill" alt="Card img cap">
-                    </a>
-                    <div class="card-body">
-                        <h5 class="card-title">{{this.name}}</h5>
-                        <p class="card-text">{{this.description}}</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+{{!-- Slide --}}
+<div id="slides" class="cover-slides">
+    <ul class="slides-container">
+        <li class="text-left">
+            <img src="/images/slider-01.jpg" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="m-b-20"><strong>Welcome To <br> Food Online</strong></h1>
+                        <p class="m-b-40">See how your users experience your website in realtime or view  <br> 
+                        trends to see any changes in performance over time.</p>
+                        <p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
                     </div>
                 </div>
             </div>
-        {{/each}}
+        </li>
+        <li class="text-left">
+            <img src="/images/slider-02.jpg" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="m-b-20"><strong>Welcome To <br> Food Online</strong></h1>
+                        <p class="m-b-40">See how your users experience your website in realtime or view  <br> 
+                        trends to see any changes in performance over time.</p>
+                        <p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
+                    </div>
+                </div>
+            </div>
+        </li>
+        <li class="text-left">
+            <img src="/images/slider-03.jpg" alt="">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="m-b-20"><strong>Welcome To <br> Food Online</strong></h1>
+                        <p class="m-b-40">See how your users experience your website in realtime or view  <br> 
+                        trends to see any changes in performance over time.</p>
+                        <p><a class="btn btn-lg btn-circle btn-outline-new-white" href="#">Reservation</a></p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="slides-navigation">
+        <a href="#" class="next"><i class="fa fa-angle-right" aria-hidden="true"></i></a>
+        <a href="#" class="prev"><i class="fa fa-angle-left" aria-hidden="true"></i></a>
     </div>
 </div>
+{{!-- gallery --}}
+<div class="container">
+    <div class="gallery-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="heading-title text-center">
+                        <h2>Danh sách món ăn</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="tz-gallery">
+                <div class="row">
+                    {{#each foods}}
+                        <div class="col-lg-4">
+                            <div class="card card-course-item">
+                                <a class="lightbox" href="/foods/{{this.slug}}">
+                                    <img class="" src="{{this.image}}" alt="Gallery Images" >
+                                </a>
+                                <div style="padding: 10px 20px 0px 20px" class="card-body">
+                                    <h2 style="padding: 0px 0px 3px 0px;">{{this.foodName}}</h2>
+                                    <p style="margin: 0px 0px 5px 0px;">{{this.description}}</p>
+                                    {{!-- <p style="margin: 0px 0px 5px 0px;">{{this.price}}</p> --}}
+                                    <hr  width="100%" align="center" style="margin: 5px 0px 5px 0px;">
+                                    <p style="color: #187CAA; margin: 0px 0px 0px 0px"><i class="fas fa-tag" style="color: crimson;">&nbsp;</i>{{discount this.discount}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="#" id="back-to-top" title="Back to top" style="display: none;"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></a>
+

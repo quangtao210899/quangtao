@@ -1,19 +1,28 @@
 
 
 .card-course-item{
-    margin-top: 32px;
+    margin-top: 30px;
 }
 
 
 .user-avatar{
-    width: 28px;
-    height: 28px;
+    width: 30px;
+    height: 30px;
     border-radius: 50% ;
     margin-right: 0px;
-    margin-top: 4px;
+    margin-top: 0px;
+}
+
+.footer-icon{
+  margin-top: 20px;
+}
+
+.contact-link{
+  margin-top: 10px;
 }
 
 
+// UI chat
 #content {
     border: 1px solid darkgrey;
     width: 400px;
@@ -212,7 +221,6 @@
     cursor: pointer;
     transition: all 0.2s linear;
     text-align: center;
-    float: right;
   }
   .bottom_wrapper .send_message:hover {
     color: #a3d063;

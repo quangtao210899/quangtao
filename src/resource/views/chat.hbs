@@ -1,37 +1,81 @@
-<div class="chat_window">
-    <div class="top_menu">
-        <div class="buttons">
-            <div class="button close"></div>
-            <div class="button minimize"></div>
-            <div class="button maximize"></div>
-        </div>
-        <div class="title">Chat</div>
-    </div>
-    <ul id ="messages" class="messages">
-        {{#each chats}}
-            {{{textChat this }}}
-        {{/each}}
-        {{!-- <p style="text-align: center;">by {{{sender chats}}} just now</p> --}}
-    </ul>
-     
-    <div class="bottom_wrapper clearfix">
-        <i id="typing"></i>
-        <form id="form" autocomplete="off">
-            <div class="message_input_wrapper">
-                <input id="text" name='text' class="message_input" placeholder="Type your message here..." />
-            </div>
-            <button class="send_message" type="search" autocomplete="off">
-                Send
-            </button>
-            <input type="hidden" id='idPerson' class='idPerson' name="idPerson" value={{user._id}}>
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Responsive Chat Box Design | CodingNepal</title>
+    <link rel="stylesheet" href="/css/chat.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <input type="checkbox" id="click">
+    <label for="click">
+      <i class="fab fa-facebook-messenger"></i>
+      <i class="fas fa-times"></i>
+    </label>
+    <div class="wrapper">
+      <div class="head-text">Let's chat? - Online</div>
+      <div class="chat-box">
+        <div class="desc-text">Please fill out the form below to start chatting with the next available agent.</div>
+        <form action="#">
+          <div class="field">
+            <input type="text" placeholder="Your Name" required>
+          </div>
+          <div class="field">
+            <input type="email" placeholder="Email Address" required>
+          </div>
+          <div class="field textarea">
+            <textarea cols="30" rows="10" placeholder="Explain your queries.." required></textarea>
+          </div>
+          <div class="field">
+            <button type="submit">Start Chat</button>
+          </div>
         </form>
+      </div>
+    </div>
+
+  </body>
+</html>
+
+
+{{!-- <head>
+    <title>Chat Real-time</title>
+    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/vendor/open-iconic-master/font/css/open-iconic-bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+</head>
+
+<div class="container">    
+    <div class="chat_window">
+        <div class="top_menu">
+            <div class="buttons">
+                <div class="button close"></div>
+                <div class="button minimize"></div>
+                <div class="button maximize"></div>
+            </div>
+            <div class="title">Chat</div>
+        </div>
+        <ul id ="messages" class="messages">
+            {{#each chats}}
+                {{{textChat this }}}
+            {{/each}}
+            {{!-- <p style="text-align: center;">by {{{sender chats}}} just now</p> --}}
+        {{!-- </ul>
+        
+        <div class="bottom_wrapper clearfix">
+            <i id="typing"></i>
+            <form id="form" autocomplete="off" style="margin: 0px 0px 0px;">
+                <div class="message_input_wrapper">
+                    <input id="text" name='text' class="message_input" placeholder="Type your message here..." />
+                </div>
+                <button class="send_message" type="search" autocomplete="off" style="padding: 0px 0px 0px 0px;">
+                    Send
+                </button>
+                <input type="hidden" id='idPerson' class='idPerson' name="idPerson" value={{user._id}}>
+            </form>
+        </div>
     </div>
 </div>
-
-
-
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-
 <script src="/socket.io/socket.io.js"></script>
-
-<script src="js/chat.js"></script>  
+<script src="js/chat.js"></script>   --}}

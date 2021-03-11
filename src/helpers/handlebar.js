@@ -32,14 +32,31 @@ module.exports = {
     },
     textChat: (chat) =>{
         if(chat.idPerson==chat.idUser){
-            return `<p style="text-align: right;">${chat.text} </p>`
+            return `<div class="user-inbox inbox">
+                        <div class="msg-header">
+                            <p>${chat.text}</p>
+                        </div>
+                    </div>`
         }
         else {
-            return `<p style="text-align: left;">${chat.text} </p>`
+            return `<div class="bot-inbox inbox">
+                        <div class="icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="msg-header">
+                            <p>${chat.text}</p>
+                        </div>
+                     </div>`
         }
         
     },
-    handleFullname: (firstname, lastname)=>{
-        return firstname + ' ' + lastname;
-    },
+
+    discount: (discount) =>{
+        if(discount){
+            return "Giảm hết " + discount + "%"
+        }
+        else {
+            return "Giảm món"
+        }
+    }
 }

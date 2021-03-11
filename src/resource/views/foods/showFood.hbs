@@ -1,0 +1,82 @@
+<div class="container">
+
+    {{!-- Food --}}
+    <div class="tz-gallery" style="margin: 30px 0px 30px 0px;">
+        <div class="row">   
+            <div class="col-lg-5">
+                <a class="lightbox" href="{{food.image}}">
+                    <img class="img-fluid card-img-top fill" src="{{food.image}}" alt="Gallery Images" >
+                </a>
+            </div>
+            <div class="col-lg-5 food">
+                <h2>{{food.foodName}}</h2>
+                <p style="margin: 0px 0px 0px 0px;">{{food.address}}</p>
+                {{!-- <h4 style="color: #666666; padding: 0px 0px 0px 0px;">{{food.description}}</h3> --}}
+                <p style="color: #FFC107; margin: 0px 0px 0px 0px; font-size: 18px;">Vote : {{food.vote}} <span style="color:#666666">trên {{food.volumVote}} lượt đánh giá</span></p>   
+                <p style="margin: 0px 0px 0px 0px;">          
+                    <i class="fas fa-circle" style="color: #6CC942; font-size:8px;">&nbsp;</i> 
+                    <span style="color: #6CC942; font-size: 18px;">Mở cửa</span>
+                    <i class="far fa-clock" style="font-size: 18px; color: #666666;"> </i>
+                    <span style=" font-size: 18px;">{{food.timeOpen}} </span>
+                </p>
+                <p style="margin: 0px 0px 10px 0px;">
+                    <i class="fas fa-dollar-sign" style="font-size: 18px; color:#666666;"></i>
+                    <span style=" font-size: 18px; margin: 0px 0px 10px 0px;">{{food.price}} </span>
+                </p>
+                <button type="button" class="btn btn-success" style="padding: 5px; font-size: 15px">
+                    <i class="fas fa-shopping-cart"></i>
+                    Order
+                </button>
+                <span>&nbsp;</span>
+                <button type="button" class="btn btn-success btn-chat" style="padding: 5px; font-size: 15px" id='btn-chat'>
+                    <i class="far fa-comment-dots"></i>
+                    Chat
+                </button>
+            
+            </div>
+            <div class="col-lg-2"></div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+
+
+    {{!-- Messenger --}}
+    <input type="checkbox" id="click">
+    <label for="click" style="position: fixed;z-index: 2;">
+        <i class="fab fa-facebook-messenger"></i>
+        <i class="fas fa-times"></i>
+    </label>
+    <div class="wrapper" style="position: fixed;z-index: 3;" >
+        <div class="head-text">Let's chat? - Online</div>
+        <div class="form" style='overflow:scroll;overflow-x:hidden;max-height:200px;'id="form-chat">
+            {{#each chats}}
+                {{{textChat this}}}
+            {{/each}}
+        </div>
+        <form id="form" autocomplete="off">
+            <div class="typing-field">
+                <div class="input-data">
+                    <input id="text" type="text" placeholder="Aa">
+                </div>
+                <i class="far fa-paper-plane" style="font-size: 20px"></i>
+                <input type="hidden" id='idPerson' class='idPerson' name="idPerson" value={{user._id}}>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/chat.js"></script>
