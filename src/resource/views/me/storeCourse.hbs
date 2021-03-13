@@ -1,86 +1,87 @@
-<form class="mt-4" name="container-form" method="POST" action='/courses/handle-form-actions-store'>
-    <div>
-        <h3>Khóa học của tôi</h3>
-        <a href="/me/trash/courses">Thùng rác ({{deleteCount}})</a>
+<div class="container">
+    <form class="mt-4" name="container-form" method="POST" action='/courses/handle-form-actions-store'>
+        <div>
+            <h3>Khóa học của tôi</h3>
+            <a href="/me/trash/courses">Thùng rác ({{deleteCount}})</a>
 
-        <div class="mt-4 d-flex align-items-center" >
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
-                <label class="form-check-label" for="checkbox-all">
-                    Chọn tất cả
-                </label>
+            <div class="mt-4 d-flex align-items-center" >
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="checkbox-all">
+                    <label class="form-check-label" for="checkbox-all">
+                        Chọn tất cả
+                    </label>
+                </div>
+
+                <select class="form-control form-control-sm" style='width:160px; margin: 0 16px;' name="action" required>
+                    <option value="">--Hành Động--</option>
+                    <option value="delete">Xóa</option>
+                </select>
+
+                <button class='btn btn-primary btn-sm btn-submit' disabled>Thực hiện</button>
+
+                <button class='btn btn-success btn-sm ml-auto btn-create-course' type="button"> 
+                    <i class="fas fa-pencil-alt"></i>
+                    <a href="/courses/create" style="color: white; text-decoration: none;"> &nbsp;Đăng khóa học</a> 
+                </button>
+
             </div>
 
-            <select class="form-control form-control-sm" style='width:160px; margin: 0 16px;' name="action" required>
-                <option value="">--Hành Động--</option>
-                <option value="delete">Xóa</option>
-            </select>
-
-            <button class='btn btn-primary btn-sm btn-submit' disabled>Thực hiện</button>
-
-            <button class='btn btn-success btn-sm ml-auto btn-create-course' type="button"> 
-                <i class="fas fa-pencil-alt"></i>
-                <a href="/courses/create" style="color: white; text-decoration: none;"> &nbsp;Đăng khóa học</a> 
-            </button>
-
         </div>
-
-    </div>
-    <table class="table mt-4">
-        <thead>
-            <tr>
-                <th></th>
-                <th scope="col">#</th>
-                <th scope="col">
-                    Tên khóa học &nbsp;
-                    {{{sortable 'name' _sort}}}
-                </th>
-                <th scope="col">
-                    Trình độ&nbsp;
-                    {{{sortable 'level' _sort}}}
-                </th>
-                <th scope="col">
-                    slug&nbsp;
-                    {{{sortable 'slug' _sort}}}
-                </th>
-                <th scope="col">{{update}}</th>
-            </tr>
-        </thead>
-            {{#each courses}}
+        <table class="table mt-4">
+            <thead>
                 <tr>
-                    <td>
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courseIds[]">
-                        </div>                        
-                    </td>
-                    <th scope="row">{{sum @index 1}}</th>
-                    <td>{{this.name}}</td>
-                    <td>{{this.level}}</td>
-                    <td>{{this.slug}}</td>
-                    <td>
-                        <a href='/courses/{{this._id}}/edit' class='btn btn-link' style="text-decoration: none;">
-                            <i class="fas fa-redo"></i>
-                            &nbsp;Update
-                        </a>
-                        <a href='' class='btn btn-link' data-toggle="modal" data-target="#delete-course-modal" data-id="{{this._id}}" style="text-decoration: none; color:red;">
-                           <i class="far fa-trash-alt"></i>
-                            Delete
-                        </a>
-                    </td>
+                    <th></th>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        Tên khóa học &nbsp;
+                        {{{sortable 'name' _sort}}}
+                    </th>
+                    <th scope="col">
+                        Trình độ&nbsp;
+                        {{{sortable 'level' _sort}}}
+                    </th>
+                    <th scope="col">
+                        slug&nbsp;
+                        {{{sortable 'slug' _sort}}}
+                    </th>
+                    <th scope="col">{{update}}</th>
                 </tr>
-            {{else}}
-                <tr>
-                    <td colspan="5" class="text-center">
-                        Bạn chưa đăng khóa học nào.
-                        <a href="/courses/create">Thêm khóa học</a>
-                    </td>
+            </thead>
+                {{#each courses}}
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{this._id}}" name="courseIds[]">
+                            </div>                        
+                        </td>
+                        <th scope="row">{{sum @index 1}}</th>
+                        <td>{{this.name}}</td>
+                        <td>{{this.level}}</td>
+                        <td>{{this.slug}}</td>
+                        <td>
+                            <a href='/courses/{{this._id}}/edit' class='btn btn-link' style="text-decoration: none;">
+                                <i class="fas fa-redo"></i>
+                                &nbsp;Update
+                            </a>
+                            <a href='' class='btn btn-link' data-toggle="modal" data-target="#delete-course-modal" data-id="{{this._id}}" style="text-decoration: none; color:red;">
+                            <i class="far fa-trash-alt"></i>
+                                Delete
+                            </a>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            Bạn chưa đăng khóa học nào.
+                            <a href="/courses/create">Thêm khóa học</a>
+                        </td>
 
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
-</form>
-
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </form>
+</div>
 
 {{!-- Confirm delete course --}}
 

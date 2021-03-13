@@ -1,0 +1,42 @@
+
+<div class="container">
+    <div class="mt-4 foods">
+        <h3>Thêm món ăn</h3>
+        <form method="POST" action="/foods/store">
+            <div class="form-group">
+                <label for="name">Tên món ăn</label>
+                <input type="text" class="form-control" id="foodName" name='foodName' autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Mô tả món ăn</label>
+                <input  class="form-control" id="description" name='description' autocomplete="off"></input>
+            </div>
+
+            <div class="form-group">
+                <label for="address">Địa chỉ</label>
+                <input type="text" class="form-control" id="address" name='address' autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="image">Thêm ảnh</label>
+                <input type="text" class="form-control" id="image" name='image' autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="price">Giá món ăn</label>
+                <input type="text" class="form-control" id="price" name='price' autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="timeOpen">Giờ đóng mở cửa</label>
+                <input type="text" class="form-control" id="timeOpen" name='timeOpen' autocomplete="off">
+            </div>
+
+            <br>
+            <div style="text-align: center;">
+                <button type="submit" class="btn btn-primary" style="margin: 0 auto;">Thêm món ăn</button>
+            </div>
+        </form>
+    </div>
+</div>

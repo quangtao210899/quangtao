@@ -31,7 +31,7 @@ module.exports = {
        return chats[chats.length-1].idPerson
     },
     textChat: (chat) =>{
-        if(chat.idPerson==chat.idUser){
+        if(chat.idUserFrom==chat.idUser){
             return `<div class="user-inbox inbox">
                         <div class="msg-header">
                             <p>${chat.text}</p>
@@ -57,6 +57,24 @@ module.exports = {
         }
         else {
             return "Giảm món"
+        }
+    },
+    countMessages: (notification) =>{
+        if(notification==null) return "Không có thông báo nào";
+        else {
+            var count = notification.content
+            count = parseInt(count)
+            if(count<=9) return 'Bạn có ' + count + " tin nhắn mới ";
+            else return 'Bạn có 9+ tin nhắn mới'
+        }
+    },
+    countNotification: (notification) => {
+        if(notification==null) return ''
+        else{
+            var count = notification.content
+            count = parseInt(count)
+            if(count<=9) return "+" + count
+            else return '+9'
         }
     }
 }

@@ -2,6 +2,8 @@
 const Course = require('../models/course')
 const Food = require('../models/food')
 const User = require('../models/user')
+const Notification = require('../models/notification')
+
 var nodemailer = require('nodemailer');
 class SiteController {
     // [GET] /home
@@ -14,7 +16,12 @@ class SiteController {
                 Course.find({}).lean(),
             ])
             .then(([user, foods, courses]) =>{
-                res.render('home',{user, foods, courses})
+                Notification.findOne({type: 'message', idUserTo: user._id})
+                    .lean()
+                    .then(notification=>{
+                        res.render('home',{user, foods, courses, notification})
+                    })
+
             })
             .catch(next)
     }
@@ -37,7 +44,7 @@ class SiteController {
                 .lean()
                 .then(user=>{
                     if(user==null){
-                        res.render('login', {
+                        res.render('loginLogout/login', {
                             layout: false,
                             username: req.query.username,
                             messageLogin : 'Tài khoản mật khẩu không đúng'
@@ -60,7 +67,7 @@ class SiteController {
                 .catch(next)
         }
         else {
-            res.render('login', {layout: false})
+            res.render('loginLogout/login', {layout: false})
         }
     }
     // [get] /logout
@@ -76,7 +83,7 @@ class SiteController {
 
     // [get] /register
     register(req, res, next) {
-        res.render('register', {layout: false} )
+        res.render('loginLogout/register', {layout: false} )
     }
 
     // [POST] /register
@@ -95,7 +102,6 @@ class SiteController {
         if(req.query.hasOwnProperty('username')){
             User.findOne({username: req.query.username})
             .then(user=>{
-                console.log('vao then')
                 if(user!=null){
                     const option = {
                         service: 'gmail',
@@ -132,15 +138,13 @@ class SiteController {
                     });               
                 }
                 else {
-                    console.log('khong co user')
-                    res.render('forgot',{layout: false, messageForgot: 'User không tồn tại'})
+                    res.render('loginLogout/forgot',{layout: false, messageForgot: 'User không tồn tại'})
                 }
             })
             .catch(next)
         }
         else {
-            console.log('logic không sai')
-            res.render('forgot',{layout: false})
+            res.render('loginLogout/forgot',{layout: false})
         }
         // const option = {
         //     service: 'gmail',

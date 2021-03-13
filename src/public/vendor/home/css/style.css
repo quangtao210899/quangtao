@@ -35,7 +35,13 @@ a {
     -o-transition: all .3s ease-in-out;
     transition: all .3s ease-in-out;
 }
-
+#notification li a:hover{
+    background-color: #d65106;
+    color: white;
+}
+#notification a i:hover{
+    color: white;
+}
 h1,
 h2,
 h3,
@@ -1111,6 +1117,10 @@ blockquote {
 .line-right-social ul li a:hover {
     background: #d65106;
     color: #ffffff;
+}
+.notification li a:hover{
+    background-color: #ffffff;
+    color: blue;
 }
 .line-right-social h5 {
     font-size: 18px;

@@ -1,4 +1,5 @@
-
+<!-- Site CSS -->
+<link rel="stylesheet" href="/vendor/home/css/style.css"> 
 
 {{!-- Header --}}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,18 +37,34 @@
             {{_fullname}}
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/courses/create">Đăng khóa học</a>
+            <a class="dropdown-item" href="/foods/create">Thêm món ăn</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="/me/stored/courses">Khóa học của tôi</a>
             <a class="dropdown-item" href="#">Bài viết của tôi</a> 
             <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="#" id='Message'>Tin nhắn</a>
             <a class="dropdown-item" href="#" id='logout'>Đăng xuất</a>
           </div>
         </li>  
+        <div id="notification">
+          <li class="nav-item dropdown" >
+              <a class="nav-link" href="/" id="notification-a-header" id="dropdown-a" data-toggle="dropdown">
+                <i class="fas fa-bell" style="font-size: 25px;" id='notification-i-header'>
+                  <span class="badge" id='notification-span-header' style="font-family: 'Times New Roman', Times, serif;">{{countNotification _notificationLocal}}</span>
+                </i>
+              </a>
+            <div class="dropdown-menu" aria-labelledby="dropdown-a">
+              <a class="dropdown-item" id='handle-notification' href="/">{{countMessages _notificationLocal}}</a>
+            </div>
+          </li>
+        </div>
       </ul>
     </div>
   </div>
 </nav>
+
+<input type="hidden" id='idUser' class='idUser' name="idUser" value={{_idUserLocal}}>
+
 
 
 <script>
@@ -56,4 +73,17 @@
     e.preventDefault();
     window.location= '/logout'
   }
+  var a = document.getElementById('notification-a-header')
+  var b = document.getElementById('notification-span-header')
+  a.onclick = function(e){
+    e.preventDefault();
+  }
+
+  var handleNotification = document.getElementById('handle-notification')
+  handleNotification.onclick = function(e){
+    e.preventDefault()
+    b.innerText=''
+    this.innerText = 'Không có thông báo nào'
+  }
 </script>
+

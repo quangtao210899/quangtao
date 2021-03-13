@@ -5,7 +5,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Food Online</title>
-        <link rel="stylesheet" href="/css/chat.css">
         <script src="https://kit.fontawesome.com/a076d05399.js"></script>
         <link rel="stylesheet" href="/css/app.css">
         <link rel="stylesheet" href="/vendor/open-iconic-master/font/css/open-iconic-bootstrap.css">
@@ -16,9 +15,7 @@
         <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
         <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
         <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="/vendor/home/css/bootstrap.min.css">    
-        <!-- Site CSS -->
-        <link rel="stylesheet" href="/vendor/home/css/style.css">    
+        <link rel="stylesheet" href="/vendor/home/css/bootstrap.min.css">       
         <!-- Responsive CSS -->
         <link rel="stylesheet" href="/vendor/home/css/responsive.css">
         <!-- Custom CSS -->
@@ -32,7 +29,7 @@
             <div>
                 {{{body}}}
             </div>
-            <footer>
+            <footer style="visibility: {{hidden}};">
                 {{> footer}}
             </footer>
         </div>
@@ -49,6 +46,11 @@
         <script src="/vendor/home/js/baguetteBox.min.js"></script>
         <script src="/vendor/home/js/form-validator.min.js"></script>
         <script src="/vendor/home/js/contact-form-script.js"></script>
-        <script src="/vendor/home/js/custom.js"></script>       
+        <script src="/vendor/home/js/custom.js"></script>  
+
+
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="/js/chat.js"></script>     
     </body>
 </html>

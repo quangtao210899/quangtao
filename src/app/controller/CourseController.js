@@ -16,7 +16,7 @@ class CourseController {
 
     // [GET]  /courses/create
     create(req,res,next){
-        res.render('./courses/create')
+        res.render('./courses/create', {hidden: 'hidden'})
     }
 
     // [POST]  /courses/store
@@ -35,7 +35,7 @@ class CourseController {
         Course.findById(req.params.id)
             .lean()
             .then(course => {
-                res.render('./courses/edit', {course})
+                res.render('./courses/edit', {course, hidden: 'hidden'})
             })
             .catch(next)
     }

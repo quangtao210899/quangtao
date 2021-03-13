@@ -10,8 +10,14 @@ const Chat = new Schema(
         text: {
             type: String
         },
-        idPerson: {
-            type: Object
+        idUserTo: {
+            type: String
+        },
+        idUserFrom: {
+            type: String
+        },
+        idFood: {
+            type: String
         },
     },
     {

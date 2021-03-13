@@ -5,7 +5,7 @@ class CourseController {
     storedCourse(req,res,next){
         Promise.all([Course.find({}).lean().sortable(req), Course.countDocumentsDeleted()])
             .then(([courses, deleteCount])=>{
-                res.render('./me/storeCourse', {courses, deleteCount})
+                res.render('./me/storeCourse', {courses, deleteCount, hidden: 'hidden'})
             })
             .catch(next)
 
@@ -16,7 +16,7 @@ class CourseController {
     // [GET]  /me/trash/courses
     getTrashCourse(req,res,next){
         Promise.all([Course.findDeleted({}).lean(), Course.countDocuments()])
-        .then(([courses, countDocument]) => res.render('./me/trashCourse', {courses, countDocument}))
+        .then(([courses, countDocument]) => res.render('./me/trashCourse', {courses, countDocument,hidden: 'hidden'}))
         .catch(next)
     }
 

@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="/css/chat.css">
+<!-- Site CSS -->
+<link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <div class="container">
 
     {{!-- Food --}}
@@ -48,6 +51,7 @@
     <br>
     <br>
     <br>
+    <br>
 
 
 
@@ -57,9 +61,25 @@
         <i class="fab fa-facebook-messenger"></i>
         <i class="fas fa-times"></i>
     </label>
-    <div class="wrapper" style="position: fixed;z-index: 3;" >
-        <div class="head-text">Let's chat? - Online</div>
-        <div class="form" style='overflow:scroll;overflow-x:hidden;max-height:200px;'id="form-chat">
+    <div class="wrapper" style="position: fixed;z-index: 5;" >
+        <div class="head-text">Let's chat? - Food Online</div>
+        <div class="form" id="form-chat">
+            <div class="bot-inbox inbox">
+                <div class="icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="msg-header">
+                    <p>Chào quý khách</p>
+                </div>
+            </div>
+            <div class="bot-inbox inbox">
+                <div class="icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="msg-header">
+                    <p>Quý khách muốn mua <strong>{{food.foodName}}</strong> hay món gì khác của shop chúng tôi?</p>
+                </div>
+            </div>
             {{#each chats}}
                 {{{textChat this}}}
             {{/each}}
@@ -69,14 +89,26 @@
                 <div class="input-data">
                     <input id="text" type="text" placeholder="Aa">
                 </div>
-                <i class="far fa-paper-plane" style="font-size: 20px"></i>
-                <input type="hidden" id='idPerson' class='idPerson' name="idPerson" value={{user._id}}>
+                <a href="" id='a-send-message'>
+                    <i class="fas fa-thumbs-up"></i>
+                    {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
+                </a>
+                <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value={{user._id}}>
+                <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value={{food.idUser}}>
+                <input type="hidden" id='idFood' class='idFood' name="idFood" value={{food._id}}>
             </div>
         </form>
     </div>
 </div>
 
 
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script src="/js/chat.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        // sự kiện click button chat
+        var btnChat = document.getElementById('btn-chat')
+        btnChat.onclick= function(){
+            window.location='/chat'
+        }
+    })
+</script>

@@ -10,7 +10,9 @@ const cookieParser = require('cookie-parser')
 const route = require('./router/indexRoute');
 const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
-const sortMiddleware = require('./app/middlewares/sortMiddleware')
+const Notification = require('./app/models/notification')
+const sortMiddleware = require('./app/middlewares/sortMiddleware');
+const { NULL } = require('node-sass');
 
 const app = express();
 const port = 3000;
@@ -76,14 +78,52 @@ io.on('connection', function(client){
         console.log('Đã kết nối được với client')
     })
 
-    client.on('messages', function(data, idPerson){
+    client.on('messages', function(data, idUserFrom, idUserTo, idFood){
         // thông báo cho client
-        client.emit('thread', data, idPerson)
+        client.emit('thread', data, idUserFrom, idUserTo, idFood)
         // thông báo cho các client khác
-        client.broadcast.emit('thread', data, idPerson)
+        client.broadcast.emit('thread', data, idUserFrom, idUserTo, idFood)
+
+        // thông báo cho client
+        client.emit('header', idUserTo)
+        // thông báo cho các client khác
+        client.broadcast.emit('header', idUserTo)
+
+
         //save chat to the database
-        let chatMessage = new Chat({text: data, idPerson: idPerson});
+        let chatMessage = new Chat({text: data, idUserFrom: idUserFrom, idUserTo: idUserTo, idFood: idFood});
         chatMessage.save();
+
+        // lưu thông báo
+        Notification.findOne({type: 'message', idUserTo: idUserTo})
+            .lean()
+            .then(notification=>{
+                if(notification==null){
+                    let newNotification= new Notification({
+                        type: 'message', idUserTo: idUserTo, content: '1'
+                    })
+                    newNotification.save()
+                }
+                else {
+                    var content = notification.content
+                    content = parseInt(content)
+                    content++
+                    Notification.findOneAndUpdate(
+                        {type: 'message', idUserTo: idUserTo},
+                        {content: content}
+                    )
+                        .lean()
+                        .then()
+                }
+            })
+
+            // type: 'message', idUser: idUserTo, idUserFrom: idUserFrom, idFood: idFood
+    })
+
+    client.on('changeNotificationMessageToZero',function(idUser){
+        Notification.findOneAndDelete({type: 'message', idUserTo: idUser})
+            .lean()
+            .then()
     })
     
 })

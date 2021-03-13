@@ -12,7 +12,10 @@ const Food = new Schema({
     foodName: { type: String,},
     address: { type: String, },
     price: { type: String,},
+    image: { type: String,},
     description: {type: String,},
+    timeOpen: {type: String},
+    idUser: {type: String},
     slug : {type: String, slug: 'foodName', unique: true}
 }, {
     timestamps: true,
