@@ -2,34 +2,35 @@
 <div class="container">
     <div class="mt-4 foods">
         <h3>Thêm món ăn</h3>
-        <form method="POST" action="/foods/store">
+        <form method="POST" action="/foods/store" id='form-create-food' enctype="multipart/form-data">
             <div class="form-group">
-                <label for="name">Tên món ăn</label>
+                <label for="foodName">Tên món ăn</label><span id='label-foodName'></span>
                 <input type="text" class="form-control" id="foodName" name='foodName' autocomplete="off">
             </div>
 
             <div class="form-group">
-                <label for="description">Mô tả món ăn</label>
-                <input  class="form-control" id="description" name='description' autocomplete="off"></input>
+                <label for="description">Mô tả món ăn</label><span id='label-description'></span>
+                <textarea  class="form-control" id="description" name='description' autocomplete="off"></textarea>
             </div>
 
             <div class="form-group">
-                <label for="address">Địa chỉ</label>
+                <label for="address">Địa chỉ</label><span id='label-address'></span>
                 <input type="text" class="form-control" id="address" name='address' autocomplete="off">
             </div>
 
             <div class="form-group">
-                <label for="image">Thêm ảnh</label>
-                <input type="text" class="form-control" id="image" name='image' autocomplete="off">
+                <label for="image">Thêm ảnh</label><span id='label-iamge'></span><br>
+                <input type="file" class="foodImage" id="image" name='file'  accept="image/png, image/jpeg">
+                {{!-- <input type="text" class="form-control" id="image" name='image' autocomplete="off"> --}}
             </div>
 
             <div class="form-group">
-                <label for="price">Giá món ăn</label>
+                <label for="price">Giá món ăn</label><span id='label-price'></span>
                 <input type="text" class="form-control" id="price" name='price' autocomplete="off">
             </div>
 
             <div class="form-group">
-                <label for="timeOpen">Giờ đóng mở cửa</label>
+                <label for="timeOpen">Giờ đóng mở cửa</label><span id='label-timeOpen'></span>
                 <input type="text" class="form-control" id="timeOpen" name='timeOpen' autocomplete="off">
             </div>
 
@@ -40,3 +41,81 @@
         </form>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var labelFoodName = document.getElementById('label-foodName')
+        var labelDescription = document.getElementById('label-description')
+        var labelAddress = document.getElementById('label-address')
+        var labelImage = document.getElementById('label-image')
+        var labelPrice = document.getElementById('label-price')
+        var labelTimeOpen = document.getElementById('label-timeOpen')
+
+        var foodName = document.getElementById('foodName')
+        var description = document.getElementById('description')
+        var address = document.getElementById('address')
+        var image = document.getElementById('image')
+        var price = document.getElementById('price')
+        var timeOpen = document.getElementById('timeOpen')    
+
+        $('#form-create-food').submit(function(e){
+            e.preventDefault()
+            var check = true;
+            var valueFoodName = foodName.value.trim()
+            var valueDescription = description.value.trim()
+            var valueAddress = address.value.trim()
+            var valuePrice = price.value.trim()
+            var valueImage = image.value
+            var valueTimeOpen = timeOpen.value.trim()
+            //foodName
+            if(valueFoodName==''){
+                check=false
+                labelFoodName.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Tên món ăn không được trống'
+            }
+            else {
+                labelFoodName.innerHTML=''
+            }
+            //description
+            if(valueDescription==''){
+                check=false
+                labelDescription.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mô tả món ăn không được trống'
+            }
+            else {
+                labelDescription.innerHTML=''
+            }
+            //address
+            if(valueAddress==''){
+                check=false
+                labelAddress.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Địa chỉ không được trống'
+            }
+            else {
+                labelAddress.innerHTML=''
+            }
+            //price
+            if(valuePrice==''){
+                check=false
+                labelPrice.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Giá món ăn không được trống'
+            }
+            else {
+                labelPrice.innerHTML=''
+            }
+            // timeOpen
+            if(valueTimeOpen==''){
+                check=false
+                labelTimeOpen.innerHTML='&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Giờ đóng mở cửa không được trống'
+            }
+            else {
+                labelTimeOpen.innerHTML=''
+            }
+
+            //images
+            if(valueImage==''||valueImage==null){
+                check=false
+            }
+            if(check==true){
+                this.submit()
+            }
+        })
+    })
+</script>

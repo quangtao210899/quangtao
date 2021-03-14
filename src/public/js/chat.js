@@ -55,7 +55,7 @@ socket.on('header', function(idUserTo){
 })
 
 
-$('form').submit(function(e){
+$('#form').submit(function(e){
     // bỏ sự kiện load lại trang
     e.preventDefault()
     // lấy text trong input
@@ -115,17 +115,15 @@ document.addEventListener('DOMContentLoaded', function(){
     a.onclick = function(e){
       e.preventDefault();
     }
-  
+
     var handleNotification = document.getElementById('handle-notification')
     handleNotification.onclick = function(e){
       e.preventDefault()
       b.innerText=''
       this.innerText = 'Không có thông báo nào'
-
       var idUser = document.getElementById('idUser').value
       socket.emit('changeNotificationMessageToZero', idUser)
     }
-
 })
 
 

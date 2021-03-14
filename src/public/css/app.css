@@ -17,6 +17,24 @@
 .foods h3 {
   font-size: 35px; }
 
+.foods input .form-control {
+  padding: 6px 5px 6px 5px;
+  height: 5px;
+  font-size: 15px; }
+
+.foods label {
+  margin: 5px 0px 0px 0px; }
+
+.foods .form-group {
+  margin: 0px; }
+
+.foods span {
+  color: red;
+  font-size: 18px; }
+
+.foods .foodImage {
+  margin: 10px 0px 0px 0px; }
+
 .badge {
   position: absolute;
   border-radius: 10px;

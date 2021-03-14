@@ -3,7 +3,7 @@ const morgan = require('morgan');
 const exphbs = require('express-handlebars');
 const path = require('path');
 const methodOverride = require('method-override')
-var cookieSession = require('cookie-session')
+const cookieSession = require('cookie-session')
 const cookieParser = require('cookie-parser')
 
 
@@ -12,7 +12,6 @@ const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
 const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
-const { NULL } = require('node-sass');
 
 const app = express();
 const port = 3000;
@@ -127,6 +126,10 @@ io.on('connection', function(client){
     })
     
 })
+
+
+
+
 
 
 server.listen(port, () => {
