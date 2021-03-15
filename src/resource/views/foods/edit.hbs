@@ -1,42 +1,38 @@
 
 <div class="container">
     <div class="mt-4 foods">
-        <h3 id='them-mon-an'>Thêm món ăn</h3>
-        <form method="POST" action="/foods/store" id='form-create-food' enctype="multipart/form-data">
+        <h3 id='them-mon-an'>Edit món ăn</h3>
+        <form method="POST" action="/foods/{{food._id}}?_method=PUT" id='form-edit-food' enctype="multipart/form-data">
             <div class="form-group">
                 <label for="foodName">Tên món ăn</label><span id='label-foodName'></span>
-                <input type="text" class="form-control" id="foodName" name='foodName' autocomplete="off">
+                <input type="text" class="form-control" id="foodName" name='foodName' autocomplete="off" value='{{food.foodName}}'>
             </div>
-
             <div class="form-group">
                 <label for="description">Mô tả món ăn</label><span id='label-description'></span>
-                <textarea  class="form-control" id="description" name='description' autocomplete="off"></textarea>
+                <textarea  class="form-control" id="description" name='description'>{{food.description}}</textarea>
             </div>
-
             <div class="form-group">
                 <label for="address">Địa chỉ</label><span id='label-address'></span>
-                <input type="text" class="form-control" id="address" name='address' autocomplete="off">
+                <input type="text" class="form-control" id="address" name='address' autocomplete="off" value='{{food.address}}'>
             </div>
-
             <div class="form-group">
                 <label for="image">Thêm ảnh</label><span id='label-iamge'></span><br>
                 <input type="file" class="foodImage" id="image" name='file'  accept="image/png, image/jpeg">
-                {{!-- <input type="text" class="form-control" id="image" name='image' autocomplete="off"> --}}
             </div>
 
             <div class="form-group">
                 <label for="price">Giá món ăn</label><span id='label-price'></span>
-                <input type="text" class="form-control" id="price" name='price' autocomplete="off">
+                <input type="text" class="form-control" id="price" name='price' autocomplete="off" value='{{food.price}}'>
             </div>
             <div class="form-group" style="margin-top: 10px;">
                 <div class="row">
                     <div class="col-lg-5">
                         <label for="timeOpen">Giờ mở cửa &nbsp;&nbsp;</label>
-                        <input type="time" id="timeOpen" name="timeOpen" required><br>
+                        <input type="time" id="timeOpen" name="timeOpen" value='{{food.timeOpen}}'required><br>
                     </div>
                     <div class="col-lg-5">
                         <label for="timeClose">Giờ đóng cửa</label>
-                        <input type="time" id="timeClose" name="timeClose" required>
+                        <input type="time" id="timeClose" name="timeClose" value='{{food.timeClose}}' required>
                     </div>
                 </div>
             </div>
@@ -44,7 +40,7 @@
             <br>
             <br>
             <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary" style="margin: 0 auto;">Thêm món ăn</button>
+                <button type="submit" class="btn btn-primary" id='btn-edit' style="margin: 0 auto;">Edit món ăn</button>
             </div>
         </form>
     </div>
@@ -52,7 +48,7 @@
 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function(){
         var labelFoodName = document.getElementById('label-foodName')
         var labelDescription = document.getElementById('label-description')
         var labelAddress = document.getElementById('label-address')
@@ -70,7 +66,7 @@
        // var timeOpen = document.getElementById('timeOpen')    
        // var timeClose = document.getElementById('timeClose')    
 
-        $('#form-create-food').submit(function(e){
+        $('#form-edit-food').submit(function(e){
             e.preventDefault()
             var check = true;
             var valueFoodName = foodName.value.trim()
@@ -116,12 +112,15 @@
 
             //images
             if(valueImage==''||valueImage==null){
-                check=false
+                this.enctype = ''
             }
 
             // check all input true
             if(check==true){
                 this.submit()
+            }
+            else {
+                this.enctype='multipart/form-data'
             }
         })
         $([document.documentElement, document.body]).animate({

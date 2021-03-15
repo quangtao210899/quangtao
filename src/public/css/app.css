@@ -33,7 +33,7 @@
   font-size: 18px; }
 
 .foods .foodImage {
-  margin: 10px 0px 0px 0px; }
+  margin: 0px 0px 0px 0px; }
 
 .badge {
   position: absolute;
@@ -48,3 +48,7 @@
   white-space: nowrap;
   margin-top: -10px;
   margin-left: -10px; }
+
+.btn-submit :hover {
+  color: red;
+  background-color: #007Bff; }

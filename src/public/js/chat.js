@@ -55,26 +55,6 @@ socket.on('header', function(idUserTo){
 })
 
 
-$('#form').submit(function(e){
-    // bỏ sự kiện load lại trang
-    e.preventDefault()
-    // lấy text trong input
-    var message =document.getElementById('text').value
-    message = message.trim()
-    var idUserTo = document.getElementById('idUserTo') .value
-    var idUserFrom = document.getElementById('idUserFrom') .value
-    var idFood = document.getElementById('idFood') .value
-    //gửi thông báo đến server
-    if(message!=''&&message!=""){
-        socket.emit('messages', message, idUserFrom, idUserTo, idFood)
-        message.value=''
-        return false;  
-    }
-    else {
-        return false;
-    }
-})
-
 
 // chờ đến khi load xong thư viện
 document.addEventListener('DOMContentLoaded', function(){
@@ -98,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function(){
             return false;  
         }
         else {
+            socket.emit('messages', "👍", idUserFrom, idUserTo, idFood)
+            message.value=''
             return false;
         }
     })
@@ -123,6 +105,32 @@ document.addEventListener('DOMContentLoaded', function(){
       this.innerText = 'Không có thông báo nào'
       var idUser = document.getElementById('idUser').value
       socket.emit('changeNotificationMessageToZero', idUser)
+    }
+    //
+    
+    $('#form1').submit(function(e){
+        e.preventDefault()
+        // lấy text trong input
+        var message =document.getElementById('text').value
+        message = message.trim()
+        var idUserTo = document.getElementById('idUserTo') .value
+        var idUserFrom = document.getElementById('idUserFrom') .value
+        var idFood = document.getElementById('idFood') .value
+        //gửi thông báo đến server
+        if(message!=''&&message!=""){
+            socket.emit('messages', message, idUserFrom, idUserTo, idFood)
+            message.value=''
+            return false;  
+        }
+        else {
+            return false;
+        }
+    })
+
+    // sự kiện click button chat
+    var btnChat = document.getElementById('btn-chat')
+    btnChat.onclick= function(){
+        window.location='/chat'
     }
 })
 

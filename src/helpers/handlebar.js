@@ -17,7 +17,6 @@ module.exports = {
         }
         const icon = icons[sortType]
         const type = types[sortType]
-        console.log(sortType);
         
         const href = Handlebars.escapeExpression(
             `?_sort&column=${field}&type=${type}`

@@ -29,7 +29,7 @@ let diskStorage = multer.diskStorage({
 // Bên trong hàm .single() truyền vào name của thẻ input, ở đây là "file"
 let uploadFile = multer({storage: diskStorage}).single("file");
    
-
+let editFile = multer().single('file')
 
 class FoodController {
     // [GET]  /foods/:slug
@@ -65,7 +65,6 @@ class FoodController {
 
     // [POST]  /foods/store
     store(req, res, next){
-        var image='';
         uploadFile(req, res, (error) => {
             // Nếu có lỗi thì trả về lỗi cho client.
             // Ví dụ như upload một file không phải file ảnh theo như cấu hình của mình bên trên
@@ -76,7 +75,6 @@ class FoodController {
             // Đồng thời file đã được lưu vào thư mục uploads
             // res.sendFile(`/uploads/${req.file.filename}`);
 
-
             const username = req.session.username
             const password = req.session.password
             User.findOne({username: username, password : password})
@@ -86,12 +84,109 @@ class FoodController {
                     req.body.image = '/uploads/'+req.file.filename
                     const food = new Food(req.body)
                     food.save()
-                        .then(()=> res.redirect('/'))
+                        .then(()=> res.redirect('/me/stored/foods'))
                         .catch(next)
                 })
                 .catch(next)
         });
 
+    }
+
+    // [PUT]  /foods/:id/edit
+    edit(req,res,next){
+        Food.findById(req.params.id)
+            .lean()
+            .then(food => {    
+                res.render('./foods/edit', {food, hidden: 'hidden'})
+            })
+            .catch(next)
+    }
+
+    // [PUT]  /foods/:id
+    update(req, res, next){
+        console.log(req.body.length)
+        if(req.body.foodName){
+            Food.updateOne({ _id: req.params.id}, req.body)
+                .then(()=> {
+                    res.redirect('/me/stored/foods')
+                })
+                .catch(next) 
+        }
+        else {
+            uploadFile(req, res, (error) => {
+                if (error) {
+                  return res.send(`Error when trying to upload: ${error}`);
+                }
+                req.body.image = '/uploads/'+req.file.filename
+                Food.updateOne({ _id: req.params.id}, req.body)
+                    .then(()=> {
+                        res.redirect('/me/stored/foods')
+                    })
+                    .catch(next) 
+            });           
+        }
+    }
+    // [DELETE]  /foods/:id
+    destroy(req,res,next){
+        Food.delete({ _id: req.params.id})
+                .then(()=> {
+                    res.redirect('back')
+                })
+                .catch(next)
+    }
+
+    // [DELETE]  /foods/:id/force
+    forceDestroy(req,res,next){
+        //res.json(req.body);
+        Food.deleteOne({ _id: req.params.id})
+                .then(()=> {
+                    res.redirect('back')
+                })
+                .catch(next)
+    }
+
+    // [PATCH] /foods/:id/restore
+    restore(req,res,next){
+        Food.restore({_id: req.params.id})
+            .then(()=> res.redirect('back'))
+            .catch(next)
+    }
+
+    // [POST] /foods/handle-form-actions-Store
+    handleFormActionsStore(req,res,next){
+        switch(req.body.action){
+            case 'delete' : 
+                Food.delete({ _id: {$in: req.body.foodIds} })
+                    .then(()=> {
+                        res.redirect('back')
+                    })
+                    .catch(next)
+                break;
+            default: 
+                res.json({message: 'Action invalid!'});
+        }
+    }
+
+    // [POST] /foods/handle-form-actions-Trash
+    handleFormActionsTrash(req,res,next){
+        switch(req.body.action){
+            case 'restore' : 
+                Food.restore({ _id: {$in: req.body.foodIds} })
+                    .then(()=> {
+                        res.redirect('back')
+                    })
+                    .catch(next)
+                break;
+            case 'deleteForce':
+                Food.deleteMany({ _id: {$in: req.body.foodIds} })
+                    .then(()=> {
+                        res.redirect('back')
+                    })
+                    .catch(next)
+                break;    
+            default: 
+                res.json({message: 'Action invalid!'});
+        }
     }
 }
 

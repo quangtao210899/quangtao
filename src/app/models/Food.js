@@ -15,11 +15,23 @@ const Food = new Schema({
     image: { type: String,},
     description: {type: String,},
     timeOpen: {type: String},
+    timeClose:{type: String},
     idUser: {type: String},
     slug : {type: String, slug: 'foodName', unique: true}
 }, {
     timestamps: true,
 });
+
+// custom query helpers
+Food.query.sortable = function(req){
+    if(req.query.hasOwnProperty('_sort')){
+        const isValidStyle = ['asc','desc'].includes(req.query.type); 
+        return this.sort({
+            [req.query.column] : isValidStyle ? req.query.type : 'desc',
+        })
+    }
+    return this;
+}
 
 //add plugin
 mongoose.plugin(slug);

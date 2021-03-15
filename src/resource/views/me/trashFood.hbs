@@ -1,0 +1,195 @@
+
+<div class="container">    
+    <form class="mt-4" name='container-form' method="POST" action='/foods/handle-form-actions-trash'>
+        <div>
+            <h3 style="font-size: 35px;">Món ăn đã xóa</h3>
+            <a href="/me/stored/foods" style="color: #007BFF; margin-left: 12px;">Món ăn của tôi ({{countDocument}})</a>
+
+            <div class="mt-4 d-flex align-items-center">
+                <div class="form-check" style="margin-left:12px ;">
+                    <input type="checkbox" class="form-check-input" id="checkbox-all">
+                    <label class="form-check-label" for="exampleCheck1">Chọn tất cả</label>
+                </div>
+
+                <select class="form-control-sm" style='width: 160px; margin: 0 16px' name='action' required>
+                    <option value="">--Hành động--</option>
+                    <option value="restore">Restore</option>
+                    <option value='deleteForce'>Xóa vĩnh viễn</option>
+                </select>   
+
+                <button class='btn btn-primary btn-sm btn-submit-storedFood' 
+                    style="font-size: 14px; text-transform: none; padding: 4px 8px;
+                        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+                        Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif" disabled>
+                    Thực Hiện
+                </button>   
+
+                <button class='btn btn-success btn-sm ml-auto btn-create-course' type="button" style="padding: 4px 8px;"> 
+                    <i class="fas fa-pencil-alt"></i>
+                    <a href="/foods/create" 
+                        style="color: white; text-decoration: none; font-size: 14px; 
+                        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, 
+                        Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;text-transform: none;">
+                         &nbsp;Thêm món ăn
+                    </a> 
+                </button>   
+            </div>
+        </div>
+
+        <table class="table mt-4">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th scope="col">#</th>
+                    <th scope="col">
+                        Tên món ăn&nbsp;
+                        {{{sortable 'foodName' _sort}}}
+                    </th>
+                    <th scope="col">
+                        Giá&nbsp;
+                        {{{sortable 'price' _sort}}}
+                    </th>
+                    <th scope="col">
+                        slug&nbsp;
+                        {{{sortable 'slug' _sort}}}
+                    </th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+                {{#each foods}}
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{this._id}}" name="foodIds[]">
+                            </div>                        
+                        </td>
+                        <th scope="row">{{sum @index 1}}</th>
+                        <td>{{this.foodName}}</td>
+                        <td>{{this.price}}</td>
+                        <td>{{this.slug}}</td>
+                        <td>
+                            <a href='' class='btn btn-link btn-restore' data-id={{this._id}}
+                                style="text-transform: none; text-decoration: none; padding: 6px 12px; 
+                                    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, 
+                                    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; 
+                                    margin-top: -10px">
+                                <i class="fas fa-trash-restore-alt"></i>
+                                Restore
+                            </a>
+                            <a href='' class='btn btn-link' data-toggle="modal" data-target="#delete-course-modal" data-id="{{this._id}}" style="text-decoration: none; color:red; padding: 6px 12px;font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; margin-top: -10px; text-transform:none;">
+                                <i class="far fa-trash-alt"></i>
+                                Xóa vĩnh viễn
+                            </a>
+                        </td>
+                    </tr>
+                {{else}}
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            Thùng rác trống.
+                            <a href="/foods/create" style="color: #007BFF;">Thêm món ăn</a>
+                        </td>
+
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </form>
+</div>
+
+
+{{!-- Confirm delete course --}}
+
+<!-- Modal -->
+<div class="modal fade" id="delete-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete món ăn vĩnh viễn</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Bạn có muốn xóa vĩnh viễn không? Thao tác này không thể phục hồi!
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal"
+            style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+            Không
+        </button>
+        <button id='btn-delete-course'type="button" class="btn btn-danger"
+            style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+            Xóa bỏ
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form method="POST" name='delete-form-hiden'></form>
+<form method="POST" name='restore-form-hiden'></form>
+
+
+<script>
+    // chờ đến khi load xong thư viện
+    document.addEventListener('DOMContentLoaded', function(){
+        var courseID
+        var btnDeleteCourse = document.getElementById('btn-delete-course')
+        var deleteForm = document.forms['delete-form-hiden']
+        var restoreForm = document.forms['restore-form-hiden']
+        var btnRestore = $('.btn-restore') 
+        var btnCreateCourse = $('.btn-create-course')
+        var checkboxAll = $('#checkbox-all')
+        var courseItemCheckbox = $('input[name="foodIds[]"]')
+        var btnSubmit = $('.btn-submit-storedFood')
+        // lấy ID của khóa học
+        $('#delete-course-modal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            courseID = button.data('id') 
+        })   
+        // xử lý logic xóa
+        btnDeleteCourse.onclick = function(){
+            deleteForm.action = '/foods/' + courseID + "/force?_method=DELETE";
+            deleteForm.submit()
+        }           
+        // xử lý logic khôi phục
+        btnRestore.click(function (e) {
+            e.preventDefault();     // loại bỏ sự kiện quay trở lại
+            var restoreID = $(this).data('id')
+            restoreForm.action = '/foods/' + restoreID + '/restore?_method=PATCH'
+            restoreForm.submit()
+        })
+
+        // xử lý sự kiện onclick vào đăng khóa học
+        btnCreateCourse.click(function(){
+            window.location = '/courses/create'
+        })
+
+        // xử lý sự kiện checkbox all change
+        checkboxAll.change(function(){
+            var isCheckedAll = $(this).prop('checked')
+            courseItemCheckbox.prop('checked', isCheckedAll)
+            renderBtnSubmit()
+        })
+
+        // xử lý sự kiện không còn check nào và đã check hết
+        courseItemCheckbox.change(function(){
+            var isCheckedAll = courseItemCheckbox.length === $('input[name="foodIds[]"]:checked').length
+            checkboxAll.prop('checked', isCheckedAll)
+            renderBtnSubmit()
+        })
+
+        // xử lý hiển thị btn-submit
+        function renderBtnSubmit(){
+            var checkedCount = $('input[name="foodIds[]"]:checked').length
+            if(checkedCount>0){
+                btnSubmit.attr('disabled', false)
+            }
+            else {
+                btnSubmit.attr('disabled', true)
+            }
+        }
+
+       // xử lý gửi form 
+    })
+</script>

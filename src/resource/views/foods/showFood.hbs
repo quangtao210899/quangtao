@@ -89,8 +89,8 @@
                 <div class="input-data">
                     <input id="text" type="text" placeholder="Aa">
                 </div>
-                <a href="" id='a-send-message'>
-                    <i class="fas fa-thumbs-up"></i>
+                <a href="" id='a-send-message' style="color: #0084ff">
+                    <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
                     {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
                 </a>
                 <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value={{user._id}}>
@@ -102,13 +102,3 @@
 </div>
 
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        // sự kiện click button chat
-        var btnChat = document.getElementById('btn-chat')
-        btnChat.onclick= function(){
-            window.location='/chat'
-        }
-    })
-</script>
