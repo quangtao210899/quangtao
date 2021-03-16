@@ -17,6 +17,7 @@ const Food = new Schema({
     timeOpen: {type: String},
     timeClose:{type: String},
     idUser: {type: String},
+    resize: {type: String},
     slug : {type: String, slug: 'foodName', unique: true}
 }, {
     timestamps: true,

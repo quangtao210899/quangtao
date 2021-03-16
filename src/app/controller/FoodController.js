@@ -1,8 +1,22 @@
 const Food = require('../models/food')
 const User = require('../models/user')
 const Chat = require('../models/chat')
+
+// thư viện xử lý lưu file
 const multer = require("multer");
 
+// thư viện xử lý ảnh
+const Jimp = require('jimp');
+
+
+async function resize(linkImage) {
+    // Read the image.
+    const image = await Jimp.read(linkImage);
+    // Resize the image to width 1200 and heigth 800.
+    await image.resize(1200, 800);
+    // Save and overwrite the image
+    await image.writeAsync(linkImage);
+}
 
 // Khởi tạo biến cấu hình cho việc lưu trữ file upload
 let diskStorage = multer.diskStorage({
@@ -28,19 +42,27 @@ let diskStorage = multer.diskStorage({
 // Khởi tạo middleware uploadFile với cấu hình như ở trên,
 // Bên trong hàm .single() truyền vào name của thẻ input, ở đây là "file"
 let uploadFile = multer({storage: diskStorage}).single("file");
-   
-let editFile = multer().single('file')
 
 class FoodController {
     // [GET]  /foods/:slug
     showFood(req,res,next){
         const username = req.session.username
         const password = req.session.password
+        var user,food;
         Promise.all([
                 Food.findOne({slug: req.params.slug}).lean(),
                 User.findOne({username: username, password : password}).lean(),
             ])
-            .then(([food, user]) => {
+            .then(([food1, user1]) => {
+                user = user1
+                food = food1
+                if(!food.resize){
+                    var image = "./src/public/"+ food.image
+                    resize(image)
+                    Food.updateOne({_id: food._id}, {resize: '1'}).then()
+                }
+            })
+            .then(()=>{
                 Chat.find({
                     $or: [
                         {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser}, {idFood: food._id}]},
@@ -82,6 +104,7 @@ class FoodController {
                 .then(user=>{
                     req.body.idUser = user._id;
                     req.body.image = '/uploads/'+req.file.filename
+                    // image = './src/public' +req.body.image
                     const food = new Food(req.body)
                     food.save()
                         .then(()=> res.redirect('/me/stored/foods'))

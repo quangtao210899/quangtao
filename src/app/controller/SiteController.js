@@ -2,26 +2,46 @@
 const Course = require('../models/course')
 const Food = require('../models/food')
 const User = require('../models/user')
-const Notification = require('../models/notification')
 
 var nodemailer = require('nodemailer');
+
+
+// thư viện xử lý ảnh
+const Jimp = require('jimp');
+
+
+async function resize(linkImage) {
+    // Read the image.
+    const image = await Jimp.read(linkImage);
+    // Resize the image to width 1200 and heigth 800.
+    await image.resize(1200, 800);
+    // Save and overwrite the image
+    await image.writeAsync(linkImage);
+}
 class SiteController {
     // [GET] /home
     home(req, res, next) {
         const username = req.session.username
         const password = req.session.password
+        var user,foods;
         Promise.all([
                 User.findOne({username: username, password : password}).lean(), 
                 Food.find({}).lean(),
-                Course.find({}).lean(),
             ])
-            .then(([user, foods, courses]) =>{
-                Notification.findOne({type: 'message', idUserTo: user._id})
-                    .lean()
-                    .then(notification=>{
-                        res.render('home',{user, foods, courses, notification})
-                    })
+            .then(([user1, foods1]) =>{
+                user = user1
+                foods = foods1
+                for(var i = 0; i < foods.length; i++){
+                    if(!foods[i].resize){
+                        var image = "./src/public/"+ foods[i].image
+                        resize(image)
+                        Food.updateOne({_id: foods[i]._id}, {resize: '1'}).then()
+                    }
+                }
 
+            })
+            .then(()=>{
+                res.render('home',{user, foods})
             })
             .catch(next)
     }

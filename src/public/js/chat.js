@@ -126,12 +126,6 @@ document.addEventListener('DOMContentLoaded', function(){
             return false;
         }
     })
-
-    // sự kiện click button chat
-    var btnChat = document.getElementById('btn-chat')
-    btnChat.onclick= function(){
-        window.location='/chat'
-    }
 })
 
 
