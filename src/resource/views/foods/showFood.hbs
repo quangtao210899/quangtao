@@ -1,8 +1,11 @@
 <link rel="stylesheet" href="/css/chat.css">
 <!-- Site CSS -->
-{{!-- <link rel="stylesheet" href="/vendor/home/css/style.css">  --}}
+<link rel="stylesheet" href="/vendor/home/css/style.css"> 
+<link rel="stylesheet" href="/css/animation.css">
 <div class="container">
+    <div id ='123'>
 
+    </div>
     {{!-- Food --}}
     <div class="tz-gallery" style="margin: 30px 0px 30px 0px;">
         <div class="row">   
@@ -25,12 +28,21 @@
                 <p style="margin: 0px 0px 10px 0px;">
                     <i class="fas fa-dollar-sign" style="font-size: 18px; color:#666666;"></i>
                     <span style=" font-size: 18px; margin: 0px 0px 10px 0px;">{{food.price}} </span>
+                    <button class="btn" id="btn-value-cart" style="background-color:white ;border-radius: 50px; padding: 0px 5px; 
+                        position:relative; top: 26px; right: 0px; text-align: center; font-size: 14px; 
+                        color: #EE4D2D; border: 1px solid #fff;"></button>
+                    {{!-- <span id="span-order" style="color: red;position:relative; top: 36px; right: 55px;text-shadow: 0 0 3px #000"></span> --}}
                 </p>
-                <button type="button" class="btn btn-success" style="padding: 5px; font-size: 15px">
-                    <i class="fas fa-shopping-cart"></i>
+                
+                <button type="button" class="btn btn-success" id='btn-order' style="padding: 5px; font-size: 15px" 
+                    data-toggle="modal" data-target="#order-modal">                 
+                    <i class="fas fa-shopping-cart"> 
+        
+                    </i>
                     Order
+                    
                 </button>
-                <span>&nbsp;</span>
+                <span>&nbsp;&nbsp;&nbsp;</span>
                 <button type="button" class="btn btn-success btn-chat" style="padding: 5px; font-size: 15px" id='btn-chat'>
                     <i class="far fa-comment-dots"></i>
                     Chat
@@ -40,21 +52,66 @@
             <div class="col-lg-2"></div>
         </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
+    <!--Section: Block Content-->
+    <section>
+
+        <!--Grid row-->
+        <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-9">
+                <h2 style="color: #CF2127;">Danh sách món ăn</h2>
+                <!-- Card -->
+                <div class="mb-3">
+                    <div class="pt-4 wish-list">
+                    {{#each Foods}}
+                        <div class="row mb-4">
+                            <div class="col-md-5 col-lg-3 col-xl-2">
+                                <div class="view zoom overlay z-depth-1 rounded mb-3 mb-md-0 tz-gallery" 
+                                    style="background-color: #e2d6d6; margin-top: 0px ">
+                                    <a class="lightbox" href="{{this.image}}" style="border: 2px solid #e2d6d6">
+                                        <img class="img-fluid card-img-top fill" src="{{this.image}}" alt="Gallery Images" 
+                                        >
+                                    </a>
+                                    {{!-- <img class="img-fluid w-100"
+                                    src="{{this.image}}" alt="Sample" style="border-style: solid; border-width: 1px black;"> --}}
+                                </div>
+                            </div>
+                            <div class="col-md-7 col-lg-9 col-xl-9">
+                            <div>
+                                <div class="d-flex justify-content-between">
+                                    <div>
+                                        <h5>{{this.foodName}}</h5>
+                                        <p class="mb-1 text-muted text-uppercase small" style="color: #6CC942;">Lượt mua: 100</p>
+                                        <p class="mb-1 text-muted text-uppercase small">vote: 5*</p>
+                                    </div>
+                                    <div>
+                                        <p class="mb-0">
+                                            <span><strong id="summary">{{this.price}}đ</strong></span> 
+                                            <button style="background-color: #fff; border: 2px solid #fff; padding: 0px 0px;" class="animation">
+                                                <i class="fas fa-plus-circle" style="color: red; font-size: 20px;"></i> 
+                                            </button>
+                                            <input type="hidden" value="{{this.foodName}}">
+                                            <input type="hidden" value="{{this.price}}">
+                                        </p class="mb-0">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <hr class="mb-4">
+                    {{/each}}
+                </div>
+                <!-- Card -->
 
 
+            </div>
+            <!--Grid column-->
 
+        </div>
+        <!-- Grid row -->
+
+    </section>
+    <!--Section: Block Content-->
     {{!-- Messenger --}}
     <input type="checkbox" id="click">
     <label for="click" style="position: fixed;z-index: 2;">
@@ -101,10 +158,148 @@
     </div>
 </div>
 
+
+<!-- Modal -->
+<div class="modal fade" id="order-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Xác nhận mua </h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <p>Chi tiết đơn hàng</p>
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Tên món ăn</th>
+                        <th scope="col">Số lượng</th>
+                        <th scope="col">Giá</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{!-- {{#each }} --}}
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>{{food.foodName}}</td>
+                                <td>
+                                    <input class="text-center" id='volumn' value="1" type="number" 
+                                        style="padding: 0px 0px 0px 0px;width:50px" min='1'>
+                                </td>
+                                <td id="td-price" >{{food.price}}</td>
+                            </tr>
+                        {{!-- {{/each}} --}}
+                    </tbody>
+                </table>
+                <div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <h3>Tổng cộng:</h3>
+                        </div>
+                        <div class="col-lg-6">
+                            <h3 style="text-align: right; margin-right: 50px" id="cost-h3">
+                                0đ
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal"
+                    style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                    Quay lại
+                </button>
+                <button id='btn-delete-course'type="button" class="btn btn-primary"
+                    style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                    Thanh toán
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // sự kiện click button chat
-    var btnChat = document.getElementById('btn-chat')
-    btnChat.onclick= function(){
-        window.location='/chat'
-    }
+    document.addEventListener('DOMContentLoaded', function(){
+        var listCartName = [];
+        var listCartPrice = [];
+        var SOLUONG = 1;
+        var btnOrder = document.getElementById('btn-order')
+        var btnValueCart = document.getElementById('btn-value-cart')
+        $('#btn-value-cart').hide()
+        $('.animation').click(function(){
+           // var positionBtnOrder = $('#btn-order').position()
+           // var p = this.parentNode 
+            //var div = p.parentNode
+            //var button = document.createElement("button");
+           // button.classList.add('animationButton')
+           // div.append(button)
+           
+            //thêm sản phẩm
+            var children = this.parentNode.children
+            var foodName = children[2].value
+            var price = children[3].value
+            var kt = 1
+            for(var i = 0; i < listCartName.length; i++){
+                if(listCartName[i]==foodName){
+                    kt=0
+                    break
+                }
+            }
+            if(kt){
+                listCartName.push(foodName)
+                listCartPrice.push(price)
+            }
+            // hiển thị vào giỏ hàng
+            var textBtnValueCart = btnValueCart.innerHTML;
+            if(textBtnValueCart==''||textBtnValueCart==null){
+                btnValueCart.innerText="1";
+                $('#btn-value-cart').show()
+            }
+            else if(textBtnValueCart!='9+') {
+                textBtnValueCart = parseInt(textBtnValueCart)
+                if(textBtnValueCart<=7) btnValueCart.innerText = textBtnValueCart+1
+                else {
+                    btnValueCart.innerText = '9+'
+                }
+                $('#btn-value-cart').show()
+            }
+        })
+        // sự kiện click button chat
+        var btnChat = document.getElementById('btn-chat')
+        btnChat.onclick= function(){
+            window.location='/chat'
+        }
+
+        // thay đổi số lượng
+        var volumn = document.getElementById('volumn')
+        var tdPrice = document.getElementById('td-price')
+        var costH3 = document.getElementById('cost-h3')
+        var oldValue = parseInt(volumn.value)
+        volumn.onchange = function(){
+            var soLuong = parseInt(volumn.value)
+            var price;
+            if(oldValue>soLuong){
+                price = parseInt(tdPrice.innerText)/(soLuong+1)
+            }
+            else{
+                price = parseInt(tdPrice.innerText)/(soLuong-1)
+            }
+            oldValue = soLuong
+            tdPrice.innerText= soLuong*price;
+            cart()
+        }
+        function cart(){
+            var soLuong = parseInt(volumn.value)
+            var price = parseInt(tdPrice.innerText)/soLuong
+            tdPrice.innerText= soLuong*price;
+            costH3.innerHTML = tdPrice.innerText
+        }
+        cart()
+    })
 </script>

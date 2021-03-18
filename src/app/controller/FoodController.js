@@ -48,36 +48,46 @@ class FoodController {
     showFood(req,res,next){
         const username = req.session.username
         const password = req.session.password
-        var user,food;
-        Promise.all([
-                Food.findOne({slug: req.params.slug}).lean(),
-                User.findOne({username: username, password : password}).lean(),
-            ])
-            .then(([food1, user1]) => {
-                user = user1
-                food = food1
-                if(!food.resize){
-                    var image = "./src/public/"+ food.image
-                    resize(image)
-                    Food.updateOne({_id: food._id}, {resize: '1'}).then()
-                }
-            })
-            .then(()=>{
-                Chat.find({
-                    $or: [
-                        {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser}, {idFood: food._id}]},
-                        {$and: [{idUserFrom: food.idUser}, {idUserTo: user._id}, {idFood: food._id}]},
-                    ]})
-                    .lean()
-                    .then((chats)=>{
-                        for(var i = 0; i<chats.length;i++){
-                            chats[i].idUser = user._id
-                        }
-                        res.render('./foods/showFood',{food,chats,user})
-                    })
-                    .catch(next)
-            })
-            .catch(next)
+        var user,food,Foods,pos;
+            Promise.all([User.findOne({username: username, password : password}).lean()])
+                .then(([user1]) => {
+                    user = user1
+                    Food.find({idUser: user1._id})
+                        .lean()
+                        .then(foods=>{
+                            Foods = foods
+                            for(var i = 0; i < foods.length; i++){
+                                if(!foods[i].resize){
+                                    var image = "./src/public/"+ foods[i].image
+                                    resize(image)
+                                    Food.updateOne({_id: foods[i]._id}, {resize: '1'}).then()
+                                }
+                                if(foods[i].slug == req.params.slug){
+                                    food = foods[i]
+                                    pos = i
+                                }
+                            }
+                        })
+                        .then(()=>{
+                            delete Foods[pos];
+                        })
+                        .then(()=>{
+                            Chat.find({
+                                $or: [
+                                    {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser}, {idFood: food._id}]},
+                                    {$and: [{idUserFrom: food.idUser}, {idUserTo: user._id}, {idFood: food._id}]},
+                                ]})
+                                .lean()
+                                .then((chats)=>{
+                                    for(var i = 0; i<chats.length;i++){
+                                        chats[i].idUser = user._id
+                                    }
+                                    res.render('./foods/showFood',{Foods,food,chats,user})
+                                })
+                                .catch(next)
+                        })
+                })
+                .catch(next)
     }
 
     // [GET]  /foods/create
