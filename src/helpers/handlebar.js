@@ -75,5 +75,9 @@ module.exports = {
             if(count<=9) return "+" + count
             else return '+9'
         }
-    }
+    },
+    toLocaleString: (number) => {
+        number = parseInt(number)
+        return number.toLocaleString()
+    },
 }

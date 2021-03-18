@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/css/chat.css">
+
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <link rel="stylesheet" href="/css/animation.css">
@@ -27,14 +28,14 @@
                 </p>
                 <p style="margin: 0px 0px 10px 0px;">
                     <i class="fas fa-dollar-sign" style="font-size: 18px; color:#666666;"></i>
-                    <span style=" font-size: 18px; margin: 0px 0px 10px 0px;">{{food.price}} </span>
+                    <span style=" font-size: 18px; margin: 0px 0px 10px 0px;">Giá: {{toLocaleString food.price}}đ </span>
                     <button class="btn" id="btn-value-cart" style="background-color:white ;border-radius: 50px; padding: 0px 5px; 
-                        position:relative; top: 26px; right: 0px; text-align: center; font-size: 14px; 
-                        color: #EE4D2D; border: 1px solid #fff;"></button>
+                        position:relative; top: 26px; right: 50px; text-align: center; font-size: 14px; 
+                        color: #EE4D2D; border: 1px solid #fff; opacity: 1;" disabled></button>
                     {{!-- <span id="span-order" style="color: red;position:relative; top: 36px; right: 55px;text-shadow: 0 0 3px #000"></span> --}}
                 </p>
                 
-                <button type="button" class="btn btn-success" id='btn-order' style="padding: 5px; font-size: 15px" 
+                <button type="button" class="btn btn-success btn-order-app" id='btn-order' style="padding: 5px; font-size: 15px;" 
                     data-toggle="modal" data-target="#order-modal">                 
                     <i class="fas fa-shopping-cart"> 
         
@@ -86,7 +87,7 @@
                                     </div>
                                     <div>
                                         <p class="mb-0">
-                                            <span><strong id="summary">{{this.price}}đ</strong></span> 
+                                            <span><strong id="summary">{{toLocaleString this.price}}đ</strong></span> 
                                             <button style="background-color: #fff; border: 2px solid #fff; padding: 0px 0px;" class="animation">
                                                 <i class="fas fa-plus-circle" style="color: red; font-size: 20px;"></i> 
                                             </button>
@@ -243,11 +244,34 @@
         var foodPriceRow1 = document.getElementById('foodPriceRow1')
         listCartPrice.push(foodPriceRow1.value)
         listCartQuantily.push('1')
+        // xử lý button màu đỏ của order khi giá tiền thay đổi
+        var foodPriceRow2 = parseInt(foodPriceRow1.value)
+        if(foodPriceRow2<10){
+            btnValueCart.style.right = '0px'
+        }
+        else if(foodPriceRow2<100){
+            btnValueCart.style.right = '12px'
+        }
+        else if(foodPriceRow2<1000){
+            btnValueCart.style.right = '24px'
+        }
+        else if(foodPriceRow2<10000){
+            btnValueCart.style.right = '40px'
+        }
+        else if(foodPriceRow2<100000){
+            btnValueCart.style.right = '50px'
+        }
+        else if(foodPriceRow2<1000000){
+            btnValueCart.style.right = '60px'
+        }
+        else {
+            btnValueCart.style.right = '76px'
+        }
         // xử lý khi click vào btnOrder
         btnOrder.onclick = function(){
             var dem = demTruoc - demSau
             for(var i = demSau+1; i <= demTruoc; i++){ 
-                $tr = '<tr><th scope="row">'+i+'</th> <td>' +listCartName[i-1]+ '</td> <td> <input class="text-center volumn" value="'+listCartQuantily[i-1]+'" type="number" style="padding: 0px 0px 0px 0px;width:50px" min="1"></td>  <td class="td-price" >'+listCartPrice[i-1]+'đ</td><tr>'
+                $tr = '<tr><th scope="row">'+i+'</th> <td>' +listCartName[i-1]+ '</td> <td> <input class="text-center volumn" value="'+listCartQuantily[i-1]+'" type="number" style="padding: 0px 0px 0px 0px;width:50px" min="1"></td>  <td class="td-price" >'+parseInt(listCartPrice[i-1]).toLocaleString()+'đ</td><tr>'
                 $('#tbody').append($tr)
             }
             demSau=demTruoc
@@ -274,7 +298,6 @@
             for(var i = 0; i < listCartName.length; i++){
                 if(listCartName[i]==foodName){
                     listCartQuantily[i]++;
-                    console.log(listCartQuantily[i])
                     kt=0
                     break
                 }
@@ -314,7 +337,7 @@
             for(var i = 0; i <listCartName.length;i++){
                 count+= listCartPrice[i]*listCartQuantily[i]
             }
-            costH3.innerText = count+"đ"
+            costH3.innerText = count.toLocaleString()+"đ"
         }
     })
 </script>
