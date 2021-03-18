@@ -80,4 +80,14 @@ module.exports = {
         number = parseInt(number)
         return number.toLocaleString()
     },
+    btnUpdateFood: (id, idUser)=>{
+        if(id==idUser){
+    return `<button type="button" class="btn btn-danger" id='update-food'>
+                Sửa thông tin món ăn
+            </button>`
+        }
+        else {
+            return;
+        }
+    }
 }

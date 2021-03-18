@@ -1,5 +1,6 @@
 <link rel="stylesheet" href="/css/chat.css">
-
+<link href="lib/noty.css" rel="stylesheet">
+<script src="lib/noty.js" type="text/javascript"></script>
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <link rel="stylesheet" href="/css/animation.css">
@@ -10,9 +11,9 @@
     {{!-- Food --}}
     <div class="tz-gallery" style="margin: 30px 0px 30px 0px;">
         <div class="row">   
-            <div class="col-lg-5">
+            <div class="col-lg-5" style="margin-bottom: 20px;">
                 <a class="lightbox" href="{{food.image}}">
-                    <img class="img-fluid card-img-top fill" src="{{food.image}}" alt="Gallery Images" >
+                    <img class="img-fluid card-img-top fill" src="{{food.image}}" alt="Gallery Images">
                 </a>
             </div>
             <div class="col-lg-5 food">
@@ -35,22 +36,26 @@
                     {{!-- <span id="span-order" style="color: red;position:relative; top: 36px; right: 55px;text-shadow: 0 0 3px #000"></span> --}}
                 </p>
                 
-                <button type="button" class="btn btn-success btn-order-app" id='btn-order' style="padding: 5px; font-size: 15px;" 
+                <button type="button" class="btn btn-success" id='btn-order' style="padding: 5px; font-size: 15px;margin-bottom:20px;" 
                     data-toggle="modal" data-target="#order-modal">                 
                     <i class="fas fa-shopping-cart"> 
         
                     </i>
                     Order
-                    
+           
                 </button>
                 <span>&nbsp;&nbsp;&nbsp;</span>
-                <button type="button" class="btn btn-success btn-chat" style="padding: 5px; font-size: 15px" id='btn-chat'>
+                <button type="button" class="btn btn-success btn-chat" style="padding: 5px; font-size: 15px; margin-bottom:20px;" id='btn-chat'>
                     <i class="far fa-comment-dots"></i>
                     Chat
                 </button>
-            
             </div>
-            <div class="col-lg-2"></div>
+            <div class="col-lg-2">
+                {{{btnUpdateFood user._id food.idUser}}}
+                {{!-- <button type="button" class="btn btn-danger" id='update-food'>
+                    Sửa thông tin món ăn
+                </button> --}}
+            </div>
         </div>
     </div>
     <!--Section: Block Content-->
@@ -93,6 +98,7 @@
                                             </button>
                                             <input type="hidden" value="{{this.foodName}}">
                                             <input type="hidden" value="{{this.price}}">
+                                            <input type="hidden" value="{{this._id}}">
                                         </p class="mb-0">
                                     </div>
                                 </div>
@@ -216,7 +222,7 @@
                     style='padding: 6px 12px; margin: 4px; text-transform: none;'>
                     Quay lại
                 </button>
-                <button id='btn-delete-course'type="button" class="btn btn-primary"
+                <button id='btn-order-cart'type="button" class="btn btn-primary"
                     style='padding: 6px 12px; margin: 4px; text-transform: none;'>
                     Thanh toán
                 </button>
@@ -227,23 +233,62 @@
 
 <input type="hidden" value="{{food.foodName}}" id='foodNameRow1'>
 <input type="hidden" value="{{food.price}}" id='foodPriceRow1'>
+<input type="hidden" value="{{food._id}}" id='idMainFood'>
 
+
+<form method="POST" name='order-form-hiden'>
+    <div id='div-add'></div>
+    {{!-- <input type="hidden" value="20" name="quantity"> --}}
+</form>
+<form method="GET" name='update-form-hidden'></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(){
+        //new Noty({
+            
+         //   text: 'Some notification text',
+            
+      //  }).show();
+        var costOrderH3 = 0;
+        var orderForm = document.forms['order-form-hiden']
+        var updateForm = document.forms['update-form-hidden']
+        var btnOrderCart = document.getElementById('btn-order-cart')
         var listCartName = [];
         var listCartPrice = [];
         var listCartQuantily =[];
+        var listCartID =[];
         var SOLUONG = 1;
         var btnOrder = document.getElementById('btn-order')
         var btnValueCart = document.getElementById('btn-value-cart')
+        var idMainFood = document.getElementById('idMainFood').value
         var demTruoc = 1; var demSau = 0;
+        // thanh toán 
+        btnOrderCart.onclick =   function(){
+            $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
+            $('#div-add').append($input)
+            $inputCost = '<input type="hidden" value="'+ costOrderH3 +'" name="cost"></input>'
+            $('#div-add').append($inputCost)
+            for(var i = 1; i< demTruoc; i++){
+                $inputFoodName= '<input type="hidden" value="'+ listCartName[i] +'" name="foodname[]"></input>'
+                $inputPrice='<input type="hidden" value="'+ listCartPrice[i] +'" name="price[]"></input>'
+                $inputQuantity='<input type="hidden" value="'+ listCartQuantily[i] +'" name="quantity1[]"></input>'
+                $inputID='<input type="hidden" value="'+ listCartID[i] +'" name="id[]"></input>'
+                $('#div-add').append($inputFoodName)
+                $('#div-add').append($inputPrice)
+                $('#div-add').append($inputQuantity)
+                $('#div-add').append($inputID)
+            }
+            orderForm.action = '/foods/' + idMainFood+ '/order'
+            orderForm.submit()
+        }
         // lấy dữ liệu của row 1 trong giỏ hàng
         var foodNameRow1 = document.getElementById('foodNameRow1')
         listCartName.push(foodNameRow1.value)
         var foodPriceRow1 = document.getElementById('foodPriceRow1')
         listCartPrice.push(foodPriceRow1.value)
         listCartQuantily.push('1')
+        var foodID = document.getElementById('idMainFood')
+        listCartID.push(foodID.value)
         // xử lý button màu đỏ của order khi giá tiền thay đổi
         var foodPriceRow2 = parseInt(foodPriceRow1.value)
         if(foodPriceRow2<10){
@@ -294,6 +339,7 @@
             var children = this.parentNode.children
             var foodName = children[2].value
             var price = children[3].value
+            var _idFood = children[4].value
             var kt = 1
             for(var i = 0; i < listCartName.length; i++){
                 if(listCartName[i]==foodName){
@@ -307,6 +353,7 @@
                 demTruoc++;
                 listCartName.push(foodName)
                 listCartPrice.push(price)
+                listCartID.push(_idFood)
 
                 // hiển thị vào giỏ hàng
                 var textBtnValueCart = btnValueCart.innerHTML;
@@ -337,7 +384,15 @@
             for(var i = 0; i <listCartName.length;i++){
                 count+= listCartPrice[i]*listCartQuantily[i]
             }
+            costOrderH3= count
             costH3.innerText = count.toLocaleString()+"đ"
+        }
+
+        // button sửa thông tin món ăn
+        var updateFood = document.getElementById('update-food')
+        updateFood.onclick = function(){
+            updateForm.action = '/foods/' + listCartID[0]+'/edit'
+            updateForm.submit()
         }
     })
 </script>

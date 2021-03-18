@@ -1,6 +1,8 @@
 const Food = require('../models/food')
 const User = require('../models/user')
 const Chat = require('../models/chat')
+const Order = require('../models/order')
+
 
 // thư viện xử lý lưu file
 const multer = require("multer");
@@ -49,10 +51,13 @@ class FoodController {
         const username = req.session.username
         const password = req.session.password
         var user,food,Foods,pos;
-            Promise.all([User.findOne({username: username, password : password}).lean()])
-                .then(([user1]) => {
+            Promise.all([
+                User.findOne({username: username, password : password}).lean(),
+                Food.findOne({slug: req.params.slug}),
+            ])
+                .then(([user1, oldFood]) => {
                     user = user1
-                    Food.find({idUser: user1._id})
+                    Food.find({idUser: oldFood.idUser})
                         .lean()
                         .then(foods=>{
                             Foods = foods
@@ -79,13 +84,14 @@ class FoodController {
                                 ]})
                                 .lean()
                                 .then((chats)=>{
-                                    for(var i = 0; i<chats.length;i++){
-                                        chats[i].idUser = user._id
-                                    }
+                                    // for(var i = 0; i<chats.length;i++){
+                                    //     chats[i].idUser = user._id
+                                    // }
                                     res.render('./foods/showFood',{Foods,food,chats,user})
                                 })
                                 .catch(next)
                         })
+                        .catch(next)
                 })
                 .catch(next)
     }
@@ -221,6 +227,47 @@ class FoodController {
                 res.json({message: 'Action invalid!'});
         }
     }
+
+    // [POST] /foods/:ID/order   (thanh toán thực đơn)
+    order(req,res,next){
+        const username = req.session.username
+        const password = req.session.password
+        Promise.all([   
+                Food.findOne({_id: req.params.id}).lean(),
+                User.findOne({username: username, password : password}).lean()
+            ])
+            .then(([food,user])=>{
+                var foods = [];
+                if(req.body.foodname){
+                    var foodname = req.body.foodname
+                    var price = req.body.price
+                    var quantity1 = req.body.quantity1
+                    var id = req.body.id
+                    for(var i = 0; i < foodname.length; i++){
+                        var newFood = {
+                            _id: id[i],
+                            foodName: foodname[i],
+                            price: price[i],
+                            quantity: quantity1[i], 
+                        }
+                        foods.push(newFood)
+                    }
+                }
+
+                const order = new Order({
+                    idUser: user._id, 
+                    idMainFood: food._id, foodName: food.foodName, 
+                    price: food.price, quantity: req.body.quantity,
+                    cost: req.body.cost, foods: foods,
+                })
+                order.save()
+                    .then(()=>{
+                        res.redirect('back')
+                    })
+            })
+            .catch(next)
+    }
+
 }
 
 module.exports = new FoodController();
