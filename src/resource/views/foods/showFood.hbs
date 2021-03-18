@@ -182,17 +182,17 @@
                         <th scope="col">Giá</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id='tbody'>
                         {{!-- {{#each }} --}}
-                            <tr>
+                            {{!-- <tr>
                                 <th scope="row">1</th>
-                                <td>{{food.foodName}}</td>
+                                <td id='foodNameRow1'>{{food.foodName}}</td>
                                 <td>
-                                    <input class="text-center" id='volumn' value="1" type="number" 
-                                        style="padding: 0px 0px 0px 0px;width:50px" min='1'>
+                                    <input class='text-center volumn' value='1' type='number' 
+                                        style='padding: 0px 0px 0px 0px;width:50px' min='1'>
                                 </td>
-                                <td id="td-price" >{{food.price}}</td>
-                            </tr>
+                                <td class="td-price" id='foodPriceRow1'>{{food.price}}đ</td>
+                            </tr> --}}
                         {{!-- {{/each}} --}}
                     </tbody>
                 </table>
@@ -224,22 +224,48 @@
     </div>
 </div>
 
+<input type="hidden" value="{{food.foodName}}" id='foodNameRow1'>
+<input type="hidden" value="{{food.price}}" id='foodPriceRow1'>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function(){
         var listCartName = [];
         var listCartPrice = [];
+        var listCartQuantily =[];
         var SOLUONG = 1;
         var btnOrder = document.getElementById('btn-order')
         var btnValueCart = document.getElementById('btn-value-cart')
+        var demTruoc = 1; var demSau = 0;
+        // lấy dữ liệu của row 1 trong giỏ hàng
+        var foodNameRow1 = document.getElementById('foodNameRow1')
+        listCartName.push(foodNameRow1.value)
+        var foodPriceRow1 = document.getElementById('foodPriceRow1')
+        listCartPrice.push(foodPriceRow1.value)
+        listCartQuantily.push('1')
+        // xử lý khi click vào btnOrder
+        btnOrder.onclick = function(){
+            var dem = demTruoc - demSau
+            for(var i = demSau+1; i <= demTruoc; i++){ 
+                $tr = '<tr><th scope="row">'+i+'</th> <td>' +listCartName[i-1]+ '</td> <td> <input class="text-center volumn" value="'+listCartQuantily[i-1]+'" type="number" style="padding: 0px 0px 0px 0px;width:50px" min="1"></td>  <td class="td-price" >'+listCartPrice[i-1]+'đ</td><tr>'
+                $('#tbody').append($tr)
+            }
+            demSau=demTruoc
+            $(".volumn" ).change(function() {
+                var children= parseInt(this.parentNode.parentNode.children[0].innerText) - 1
+                listCartQuantily[children]= this.value
+                cart()
+            });
+            var volumns = document.getElementsByClassName('volumn')
+            for(var i = 0; i < demTruoc; i++){
+                volumns[i].value = listCartQuantily[i]
+            }
+            cart()
+
+        }
+        // ẩn button số trên order
         $('#btn-value-cart').hide()
         $('.animation').click(function(){
-           // var positionBtnOrder = $('#btn-order').position()
-           // var p = this.parentNode 
-            //var div = p.parentNode
-            //var button = document.createElement("button");
-           // button.classList.add('animationButton')
-           // div.append(button)
-           
             //thêm sản phẩm
             var children = this.parentNode.children
             var foodName = children[2].value
@@ -247,27 +273,32 @@
             var kt = 1
             for(var i = 0; i < listCartName.length; i++){
                 if(listCartName[i]==foodName){
+                    listCartQuantily[i]++;
+                    console.log(listCartQuantily[i])
                     kt=0
                     break
                 }
             }
             if(kt){
+                listCartQuantily[demTruoc]=1;
+                demTruoc++;
                 listCartName.push(foodName)
                 listCartPrice.push(price)
-            }
-            // hiển thị vào giỏ hàng
-            var textBtnValueCart = btnValueCart.innerHTML;
-            if(textBtnValueCart==''||textBtnValueCart==null){
-                btnValueCart.innerText="1";
-                $('#btn-value-cart').show()
-            }
-            else if(textBtnValueCart!='9+') {
-                textBtnValueCart = parseInt(textBtnValueCart)
-                if(textBtnValueCart<=7) btnValueCart.innerText = textBtnValueCart+1
-                else {
-                    btnValueCart.innerText = '9+'
+
+                // hiển thị vào giỏ hàng
+                var textBtnValueCart = btnValueCart.innerHTML;
+                if(textBtnValueCart==''||textBtnValueCart==null){
+                    btnValueCart.innerText="2";
+                    $('#btn-value-cart').show()
                 }
-                $('#btn-value-cart').show()
+                else if(textBtnValueCart!='9+') {
+                    textBtnValueCart = parseInt(textBtnValueCart)
+                    if(textBtnValueCart<=7) btnValueCart.innerText = textBtnValueCart+1
+                    else {
+                        btnValueCart.innerText = '9+'
+                    }
+                    $('#btn-value-cart').show()
+                }
             }
         })
         // sự kiện click button chat
@@ -276,30 +307,14 @@
             window.location='/chat'
         }
 
-        // thay đổi số lượng
-        var volumn = document.getElementById('volumn')
-        var tdPrice = document.getElementById('td-price')
-        var costH3 = document.getElementById('cost-h3')
-        var oldValue = parseInt(volumn.value)
-        volumn.onchange = function(){
-            var soLuong = parseInt(volumn.value)
-            var price;
-            if(oldValue>soLuong){
-                price = parseInt(tdPrice.innerText)/(soLuong+1)
-            }
-            else{
-                price = parseInt(tdPrice.innerText)/(soLuong-1)
-            }
-            oldValue = soLuong
-            tdPrice.innerText= soLuong*price;
-            cart()
-        }
+
         function cart(){
-            var soLuong = parseInt(volumn.value)
-            var price = parseInt(tdPrice.innerText)/soLuong
-            tdPrice.innerText= soLuong*price;
-            costH3.innerHTML = tdPrice.innerText
+            var costH3 = document.getElementById('cost-h3')
+            var count = 0;
+            for(var i = 0; i <listCartName.length;i++){
+                count+= listCartPrice[i]*listCartQuantily[i]
+            }
+            costH3.innerText = count+"đ"
         }
-        cart()
     })
 </script>
