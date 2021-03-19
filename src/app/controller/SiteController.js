@@ -158,7 +158,7 @@ class SiteController {
                     });               
                 }
                 else {
-                    res.render('loginLogout/forgot',{layout: false, messageForgot: 'User không tồn tại'})
+                    res.render('loginLogout/forgot',{layout: false, messageForgot: 'User không tồn tại', username: req.query.username, })
                 }
             })
             .catch(next)

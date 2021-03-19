@@ -1,7 +1,9 @@
 const express = require('express');
-const multer = require("multer");
 
 const router = express.Router();
+
+
+const checkSuccessPayOrder = require('../app/middlewares/checkSuccessPayOrder')
 
 const foodController = require('../app/controller/FoodController');
 
@@ -17,7 +19,7 @@ router.patch('/:id/restore', foodController.restore);
 router.delete('/:id/force', foodController.forceDestroy);
 router.put('/:id', foodController.update);
 router.delete('/:id', foodController.destroy);
-router.get('/:slug', foodController.showFood);
+router.get('/:slug', checkSuccessPayOrder, foodController.showFood);
 
 
 

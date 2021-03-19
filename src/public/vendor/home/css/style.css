@@ -141,9 +141,6 @@ ul, li, ol{
 	margin: 0px;
 	padding: 0px;
 }
-button:focus{
-	outline: none;
-}
 
 .form-control::-moz-placeholder {
     color: #2a2a2a;

@@ -7,6 +7,8 @@ router.get('/stored/courses', meController.storedCourse);
 router.get('/stored/foods', meController.storedFood);
 router.get('/trash/courses', meController.getTrashCourse);
 router.get('/trash/foods', meController.getTrashFood);
+router.get('/profile', meController.profile);
+
 
 
 

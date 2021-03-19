@@ -11,6 +11,7 @@ const Noty = require('noty');
 const route = require('./router/indexRoute');
 const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
+const User = require('./app/models/user')
 const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
 
@@ -124,6 +125,16 @@ io.on('connection', function(client){
         Notification.findOneAndDelete({type: 'message', idUserTo: idUser})
             .lean()
             .then()
+    })
+
+
+    //save thông tin profile
+    client.on('saveInfoUser', function(userID, firstname, lastname, phone, gender){
+        User.updateOne(
+            {_id: userID},
+            { firstname: firstname, lastname: lastname, phone: phone, gender: gender}
+        )
+        .then()
     })
     
 })

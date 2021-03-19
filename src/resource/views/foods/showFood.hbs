@@ -1,13 +1,18 @@
+
+{{!--  --}}
 <link rel="stylesheet" href="/css/chat.css">
-<link href="lib/noty.css" rel="stylesheet">
-<script src="lib/noty.js" type="text/javascript"></script>
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <link rel="stylesheet" href="/css/animation.css">
-<div class="container">
-    <div id ='123'>
 
+<div class="row" style="position: relative; right: 20px">
+    <div class="alert alert-success" id="success-alert" style="z-index:10; position : absolute; right: 10px; display:none">
+        {{!-- <button type="button" class="close" data-dismiss="alert" style="">x</button> --}}
+        Đặt hàng thành công! &nbsp;
     </div>
+</div>
+
+<div class="container">
     {{!-- Food --}}
     <div class="tz-gallery" style="margin: 30px 0px 30px 0px;">
         <div class="row">   
@@ -50,7 +55,7 @@
                     Chat
                 </button>
             </div>
-            <div class="col-lg-2">
+            <div class="col-lg-2" style="margin-right: 1000px;">
                 {{{btnUpdateFood user._id food.idUser}}}
                 {{!-- <button type="button" class="btn btn-danger" id='update-food'>
                     Sửa thông tin món ăn
@@ -230,25 +235,20 @@
         </div>
     </div>
 </div>
-
 <input type="hidden" value="{{food.foodName}}" id='foodNameRow1'>
 <input type="hidden" value="{{food.price}}" id='foodPriceRow1'>
 <input type="hidden" value="{{food._id}}" id='idMainFood'>
 
+{{!-- hiển thị thông báo thành công --}}
+<input type="hidden" value="{{_successOrder}}" id="inputHiddenSuccessOrder">
 
 <form method="POST" name='order-form-hiden'>
     <div id='div-add'></div>
-    {{!-- <input type="hidden" value="20" name="quantity"> --}}
 </form>
 <form method="GET" name='update-form-hidden'></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(){
-        //new Noty({
-            
-         //   text: 'Some notification text',
-            
-      //  }).show();
         var costOrderH3 = 0;
         var orderForm = document.forms['order-form-hiden']
         var updateForm = document.forms['update-form-hidden']
@@ -389,10 +389,17 @@
         }
 
         // button sửa thông tin món ăn
-        var updateFood = document.getElementById('update-food')
-        updateFood.onclick = function(){
+        $('#update-food').click(function(){
             updateForm.action = '/foods/' + listCartID[0]+'/edit'
             updateForm.submit()
+        })
+
+        // hiển thị thông báo đặt hàng thành công
+        var inputHiddenSuccessOrder = document.getElementById('inputHiddenSuccessOrder').value
+        if(inputHiddenSuccessOrder=='yes'){
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+                $("#success-alert").slideUp(500);
+            });
         }
     })
 </script>

@@ -13,6 +13,17 @@ class CourseController {
             .catch(next)
 
     }
+    // [GET]  /me/info
+    profile(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                res.render('./me/profile', {user})
+            })  
+
+    }
 
 
 

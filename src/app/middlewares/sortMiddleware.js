@@ -6,7 +6,6 @@ module.exports = function sortMiddleware(req,res,next){
         type: 'default',
     }
     res.locals._fullname = req.session.fullname
-
     if(req.query.hasOwnProperty('_sort')){
         res.locals._sort.enabled = true
         res.locals._sort.type = req.query.type

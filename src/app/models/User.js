@@ -13,6 +13,8 @@ const User = new Schema({
     password: { type: String},
     firstname: {type: String},
     lastname: {type: String},
+    phone: {type: String},
+    gender: {type: String},
 }, {
     timestamps: true,
 });

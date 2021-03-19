@@ -262,6 +262,7 @@ class FoodController {
                 })
                 order.save()
                     .then(()=>{
+                        req.session.userOrder = 'yes'
                         res.redirect('back')
                     })
             })
