@@ -51,7 +51,7 @@ body{
     box-shadow: none!important;
 }
 /*  */
-#btn-save-info-user{
+#btn-save-password-user, #btn-save-info-user, #btn-add-address{
     margin-top:20px; 
     padding: 4px 30px; 
     text-transform: none;

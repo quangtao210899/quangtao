@@ -1,3 +1,6 @@
+
+
+
 var socket = io.connect(`http://localhost:3000`)
 
 
@@ -67,5 +70,50 @@ document.addEventListener('DOMContentLoaded', function(){
     // my-foods-profile
     $('#my-foods-profile').click(function(){
         window.location = '/me/stored/foods'
+    })
+
+    // preview image ở trang profile
+    $('#file').change(function(){
+        var file = document.getElementById('file').files;
+        var filename = $('input[type=file]').val().split('\\').pop();
+        // socket.emit('previewFileProfile', file[0])
+        // resize(file[0])
+        if(file.length>0){
+            var userID = $('#user-id-profile').val().trim()
+            var url = URL.createObjectURL(file[0]);
+            socket.emit('previewFileProfile', userID, file[0], filename)
+            document.getElementById('preview-iamge-profile').setAttribute('src', url);
+        }
+    })
+
+    // xử lý thay mật khẩu mới
+    $('#btn-save-password-user').click(function(){
+        var userID = $('#user-id-profile').val().trim()
+        var password = $('#user-password-profile').val().trim()
+        var oldPassword = $('#oldPassword').val().trim()
+        var newPassword = $('#newPassword').val().trim()
+        var newPasswordAgain = $('#newPasswordAgain').val().trim()
+        var kt = 1;
+        if(password==oldPassword){
+            if(newPassword!=newPasswordAgain) kt = 0;
+            if(newPassword.length<6) kt=0
+        }
+        else{
+            kt=0
+        }
+        if(kt==1){
+            socket.emit('saveNewPassword', newPassword, userID)
+            $('#text-to-check-data-password')[0].innerHTML = '' 
+            $('#oldPassword')[0].value = ''
+            $('#newPassword')[0].value = ''
+            $('#newPasswordAgain')[0].value = ''
+            $('#user-password-profile').value = newPassword
+            $("#success-alert").fadeTo(2000, 500).slideUp(500, function(){
+                $("#success-alert").slideUp(500);
+            });
+        }else{
+            $('#text-to-check-data-password')[0].innerHTML = 'Vui lòng nhập chính xác' 
+        }
+
     })
 })

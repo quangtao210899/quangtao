@@ -15,6 +15,10 @@ const User = new Schema({
     lastname: {type: String},
     phone: {type: String},
     gender: {type: String},
+    image: {type: String},
+    address: [
+        {address: String}
+    ],
 }, {
     timestamps: true,
 });

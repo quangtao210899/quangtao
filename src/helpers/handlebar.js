@@ -82,12 +82,20 @@ module.exports = {
     },
     btnUpdateFood: (id, idUser)=>{
         if(id==idUser){
-    return `<button type="button" class="btn btn-danger" id='update-food'>
-                Sửa thông tin món ăn
-            </button>`
+            return `<button type="button" class="btn btn-danger" id='update-food'>
+                        Sửa thông tin món ăn
+                    </button>`
         }
         else {
             return;
+        }
+    },
+    setImageProfile: (image)=>{
+        if(image!=null&&image!=''){
+            return image;
+        }
+        else {
+            return `https://bootdey.com/img/Content/avatar/avatar7.png`
         }
     }
 }

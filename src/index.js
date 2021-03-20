@@ -5,7 +5,8 @@ const path = require('path');
 const methodOverride = require('method-override')
 const cookieSession = require('cookie-session')
 const cookieParser = require('cookie-parser')
-const Noty = require('noty');
+// thư viện xử lý ảnh
+const Jimp = require('jimp');
 
 
 const route = require('./router/indexRoute');
@@ -73,6 +74,19 @@ app.set('views', path.join(__dirname, 'resource/views'));
 route(app);
 
 
+
+// hàm resize ảnh
+
+async function resize(linkImage, filename, date) {
+    // Read the image.
+    const image = await Jimp.read(linkImage);
+    // Resize the image to width 1200 and heigth 800.
+    await image.resize(315, 315);
+    // Save and overwrite the image
+    await image.writeAsync(`./src/public/uploads/profile/${date}-quangtao-${filename}`);
+}
+
+
 //Tạo socket và gửi message
 io.on('connection', function(client){
     client.on('join', function(data){
@@ -136,7 +150,26 @@ io.on('connection', function(client){
         )
         .then()
     })
-    
+
+    // resize ảnh
+    client.on('previewFileProfile', function(userID, file, filename){
+        var date = Date.now()
+        resize(file, filename, date)
+        User.updateOne(
+            {_id: userID},
+            { image: `/uploads/profile/${date}-quangtao-${filename}`}
+        )
+        .then()        
+    })
+
+    // save new password
+    client.on('saveNewPassword', function(newPassword, userID){
+        User.updateOne(
+            {_id: userID},
+            {password: newPassword}
+        )
+        .then()        
+    })
 })
 
 

@@ -113,7 +113,6 @@ class SiteController {
         user.save()
             .then(()=>res.redirect('/'))
             .catch(next)
-        
     }
 
 
