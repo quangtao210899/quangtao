@@ -1,9 +1,40 @@
 
-
-
 var socket = io.connect(`http://localhost:3000`)
-
-
+var position
+var inputUpdateAddress
+var addressID
+var deleteDiv
+socket.on('newIdAddress', function(newIdAddress){
+    var inputNewAddress =  $('#input-new-address').val().trim()
+    var countLength = $('#div-add-address').children().length - 1 
+    $('#add-address-profile').modal('hide')
+    $input = `  <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 18px;">Địa chỉ ${countLength}: </h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary d-flex">
+                        <input type="text" class="form-control" value="${inputNewAddress}"
+                            style="min-height: 10px; font-size: 15px; margin-top: 10px;" class='address123' readonly/>
+                        <i class="fas fa-trash-restore restore" data-toggle="modal" data-target="#modal-update-address"
+                            data-id="${newIdAddress}" name='${countLength}'></i>
+                        <i class="fas fa-trash-alt trash" data-toggle="modal" data-target="#delete-address-person" 
+                            data-id="${newIdAddress}" name='${countLength}'></i>
+                    </div>
+                </div>`
+    $('#div-add-address').append($input)
+    $('#div-add-address').append($('#div-add-address-2'))
+    $('#input-new-address')[0].value=''
+    $('.trash').click(function(){
+        position = $(this).attr('name')
+    })
+    $('.restore').click(function(){
+        document.getElementById('error-address-update').innerHTML=''
+        var parent = $(this).parent()[0]
+        inputUpdateAddress = $(parent).children()[0]
+        var text = $(inputUpdateAddress).val().trim()
+        $('#input-new-address-update').val(text)
+    })
+})
 // chờ đến khi load xong thư viện
 document.addEventListener('DOMContentLoaded', function(){
     var inputHiddenGenderProfile = $('#input-hidden-profile-gender').val()
@@ -114,6 +145,87 @@ document.addEventListener('DOMContentLoaded', function(){
         }else{
             $('#text-to-check-data-password')[0].innerHTML = 'Vui lòng nhập chính xác' 
         }
-
     })
+    // xử lý ấn vào button thêm của thêm địa chỉ
+    $('#input-new-address').keypress(function(event) {
+        if (event.keyCode == 13 || event.which == 13) {  
+            document.getElementById('error-address').innerHTML=''
+            var inputNewAddress =  $('#input-new-address').val().trim()
+            if(inputNewAddress){
+                var userID = $('#user-id-profile').val().trim()
+                socket.emit('addAddressUser', userID, inputNewAddress)
+            }
+            else {
+                document.getElementById('error-address').innerHTML='*Địa chỉ không được trống'
+            }   
+        }
+    });
+    $('#btn-add-address-modal').click(function(){
+        document.getElementById('error-address').innerHTML=''
+        var inputNewAddress =  $('#input-new-address').val().trim()
+        if(inputNewAddress){
+            var userID = $('#user-id-profile').val().trim()
+            socket.emit('addAddressUser', userID, inputNewAddress)
+        }
+        else {
+            document.getElementById('error-address').innerHTML='*Địa chỉ không được trống'
+        }
+    })
+
+    // xử lý xóa địa chỉ
+    $('#delete-address-person').on('show.bs.modal', function (event) {
+        // lấy ra addressID
+        var button = $(event.relatedTarget)
+        addressID = button.data('id') 
+    })
+    $('#modal-update-address').on('show.bs.modal', function (event) {
+        // lấy ra addressID
+        var button = $(event.relatedTarget)
+        addressID = button.data('id') 
+    })
+    $('.trash').click(function(){
+        position = $(this).attr('name')
+    })
+    $('#btn-delete-address').click(function(){
+        var userID = $('#user-id-profile').val().trim()
+        socket.emit('deleteAddress', userID, addressID)
+        deleteDiv = $('#div-add-address').children()
+        deleteDiv = deleteDiv[position]
+        deleteDiv.remove()
+
+        // cập nhật lại
+        var n = $('#div-add-address').children().length
+        for(var i = position; i < n-1; i++){
+            var children = $('#div-add-address').children()[i]
+            children = $(children).children()
+            var children0 = $(children).children()[0]
+            var children3 = $(children).children()[3]
+            children0.innerHTML = "Địa chỉ " + i +":"
+            $(children3).attr('name', i)
+        }
+    })
+
+    // update địa chỉ
+    $('.restore').click(function(){
+        document.getElementById('error-address-update').innerHTML=''
+        var parent = $(this).parent()[0]
+        inputUpdateAddress = $(parent).children()[0]
+        var text = $(inputUpdateAddress).val().trim()
+        $('#input-new-address-update').val(text)
+    })
+
+    
+    $('#btn-update-address-modal').click(function(){
+        var text = $('#input-new-address-update').val().trim()
+        if(text){
+            $(inputUpdateAddress).val(text)
+            var userID = $('#user-id-profile').val().trim()
+            socket.emit('updateAddress', userID, addressID, text)
+            $('#modal-update-address').modal('hide')
+        }
+        else{
+            document.getElementById('error-address-update').innerHTML='*Địa chỉ không được trống'
+        }
+    })
+
 })

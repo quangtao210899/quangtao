@@ -170,6 +170,69 @@ io.on('connection', function(client){
         )
         .then()        
     })
+    //add newAddress
+    client.on('addAddressUser', function(UserID, newAddress){
+        User.findById(UserID)
+            .lean()
+            .then(user=>{
+                var address = user.address
+                if(!address){
+                    address=[{address: newAddress}]
+                }
+                else{
+                    var a = {address: newAddress}
+                    address.push(a)
+                }
+                User.updateOne({_id: UserID}, {address: address})
+                    .then(()=>{
+                        User.findById(UserID)
+                            .then(user=>{
+                                var count = user.address.length-1
+                                client.emit('newIdAddress', user.address[count]._id)
+                            })
+                    })
+            })      
+    })
+
+    //delete address
+    client.on('deleteAddress', function(UserID, addressID){
+        User.findById(UserID)
+            .lean()
+            .then(user=>{
+                var kt = -1;
+                var address = user.address
+                for(var i = 0; i < address.length; i++){
+                    if(address[i]._id==addressID){
+                        kt=i 
+                        break
+                    }
+                }
+                if(kt!=-1){
+                    address.splice(i,1)
+                    User.updateOne({_id: UserID}, {address: address}).then()
+                }
+            })      
+    })
+
+    // update address
+    client.on('updateAddress', function(UserID, addressID, text){
+        User.findById(UserID)
+            .lean()
+            .then(user=>{
+                var kt = -1;
+                var address = user.address
+                for(var i = 0; i < address.length; i++){
+                    if(address[i]._id==addressID){
+                        kt=i 
+                        break
+                    }
+                }
+                if(kt!=-1){
+                    address[kt].address = text
+                    User.updateOne({_id: UserID}, {address: address}).then()
+                }
+            })  
+    })
 })
 
 

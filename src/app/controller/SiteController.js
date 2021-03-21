@@ -108,11 +108,26 @@ class SiteController {
 
     // [POST] /register
     saveRegister(req, res, next) {
-        console.log(res.query)
-        const user = new User(req.body)
-        user.save()
-            .then(()=>res.redirect('/'))
-            .catch(next)
+        User.findOne({username: req.body.username})
+            .lean()
+            .then(user=>{
+                if(user){
+                    res.render('loginLogout/register', 
+                    {
+                        layout: false,
+                        firstname: req.body.firstname,
+                        lastname: req.body.lastname,
+                        username: req.body.username,
+                        messageRegister: 'Tài khoản đã tồn tại',
+                    })
+                }
+                else{
+                    const user = new User(req.body)
+                    user.save()
+                        .then(()=>res.redirect('/'))
+                        .catch(next)
+                }
+            })
     }
 
 

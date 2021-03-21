@@ -62,3 +62,17 @@ body{
     outline: none !important;
     box-shadow: none;
 }
+
+.trash{
+    color: #CF2127;
+    margin: 24px 0px 0px 10px;
+}
+
+.trash:hover, .restore:hover{
+    transform: scale(1.1);
+}
+
+.restore{
+    color: #007BFF;
+    margin: 24px 0px 0px 10px;
+}
