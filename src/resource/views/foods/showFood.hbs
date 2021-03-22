@@ -14,6 +14,7 @@
 
 <div class="container">
     {{!-- Food --}}
+    <br> <br> <br>
     <div class="tz-gallery" style="margin: 30px 0px 30px 0px;">
         <div class="row">   
             <div class="col-lg-5" style="margin-bottom: 20px;">
@@ -99,7 +100,7 @@
                                         <p class="mb-0">
                                             <span><strong id="summary">{{toLocaleString this.price}}đ</strong></span> 
                                             <button style="background-color: #fff; border: 2px solid #fff; padding: 0px 0px;" class="animation">
-                                                <i class="fas fa-plus-circle" style="color: red; font-size: 20px;"></i> 
+                                                <i class="fas fa-plus-circle circle-i" style="color: red; font-size: 20px;"></i> 
                                             </button>
                                             <input type="hidden" value="{{this.foodName}}">
                                             <input type="hidden" value="{{this.price}}">
@@ -263,7 +264,8 @@
         var idMainFood = document.getElementById('idMainFood').value
         var demTruoc = 1; var demSau = 0;
         // thanh toán 
-        btnOrderCart.onclick =   function(){
+        btnOrderCart.onclick =   function(e){
+            e.preventDefault()
             $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
             $('#div-add').append($input)
             $inputCost = '<input type="hidden" value="'+ costOrderH3 +'" name="cost"></input>'
@@ -313,7 +315,8 @@
             btnValueCart.style.right = '76px'
         }
         // xử lý khi click vào btnOrder
-        btnOrder.onclick = function(){
+        btnOrder.onclick = function(e){
+            e.preventDefault()
             var dem = demTruoc - demSau
             for(var i = demSau+1; i <= demTruoc; i++){ 
                 $tr = '<tr><th scope="row">'+i+'</th> <td>' +listCartName[i-1]+ '</td> <td> <input class="text-center volumn" value="'+listCartQuantily[i-1]+'" type="number" style="padding: 0px 0px 0px 0px;width:50px" min="1"></td>  <td class="td-price" >'+parseInt(listCartPrice[i-1]).toLocaleString()+'đ</td><tr>'

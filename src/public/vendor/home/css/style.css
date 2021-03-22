@@ -16,6 +16,10 @@
 /*------------------------------------------------------------------
     SKELETON
 -------------------------------------------------------------------*/
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
 
 body {
     color: #666666;
@@ -162,7 +166,7 @@ ul, li, ol{
 
 .top-navbar .navbar{
 	padding: 0px 0px;
-	/* position: fixed; */
+	position: fixed;
 	width: 100%;
 	/* border-radius: 0px 0px 100px 100px; */
 	transition: height .3s ease-out, background .3s ease-out, box-shadow .3s ease-out;
@@ -927,7 +931,7 @@ ul, li, ol{
 
 .form-control{
 	border-radius: 0px;
-	min-height: 50px;
+	min-height: 25px;
 }
 .form-control:focus{
 	border: 1px solid #d65106;

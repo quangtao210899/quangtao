@@ -98,7 +98,7 @@ class FoodController {
 
     // [GET]  /foods/create
     create(req, res, next){
-        res.render('foods/create', {hidden: 'hidden'})
+        res.render('foods/create', {hidden: 'none'})
     }
 
     // [POST]  /foods/store
@@ -136,7 +136,7 @@ class FoodController {
         Food.findById(req.params.id)
             .lean()
             .then(food => {    
-                res.render('./foods/edit', {food, hidden: 'hidden'})
+                res.render('./foods/edit', {food, hidden: 'none'})
             })
             .catch(next)
     }

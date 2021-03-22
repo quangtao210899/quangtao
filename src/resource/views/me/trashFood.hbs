@@ -1,7 +1,8 @@
 
 <div class="container">    
-    <form class="mt-4" name='container-form' method="POST" action='/foods/handle-form-actions-trash'>
+    <form class="" name='container-form' method="POST" action='/foods/handle-form-actions-trash'>
         <div>
+            <br><br><br><br>
             <h3 style="font-size: 35px;">Món ăn đã xóa</h3>
             <a href="/me/stored/foods"  class='btn-link' style=" margin-left: 12px;">Món ăn của tôi ({{countDocument}})</a>
 
@@ -94,37 +95,37 @@
             </tbody>
         </table>
     </form>
+
+<!-- Modal -->
+    <div class="modal fade" id="delete-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete món ăn vĩnh viễn</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Bạn có muốn xóa vĩnh viễn không? Thao tác này không thể phục hồi!
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal"
+                        style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                        Không
+                    </button>
+                    <button id='btn-delete-course'type="button" class="btn btn-danger"
+                        style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                        Xóa bỏ
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 {{!-- Confirm delete course --}}
-
-<!-- Modal -->
-<div class="modal fade" id="delete-course-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete món ăn vĩnh viễn</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        Bạn có muốn xóa vĩnh viễn không? Thao tác này không thể phục hồi!
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal"
-            style='padding: 6px 12px; margin: 4px; text-transform: none;'>
-            Không
-        </button>
-        <button id='btn-delete-course'type="button" class="btn btn-danger"
-            style='padding: 6px 12px; margin: 4px; text-transform: none;'>
-            Xóa bỏ
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
 <form method="POST" name='delete-form-hiden'></form>
 <form method="POST" name='restore-form-hiden'></form>

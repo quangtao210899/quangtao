@@ -8,7 +8,7 @@ class CourseController {
     storedCourse(req,res,next){
         Promise.all([Course.find({}).lean().sortable(req), Course.countDocumentsDeleted()])
             .then(([courses, deleteCount])=>{
-                res.render('./me/storeCourse', {courses, deleteCount, hidden: 'hidden'})
+                res.render('./me/storeCourse', {courses, deleteCount, hidden: 'none'})
             })
             .catch(next)
 
@@ -30,7 +30,7 @@ class CourseController {
     // [GET]  /me/trash/courses
     getTrashCourse(req,res,next){
         Promise.all([Course.findDeleted({}).lean(), Course.countDocuments()])
-        .then(([courses, countDocument]) => res.render('./me/trashCourse', {courses, countDocument,hidden: 'hidden'}))
+        .then(([courses, countDocument]) => res.render('./me/trashCourse', {courses, countDocument,hidden: 'none'}))
         .catch(next)
     }
 
@@ -43,7 +43,7 @@ class CourseController {
             .then(user=>{
                 Promise.all([Food.find({idUser: user._id}).lean().sortable(req), Food.countDocumentsDeleted({idUser: user._id})])
                     .then(([foods, deleteCount])=>{
-                        res.render('./me/storeFood', {foods, deleteCount, hidden: 'hidden'})
+                        res.render('./me/storeFood', {foods, deleteCount, hidden: 'none'})
                     })
                     .catch(next)
             })
@@ -57,9 +57,13 @@ class CourseController {
             .lean()
             .then(user=>{
                 Promise.all([Food.findDeleted({idUser: user._id}).lean().sortable(req), Food.countDocuments({idUser: user._id}).lean()])
-                    .then(([foods, countDocument]) => res.render('./me/trashFood', {foods, countDocument,hidden: 'hidden'}))
+                    .then(([foods, countDocument]) => res.render('./me/trashFood', {foods, countDocument,hidden: 'none'}))
                     .catch(next)
             })
+    }
+    // [GET]  /me/stored/message
+    storedMessage(req,res,next){
+        res.render('./me/storeMessage', {hidden: 'none'})
     }
 
 
