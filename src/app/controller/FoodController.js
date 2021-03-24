@@ -84,9 +84,9 @@ class FoodController {
                                 ]})
                                 .lean()
                                 .then((chats)=>{
-                                    // for(var i = 0; i<chats.length;i++){
-                                    //     chats[i].idUser = user._id
-                                    // }
+                                    for(var i = 0; i<chats.length;i++){
+                                        chats[i].idUser = user._id
+                                    }
                                     res.render('./foods/showFood',{Foods,food,chats,user})
                                 })
                                 .catch(next)

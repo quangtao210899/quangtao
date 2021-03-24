@@ -3,7 +3,8 @@
 <link rel="stylesheet" href="/css/chat.css">
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
-<link rel="stylesheet" href="/css/animation.css">
+<link rel="stylesheet" href="/css/storedMessage.css">
+{{!-- thêm js để chạy animation --}}
 
 <div class="row" style="position: relative; right: 20px">
     <div class="alert alert-success" id="success-alert" style="z-index:10; position : absolute; right: 10px; display:none">
@@ -42,7 +43,7 @@
                     {{!-- <span id="span-order" style="color: red;position:relative; top: 36px; right: 55px;text-shadow: 0 0 3px #000"></span> --}}
                 </p>
                 
-                <button type="button" class="btn btn-success" id='btn-order' style="padding: 5px; font-size: 15px;margin-bottom:20px;" 
+                <button type="button" class="btn btn-success btn-order-animation" id='btn-order' style="padding: 5px; font-size: 15px;margin-bottom:20px;" 
                     data-toggle="modal" data-target="#order-modal">                 
                     <i class="fas fa-shopping-cart"> 
         
@@ -89,7 +90,6 @@
                                 </div>
                             </div>
                             <div class="col-md-7 col-lg-9 col-xl-9">
-                            <div>
                                 <div class="d-flex justify-content-between">
                                     <div>
                                         <h5>{{this.foodName}}</h5>
@@ -100,7 +100,7 @@
                                         <p class="mb-0">
                                             <span><strong id="summary">{{toLocaleString this.price}}đ</strong></span> 
                                             <button style="background-color: #fff; border: 2px solid #fff; padding: 0px 0px;" class="animation">
-                                                <i class="fas fa-plus-circle circle-i" style="color: red; font-size: 20px;"></i> 
+                                                <i class="fas fa-plus-circle circle-i add-to-cart" style="color: red; font-size: 20px;"></i> 
                                             </button>
                                             <input type="hidden" value="{{this.foodName}}">
                                             <input type="hidden" value="{{this.price}}">
@@ -108,7 +108,6 @@
                                         </p class="mb-0">
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                         <hr class="mb-4">
@@ -131,43 +130,136 @@
         <i class="fab fa-facebook-messenger"></i>
         <i class="fas fa-times"></i>
     </label>
-    <div class="wrapper" style="position: fixed;z-index: 5;" >
+    <div class="wrapper" style="position: fixed;z-index: 105;" >
         <div class="head-text">Let's chat? - Food Online</div>
-        <div class="form" id="form-chat">
-            <div class="bot-inbox inbox">
-                <div class="icon">
-                    <i class="fas fa-user"></i>
-                </div>
-                <div class="msg-header">
-                    <p>Chào quý khách</p>
+        <div class="row">
+            <div class="mb-sm-3 mb-md-0 contacts_card" style="height: 460px;   overflow-y: auto;">
+                <div  style="background-color: #F0F2F5;width: 200px; margin-left:15px" class="div_overflow">
+                    {{!-- Hiện danh sách những ng đã chat --}}
+                    <div class="card-header">
+						<div class="input-group">
+							<input type="text" placeholder="Search..." name="" class="form-control search">
+							<div class="input-group-prepend">
+								<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
+							</div>
+						</div>
+					</div>
+                    <div class="card-body contacts_body" style="cursor: pointer;">
+                        <ui class="contacts">
+                        <li class="active2 onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Khalid</span>
+                                    <p>Kalid is online</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Khalid</span>
+                                    <p>Kalid is online</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon offline"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Taherah Big</span>
+                                    <p>Taherah left 7 mins ago</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Sami Rafi</span>
+                                    <p>Sami is online</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon offline"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Nargis Hawa</span>
+                                    <p>Nargis left 30 mins ago</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="onActive">
+                            <div class="d-flex bd-highlight">
+                                <div class="img_cont">
+                                    <img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
+                                    <span class="online_icon offline"></span>
+                                </div>
+                                <div class="user_info">
+                                    <span>Rashid Samim</span>
+                                    <p>Rashid left 50 mins ago</p>
+                                </div>
+                            </div>
+                        </li>
+                        </ui>
+                    </div>
                 </div>
             </div>
-            <div class="bot-inbox inbox">
-                <div class="icon">
-                    <i class="fas fa-user"></i>
+            <div style="width:375px; margin-right:15px;">
+                <div class="form" id="form-chat">
+                    <div class="bot-inbox inbox">
+                        <div class="icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="msg-header">
+                            <p>Chào quý khách</p>
+                        </div>
+                    </div>
+                    <div class="bot-inbox inbox">
+                        <div class="icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="msg-header">
+                            <p>Quý khách muốn mua <strong>{{food.foodName}}</strong> hay món gì khác của shop chúng tôi?</p>
+                        </div>
+                    </div>
+                    {{#each chats}}
+                        {{{textChat this}}}
+                    {{/each}}
                 </div>
-                <div class="msg-header">
-                    <p>Quý khách muốn mua <strong>{{food.foodName}}</strong> hay món gì khác của shop chúng tôi?</p>
-                </div>
+                <form id="form1" autocomplete="off">
+                    <div class="typing-field">
+                        <div class="input-data">
+                            <input id="text" type="text" placeholder="Aa">
+                        </div>
+                        <a href="" id='a-send-message' style="color: #0084ff">
+                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
+                            {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
+                        </a>
+                        <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value={{user._id}}>
+                        <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value={{food.idUser}}>
+                        <input type="hidden" id='idFood' class='idFood' name="idFood" value={{food._id}}>
+                    </div>
+                </form>
             </div>
-            {{#each chats}}
-                {{{textChat this}}}
-            {{/each}}
         </div>
-        <form id="form1" autocomplete="off">
-            <div class="typing-field">
-                <div class="input-data">
-                    <input id="text" type="text" placeholder="Aa">
-                </div>
-                <a href="" id='a-send-message' style="color: #0084ff">
-                    <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
-                    {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
-                </a>
-                <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value={{user._id}}>
-                <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value={{food.idUser}}>
-                <input type="hidden" id='idFood' class='idFood' name="idFood" value={{food._id}}>
-            </div>
-        </form>
     </div>
 </div>
 
@@ -404,5 +496,33 @@
                 $("#success-alert").slideUp(500);
             });
         }
+
+
+        // animation
+        $('.add-to-cart').click(function() {
+            var cart = $('.btn-order-animation');
+            var imgtofly = $(this).parent().parent().parent().parent().parent().parent()[0]
+            imgtofly = $(imgtofly).children('div.col-md-5')[0]
+            imgtofly = $(imgtofly).children()[0]
+            imgtofly = $(imgtofly).find('a.lightbox img').eq(0)
+            if (imgtofly) {
+                var imgclone = imgtofly.clone()
+                    .offset({ top:imgtofly.offset().top, left:imgtofly.offset().left })
+                    .css({'opacity':'0.7', 'position':'absolute', 'height':'50px', 'width':'50px', 'z-index':'1000'})
+                    .appendTo($('body'))
+                    .animate({
+                        'top':cart.offset().top + 10,
+                        'left':cart.offset().left + 30,
+                        'width':55,
+                        'height':55
+                    }, 1000, 'easeOutSine');
+                imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
+            }
+        });
+
+        // xử lý sự kiện click vào danh sách người đã nhắn tin
+        $('.onActive').click(function(){
+            $(this).addClass('active2')
+        })
     })
 </script>

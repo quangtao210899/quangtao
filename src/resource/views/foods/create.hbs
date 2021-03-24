@@ -106,7 +106,15 @@
                 labelPrice.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Giá món ăn không được trống'
             }
             else {
-                labelPrice.innerHTML=''
+                function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+                if(isNumber(valuePrice)){
+                    labelPrice.innerHTML=''
+                }
+                else{
+                    labelPrice.innerHTML='&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Giá món ăn phải là số'
+                    check =false;
+                }
+
             }
 
             //images
