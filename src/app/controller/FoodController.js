@@ -143,7 +143,6 @@ class FoodController {
 
     // [PUT]  /foods/:id
     update(req, res, next){
-        console.log(req.body.length)
         if(req.body.foodName){
             Food.updateOne({ _id: req.params.id}, req.body)
                 .then(()=> {
@@ -157,6 +156,7 @@ class FoodController {
                   return res.send(`Error when trying to upload: ${error}`);
                 }
                 req.body.image = '/uploads/'+req.file.filename
+                req.body.resize = ''
                 Food.updateOne({ _id: req.params.id}, req.body)
                     .then(()=> {
                         res.redirect('/me/stored/foods')

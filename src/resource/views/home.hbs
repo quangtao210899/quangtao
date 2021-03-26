@@ -62,7 +62,7 @@
             <div class="tz-gallery">
                 <div class="row">
                     {{#each foods}}
-                        <div class="col-lg-4">
+                        {{!-- <div class="col-lg-4">
                             <div class="card card-course-item">
                                 <a class="lightbox" href="/foods/{{this.slug}}">
                                     <img class="" src="{{this.image}}" alt="Gallery Images" >
@@ -70,7 +70,25 @@
                                 <div style="padding: 10px 20px 0px 20px" class="card-body">
                                     <h2 style="padding: 0px 0px 3px 0px;">{{this.foodName}}</h2>
                                     <p style="margin: 0px 0px 5px 0px;">{{this.description}}</p>
-                                    {{!-- <p style="margin: 0px 0px 5px 0px;">{{this.price}}</p> --}}
+                                    <hr  width="100%" align="center" style="margin: 5px 0px 5px 0px;">
+                                    <p style="color: #187CAA; margin: 0px 0px 0px 0px"><i class="fas fa-tag" style="color: crimson;">&nbsp;</i>{{discount this.discount}}</p>
+                                </div>
+                            </div>
+                        </div> --}}
+
+                        <div class="col-lg-4 col-md-6 special-grid drinks">
+                            <div class="card card-course-item" style="cursor: pointer;" slug='{{this.slug}}'>
+                                <div class="gallery-single fix href-showFood">
+                                    <img src="{{this.image}}" class="img-fluid" alt="Image">
+                                    <div class="why-text">
+                                        <h4>{{this.foodName}}</h4>
+                                        <p>{{this.description}}</p>
+                                        <h5>{{toLocaleString this.price}} VNĐ</h5>
+                                    </div>
+                                </div>
+                                <div style="padding: 10px 20px 0px 20px; margin-top: -10px;" class="card-body">
+                                    <h2 style="padding: 0px 0px 3px 0px;">{{this.foodName}}</h2>
+                                    <p style="margin: 0px 0px 5px 0px;">{{this.description}}</p>
                                     <hr  width="100%" align="center" style="margin: 5px 0px 5px 0px;">
                                     <p style="color: #187CAA; margin: 0px 0px 0px 0px"><i class="fas fa-tag" style="color: crimson;">&nbsp;</i>{{discount this.discount}}</p>
                                 </div>
@@ -82,5 +100,14 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        $('.card-course-item').click(function(){
+            window.location = '/foods/' + $(this).attr('slug')
+        })
+    })
+</script>
 
 
