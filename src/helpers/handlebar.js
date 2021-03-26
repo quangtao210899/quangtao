@@ -97,5 +97,54 @@ module.exports = {
         else {
             return `https://bootdey.com/img/Content/avatar/avatar7.png`
         }
+    },
+    displayVote: (userVote)=>{
+        if(userVote){
+            var vote =  0
+            for(var i = 0; i < userVote.length; i++){
+                vote += parseInt(userVote[i].vote)
+            }
+            vote = vote/userVote.length
+            vote = Math.round(vote * 100) / 100
+            return `<p style="color: #FFC107; margin: 0px 0px 0px 0px; font-size: 18px;" id='pVoteShowFood'>Vote : ${vote} 
+                        <span style="color:#666666" id='spanVoteShowFood'>trên ${userVote.length} lượt đánh giá</span>
+                    </p>`
+                 
+        }
+        else{
+            return `<p style="color: #FFC107; margin: 0px 0px 0px 0px; font-size: 18px;" id='pVoteShowFood'> Vote: 
+                        <span style="color:#666666" id='spanVoteShowFood'>Chưa có lượt đánh giá nào</span>
+                    </p>`
+        }
+    }, 
+    displayStarVote: (vote)=>{
+        var output = ''
+        for(i = 0; i < 5; i++){
+            if(i>=vote){
+                output += '<i class="fas fa-star fa-star-vote" vote='+ (i+1)+'"></i>'
+            }
+            else{
+                output += '<i class="fas fa-star fa-star-vote" style="color: #FD4" vote='+ (i+1)+'"></i>'
+            }
+        }
+        return output
+    },
+    hiddenVote: (userVote)=>{
+        var output = ''
+        console.log(userVote)
+        if(userVote){
+            var vote =  0
+            for(var i = 0; i < userVote.length; i++){
+                vote += parseInt(userVote[i].vote)
+            }
+            output+= '<input type="hidden" value="'+ vote +'" id="countVote"></input>'
+            output+= '<input type="hidden" value="'+ userVote.length +'" id="countUserVote"></input>'
+            return output
+        }  
+        else{
+            output+= '<input type="hidden" value="'+ 0 +'" id="countVote"></input>'
+            output+= '<input type="hidden" value="'+ 0 +'" id="countUserVote"></input>'
+            return output
+        }
     }
 }

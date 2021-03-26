@@ -13,6 +13,7 @@ const route = require('./router/indexRoute');
 const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
 const User = require('./app/models/user')
+const Food = require('./app/models/food')
 const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
 
@@ -233,6 +234,44 @@ io.on('connection', function(client){
                 }
             })  
     })
+
+    // vote star food
+    client.on('userVote', function(userID, vote, foodID){
+        Food.findById(foodID)
+            .lean()
+            .then(food=>{
+                var userVote = food.userVote
+                if(userVote){
+                    var kt=0;
+                    for(var i = 0; i < userVote.length; i++){
+                        if(userVote[i].userId==userID) {
+                            kt=1; 
+                            userVote[i].vote = vote
+                            break;
+                        }
+                    }
+                    if(kt){
+                        Food.updateOne({_id: foodID}, {userVote: userVote})
+                        .then()
+                    }
+                    else{
+                        userVote.push({userId: userID, vote: vote})
+                        Food.updateOne({_id: foodID}, {userVote: userVote})
+                            .then()
+                    }
+                }
+                else{
+                    var UserVote = []
+                    UserVote.push({userId: userID, vote: vote})
+                    Food.updateOne({_id: foodID}, {userVote: UserVote})
+                        .then()
+                }
+            })
+    })
+
+
+
+
 })
 
 

@@ -126,6 +126,39 @@ document.addEventListener('DOMContentLoaded', function(){
             return false;
         }
     })
+
+    // xử lý sự kiện vote
+    $('.fa-star').click(function(){
+        var parent = $(this).parent()[0]
+        var position = parseInt($(this).attr('vote'))
+        var voteByUser = parseInt($('#voteByUser').val())
+        var countVote = parseInt($('#countVote').val())
+        var countUserVote = parseInt($('#countUserVote').val())
+        if(voteByUser!=position){
+            // gán lại vào input hidden
+            if(voteByUser==0){
+                countUserVote++;
+                $('#countUserVote').val(countUserVote)
+            }
+            countVote = countVote + position - voteByUser
+            $('#countVote').val(countVote)
+            $('#voteByUser').val(position)
+            var voteStar = countVote/countUserVote
+            voteStar = Math.round(voteStar * 100) / 100
+            // display Vote
+            // $('#spanVoteShowFood').text('trên '+voteStar+ ' lượt đánh giá')
+            document.getElementById('pVoteShowFood').innerHTML = 'Vote : '+voteStar+ ' '+ 
+                '<span style="color:#666666" id="spanVoteShowFood">trên '+ countUserVote +' lượt đánh giá</span>'
+            // $('#pVoteShowFood').text('Vote : '+countUserVote+ ' ')
+            for(var i = 0; i <= 4; i++){
+                if(i >= position) $(parent).children()[i].style.color = '#444'
+                else $(parent).children()[i].style.color= '#FD4'
+            }
+            var userID = document.getElementById('idUserFrom').value
+            var foodID = document.getElementById('idMainFood').value
+            socket.emit('userVote', userID, position, foodID)
+        }
+    })
 })
 
 

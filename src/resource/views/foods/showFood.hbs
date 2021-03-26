@@ -25,14 +25,17 @@
             </div>
             <div class="col-lg-5 food">
                 <h2>{{food.foodName}}</h2>
-                <p style="margin: 0px 0px 0px 0px;">{{food.address}}</p>
-                {{!-- <h4 style="color: #666666; padding: 0px 0px 0px 0px;">{{food.description}}</h3> --}}
-                <p style="color: #FFC107; margin: 0px 0px 0px 0px; font-size: 18px;">Vote : {{food.vote}} <span style="color:#666666">trên {{food.volumVote}} lượt đánh giá</span></p>   
+                <p style="margin: 0px 0px 0px 0px;">Địa chỉ: {{food.address}}</p>
+                {{{displayVote food.userVote}}}
+                <div >
+                    {{{displayStarVote vote}}}
+                    <br>
+                </div>
                 <p style="margin: 0px 0px 0px 0px;">          
                     <i class="fas fa-circle" style="color: #6CC942; font-size:8px;">&nbsp;</i> 
                     <span style="color: #6CC942; font-size: 18px;">Mở cửa</span>
                     <i class="far fa-clock" style="font-size: 18px; color: #666666;"> </i>
-                    <span style=" font-size: 18px;">{{food.timeOpen}} </span>
+                    <span style=" font-size: 18px;">{{food.timeOpen}}-{{food.timeClose}} </span>
                 </p>
                 <p style="margin: 0px 0px 10px 0px;">
                     <i class="fas fa-dollar-sign" style="font-size: 18px; color:#666666;"></i>
@@ -329,6 +332,11 @@
 <input type="hidden" value="{{food.price}}" id='foodPriceRow1'>
 <input type="hidden" value="{{food._id}}" id='idMainFood'>
 
+<input type="hidden" value="{{vote}}" id='voteByUser'>
+{{{hiddenVote food.userVote}}}
+
+
+
 {{!-- hiển thị thông báo thành công --}}
 <input type="hidden" value="{{_successOrder}}" id="inputHiddenSuccessOrder">
 
@@ -521,5 +529,6 @@
         $('.onActive').click(function(){
             $(this).addClass('active2')
         })
+
     })
 </script>

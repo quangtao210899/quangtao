@@ -20,6 +20,10 @@ const Food = new Schema({
     resize: {type: String},
     type: {type: String},
     discount: {type: String},
+    userVote:[{
+        userId: String,
+        vote: String,
+    }],
     slug : {type: String, slug: 'foodName', unique: true}
 }, {
     timestamps: true,

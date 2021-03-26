@@ -84,10 +84,19 @@ class FoodController {
                                 ]})
                                 .lean()
                                 .then((chats)=>{
+                                    var vote = 0;
                                     for(var i = 0; i<chats.length;i++){
                                         chats[i].idUser = user._id
                                     }
-                                    res.render('./foods/showFood',{Foods,food,chats,user})
+                                    if(food.userVote){
+                                        for(var i = 0; i<food.userVote.length; i++){
+                                            if(food.userVote[i].userId==user._id){
+                                                vote = food.userVote[i].vote
+                                                break
+                                            }
+                                        }
+                                    }
+                                    res.render('./foods/showFood',{Foods,food,chats,user, vote})
                                 })
                                 .catch(next)
                         })
@@ -120,7 +129,6 @@ class FoodController {
                 .then(user=>{
                     req.body.idUser = user._id;
                     req.body.image = '/uploads/'+req.file.filename
-                    // image = './src/public' +req.body.image
                     const food = new Food(req.body)
                     food.save()
                         .then(()=> res.redirect('/me/stored/foods'))
