@@ -31,6 +31,9 @@
   margin: 0px;
   background-color: #E0ffff;
 }
+.active3{
+  margin: 0px;
+}
 .card-header{
   padding: 12px 10px 12px 10px;
   background-color: white;
@@ -123,8 +126,8 @@ height: 10px;
 width: 10px;
 background-color: #4cd137;
 border-radius: 50%;
-bottom: 0.2em;
-right: 0.4em;
+bottom: -0.3em;
+right: 0.2em;
 border:1.5px solid white;
 }
 .offline{
@@ -144,7 +147,16 @@ font-size: 12px;
 color:#65676B;
 margin-bottom: 10px;
 margin-top: 0px;
+/*  */
+white-space: nowrap; 
+width: 100px; 
+overflow: hidden; 
+text-overflow: ellipsis; 
 }
+.user_info2 p{
+  color: #1876F2;
+}
+
 .video_cam{
 margin-left: 50px;
 margin-top: 5px;
@@ -232,6 +244,7 @@ background-color: rgba(0,0,0,0.2);
 margin-bottom: 15px !important;
 }
 }
+
 
 
 /* vote */

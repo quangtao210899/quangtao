@@ -1,5 +1,4 @@
 const Handlebars = require('handlebars');
-const { render } = require('node-sass');
 module.exports = {
     sum: (a,b) => a+b,
     sortable: (field, sort) =>{
@@ -144,6 +143,19 @@ module.exports = {
             output+= '<input type="hidden" value="'+ 0 +'" id="countVote"></input>'
             output+= '<input type="hidden" value="'+ 0 +'" id="countUserVote"></input>'
             return output
+        }
+    },
+    returnUser0ID: (user)=>{
+        if(user[0])
+            return user[0]._id
+        else return ''
+    },
+    imageChat: (image)=>{
+        if(image){
+            return `<img src="${image}" class="rounded-circle user_img">`
+        }
+        else{
+            return `<img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle user_img">`
         }
     }
 }

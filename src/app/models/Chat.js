@@ -16,9 +16,6 @@ const Chat = new Schema(
         idUserFrom: {
             type: String
         },
-        idFood: {
-            type: String
-        },
     },
     {
         timestamps: true

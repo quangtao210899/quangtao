@@ -1,5 +1,6 @@
 
 
+
 // kết nối server
 var socket = io.connect(`http://localhost:3000`)
 var messages = document.getElementById("messages");
@@ -12,18 +13,77 @@ socket.on('connect',function(data){
 
 
 // listen thread event
-socket.on('thread', function(data, idUserFrom, idUserTo, idFood){
+socket.on('thread', function(data, idUserFrom, idUserTo){
     // lấy idPerson
     var idUserF = document.getElementById('idUserFrom').value
     var idUserT = document.getElementById('idUserTo').value
-    var idF = document.getElementById('idFood').value
     // hiển thị tin nhắn từ server gửi đến
-    if(idUserFrom==idUserF&&idUserTo==idUserT&&idFood==idF){
+    if(idUserFrom==idUserF&&idUserTo==idUserT){
         $msg = '<div class="user-inbox inbox"><div class="msg-header"><p>'+ data +'</p></div></div>';
-        $(".form").append($msg);
+        $("#chatMessageByUser").append($msg);
         $("#text").val('');
         var formChat = $('#form-chat');
         formChat.scrollTop(formChat.prop("scrollHeight"));
+        // xử lý sau khi nhắn tin
+        var idUserChats = $('.idUserChats')
+        for(var i = 0; i < idUserChats.length; i++){
+            if(idUserChats[i].value == idUserTo){
+                var children = $('#uiContacts').children()
+                var index = $(children[i])
+                $(index).insertBefore(children[0])
+                //
+                var li = $($('.idUserChats')[0]).parent()[0]
+                li = $(li).children()[0]
+                li = $(li).children()[1]
+                li = $(li).children()[1]
+                li.innerHTML = data
+            }
+        }
+    }
+    else if(idUserFrom==idUserT&&idUserTo==idUserF){
+        $msg = `<div class="bot-inbox inbox"><div class="icon"><i class="fas fa-user"></i>
+                </div><div class="msg-header"><p>${data}</p></div></div>`
+        $("#chatMessageByUser").append($msg);
+        $("#text").val('');
+        var formChat = $('#form-chat');
+        formChat.scrollTop(formChat.prop("scrollHeight"));    
+        // xử lý tin nhắn sau chat  
+        var idUserChats = $('.idUserChats')
+        for(var i = 0; i < idUserChats.length; i++){
+            if(idUserChats[i].value == idUserFrom){
+                var children = $('#uiContacts').children()
+                var index = $(children[i])
+                $(index).insertBefore(children[0])
+                //
+                var li = $($('.idUserChats')[0]).parent()[0]
+                li = $(li).children()[0]
+                li = $(li).children()[1]
+                li = $(li).children()[1]
+                li.innerHTML = data
+            }
+        }      
+    }
+    else if(idUserTo==idUserF&&idUserFrom!=idUserT){
+        // xử lý tin nhắn sau chat  
+        var idUserChats = $('.idUserChats')
+        for(var i = 0; i < idUserChats.length; i++){
+            if(idUserChats[i].value == idUserFrom){
+                var children = $('#uiContacts').children()
+                var index = $(children[i])
+                $(index).insertBefore(children[0])
+                //oke
+                // $(this).addClass('active2')
+                var li = $($('.idUserChats')[0]).parent()[0]
+                li = $(li).children()[0]
+                li = $(li).children()[1]
+                $(li).addClass('user_info2')
+                var span = $(li).children()[0]
+                var p = $(li).children()[1]
+                var textSpan = span.innerHTML
+                span.innerHTML = '<strong>'+textSpan+'</Strong>'
+                p.innerHTML=data
+            }
+        }         
     }
 })
 
@@ -56,7 +116,34 @@ socket.on('header', function(idUserTo){
 
 // hiển thị tin nhắn lấy về
 socket.on('chatsToUser', function(chats){
-    console.log(chats)
+    $('#chatMessageByUser').children().remove()
+    var chatMessageByUser = $('#chatMessageByUser')
+    if(chats){
+        var idUserFrom =$('#idUserFrom').val()
+        for(var i = 0; i < chats.length; i++){
+            if(chats[i].idUserFrom==idUserFrom){
+                var div =   `<div class="user-inbox inbox">
+                                <div class="msg-header">
+                                    <p>${chats[i].text}</p>
+                                </div>
+                            </div>`
+                $(chatMessageByUser).append(div)
+            }
+            else {
+                var div =   `<div class="bot-inbox inbox">
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="msg-header">
+                                    <p>${chats[i].text}</p>
+                                </div>
+                            </div>`
+                $(chatMessageByUser).append(div)
+            }  
+        }
+        var formChat = $('#form-chat');
+        formChat.scrollTop(formChat.prop("scrollHeight"));
+    }
 })
 
 
@@ -75,15 +162,14 @@ document.addEventListener('DOMContentLoaded', function(){
         message = message.trim()
         var idUserTo = document.getElementById('idUserTo') .value
         var idUserFrom = document.getElementById('idUserFrom') .value
-        var idFood = document.getElementById('idFood') .value
         //gửi thông báo đến server
         if(message!=''&&message!=""){
-            socket.emit('messages', message, idUserFrom, idUserTo, idFood)
+            socket.emit('messages', message, idUserFrom, idUserTo)
             message.value=''
             return false;  
         }
         else {
-            socket.emit('messages', "👍", idUserFrom, idUserTo, idFood)
+            socket.emit('messages', "👍", idUserFrom, idUserTo)
             message.value=''
             return false;
         }
@@ -120,10 +206,9 @@ document.addEventListener('DOMContentLoaded', function(){
         message = message.trim()
         var idUserTo = document.getElementById('idUserTo') .value
         var idUserFrom = document.getElementById('idUserFrom') .value
-        var idFood = document.getElementById('idFood') .value
         //gửi thông báo đến server
         if(message!=''&&message!=""){
-            socket.emit('messages', message, idUserFrom, idUserTo, idFood)
+            socket.emit('messages', message, idUserFrom, idUserTo)
             message.value=''
             return false;  
         }
@@ -168,18 +253,76 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // xử lý sự kiện click vào danh sách người đã nhắn tin
     $('.onActive').click(function(){
+        setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+            document.getElementsByClassName("textInputMessageChat")[0].value.length);
         $('.onActive').removeClass('active2')
         $(this).addClass('active2')
+        
+        var li = $(this).children()[0]
+        li = $(li).children()[1]
+        $(li).removeClass('user_info2')
+        var span = $(li).children()[0]
+        var textSpan = $(span).find('strong').text()
+        if(textSpan) span.innerHTML = textSpan
+
         var idUserFrom =$('#idUserFrom').val()
         var children  = $(this).children()[1]
         var idUserTo = $(children).val()
+        // gán lại idUserTo
+        document.getElementById('idUserTo').value=idUserTo
         socket.emit('getChat', idUserFrom, idUserTo)
     })
 
+    $('#click').change(function(){
+        setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+            document.getElementsByClassName("textInputMessageChat")[0].value.length);
+    })
+    // sự kiện click button chat
+    $('#btn-chat').click(function(){
+        var checked = $('#click').prop('checked')
+        $('#click').prop('checked', !checked)
+        var chatIdUser = $('#chatIdUser').val()
+        if(!checked){
+            var idUserChats = $('.idUserChats')
+            for(var i = 0; i < idUserChats.length; i++){
+                if(idUserChats[i].value == chatIdUser){
+                    var children = $('#uiContacts').children()
+                    for(var j = 0; j < children.length; j++){
+                        if(i!=j) $(children[j]).removeClass('active2')
+                    }
+                    $(children[i]).addClass('active2')
+                    var idUserFrom =$('#idUserFrom').val()
+                    var index = $(children[i])
+                    $(index).insertBefore(children[0])
+                    // gán lại idUserTo
+                    document.getElementById('idUserTo').value=chatIdUser
+                    socket.emit('getChat', idUserFrom, chatIdUser)
+                }
+            } 
+        }
+        setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+            document.getElementsByClassName("textInputMessageChat")[0].value.length);
+    })
 
 })
 
-
+function setSelectionRange(input, selectionStart, selectionEnd) {
+    if (input.setSelectionRange) {
+      input.focus();
+      input.setSelectionRange(selectionStart, selectionEnd);
+    }
+    else if (input.createTextRange) {
+      var range = input.createTextRange();
+      range.collapse(true);
+      range.moveEnd('character', selectionEnd);
+      range.moveStart('character', selectionStart);
+      range.select();
+    }
+}
+   
+function setCaretToPos (input, pos) {
+    setSelectionRange(input, pos, pos);
+}
 
 
 /// header

@@ -50,14 +50,26 @@ class FoodController {
     showFood(req,res,next){
         const username = req.session.username
         const password = req.session.password
-        var user,food,Foods,pos;
+        var user,food,Foods,pos, users=[];
             Promise.all([
                 User.findOne({username: username, password : password}).lean(),
                 Food.findOne({slug: req.params.slug}),
                 User.find({}).lean(),
             ])
-                .then(([user1, oldFood, users]) => {
+                .then(([user1, oldFood, users1]) => {
                     user = user1
+                    // tìm những user đã nhắn tin vs người dùng
+                    if(user1.idUserChats){
+                        for(var i = 0; i < user1.idUserChats.length; i++){
+                            for(var j = 0; j < users1.length; j++){
+                                if(user1.idUserChats[i].idUser==users1[j]._id){
+                                    users.push(users1[j])
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    // tìm món ăn muốn xem
                     Food.find({idUser: oldFood.idUser})
                         .lean()
                         .then(foods=>{
@@ -78,28 +90,44 @@ class FoodController {
                             delete Foods[pos];
                         })
                         .then(()=>{
-                            Chat.find({
-                                $or: [
-                                    {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser},]},
-                                    {$and: [{idUserFrom: food.idUser}, {idUserTo: user._id},]},
-                                ]})
-                                .lean()
-                                .then((chats)=>{
-                                    var vote = 0;
-                                    for(var i = 0; i<chats.length;i++){
-                                        chats[i].idUser = user._id
-                                    }
-                                    if(food.userVote){
-                                        for(var i = 0; i<food.userVote.length; i++){
-                                            if(food.userVote[i].userId==user._id){
-                                                vote = food.userVote[i].vote
-                                                break
+                            // tìm đoạn tin nhắn đầu tiên
+                            if(users[0]){
+                                Chat.find({
+                                    $or: [
+                                        {$and: [{idUserFrom: user._id}, {idUserTo: users[0]._id},]},
+                                        {$and: [{idUserFrom: users[0]._id}, {idUserTo: user._id},]},
+                                    ]})
+                                    .lean()
+                                    .then((chats)=>{
+                                        var vote = 0;
+                                        for(var i = 0; i<chats.length;i++){
+                                            chats[i].idUser = user._id
+                                        }
+                                        if(food.userVote){
+                                            for(var i = 0; i<food.userVote.length; i++){
+                                                if(food.userVote[i].userId==user._id){
+                                                    vote = food.userVote[i].vote
+                                                    break
+                                                }
                                             }
                                         }
+                                        res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
+                                    })
+                                    .catch(next)
+                            }
+                            else{
+                                var chats = []
+                                var vote = 0
+                                if(food.userVote){
+                                    for(var i = 0; i<food.userVote.length; i++){
+                                        if(food.userVote[i].userId==user._id){
+                                            vote = food.userVote[i].vote
+                                            break
+                                        }
                                     }
-                                    res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
-                                })
-                                .catch(next)
+                                }
+                                res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
+                            }
                         })
                         .catch(next)
                 })

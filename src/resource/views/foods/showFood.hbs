@@ -133,7 +133,7 @@
     <div class="wrapper" style="position: fixed;z-index: 105;" >
         <div class="head-text">Let's chat? - Food Online</div>
         <div class="row">
-            <div class="mb-sm-3 mb-md-0 contacts_card" style="height: 460px;   overflow-y: auto; border-right: 1px solid #C0C0C0;">
+            <div class="mb-sm-3 mb-md-0 contacts_card" style="height: 460px;   overflow-y: auto; border-right: 1px solid #DCDCDC;">
                 <div  style="background-color: #F0F2F5;width: 200px; margin-left:15px" class="div_overflow">
                     {{!-- Hiện danh sách những ng đã chat --}}
                     <div class="card-header">
@@ -145,14 +145,13 @@
 						</div>
 					</div>
                     <div class="card-body contacts_body" style="cursor: pointer;">
-                        <ui class="contacts">
+                        <ui class="contacts" id='uiContacts'>
                             {{#each users}}
                                 {{#if @index}}
                                     <li class="onActive">
                                         <div class="d-flex bd-highlight">
                                             <div class="img_cont">
-                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" 
-                                                    class="rounded-circle user_img">
+                                                {{{imageChat this.image }}}
                                                 <span class="online_icon"></span>
                                             </div>
                                             <div class="user_info">
@@ -160,22 +159,21 @@
                                                 <p>Kalid is online</p>
                                             </div>
                                         </div>
-                                        <input type="hidden" value='{{this._id}}'>
+                                        <input type="hidden" value='{{this._id}}' class="idUserChats">
                                     </li>
                                 {{else}}
                                     <li class="onActive active2">
                                         <div class="d-flex bd-highlight">
                                             <div class="img_cont">
-                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" 
-                                                    class="rounded-circle user_img">
+                                                {{{imageChat this.image }}}
                                                 <span class="online_icon"></span>
                                             </div>
                                             <div class="user_info">
-                                                <span style="margin-bottom: 10px;">Khalid</span>
+                                                <span style="margin-bottom: 10px;">{{this.firstname}} {{this.lastname}}</span>
                                                 <p>Kalid is online</p>
                                             </div>
                                         </div>
-                                        <input type="hidden" value='{{this._id}}'>
+                                        <input type="hidden" value='{{this._id}}' class="idUserChats">
                                     </li>   
                                 {{/if}}                            
                             {{/each}}
@@ -185,40 +183,49 @@
             </div>
             <div style="width:375px; margin-right:15px;">
                 <div class="form" id="form-chat">
-                    <div class="bot-inbox inbox">
-                        <div class="icon">
-                            <i class="fas fa-user"></i>
+                    {{!-- {{#if chats}} --}}
+                        <div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Chào quý khách</p>
+                            </div>
                         </div>
-                        <div class="msg-header">
-                            <p>Chào quý khách</p>
+                        <div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
+                            </div>
                         </div>
+                    {{!-- {{else}}
+                        <p style="text-align:center; font-size: 25px">Bạn chưa nhắn tin với ai</p>
+                    {{/if}} --}}
+                    <div id="chatMessageByUser">
+                        {{#each chats}}
+                            {{{textChat this}}}
+                        {{/each}}
                     </div>
-                    <div class="bot-inbox inbox">
-                        <div class="icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="msg-header">
-                            <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
-                        </div>
-                    </div>
-                    {{#each chats}}
-                        {{{textChat this}}}
-                    {{/each}}
                 </div>
-                <form id="form1" autocomplete="off">
-                    <div class="typing-field">
-                        <div class="input-data">
-                            <input id="text" type="text" placeholder="Aa">
+                {{!-- {{#if chats}} --}}
+                    <form id="form1" autocomplete="off">
+                        <div class="typing-field">
+                            <div class="input-data">
+                                <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
+                            </div>
+                            <a href="" id='a-send-message' style="color: #0084ff">
+                                <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
+                                {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
+                            </a>
+                            <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value='{{user._id}}'/>
+                            <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value='{{returnUser0ID users}}' />
+                            <input type="hidden" id='idFood' class='idFood' name="idFood" value='{{food._id}}'/>
+                            <input type="hidden" id='chatIdUser' class='chatIdUser' name="chatIdUser" value='{{food.idUser}}' />
                         </div>
-                        <a href="" id='a-send-message' style="color: #0084ff">
-                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
-                            {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
-                        </a>
-                        <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value={{user._id}}>
-                        <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value={{food.idUser}}>
-                        <input type="hidden" id='idFood' class='idFood' name="idFood" value={{food._id}}>
-                    </div>
-                </form>
+                    </form>
+                {{!-- {{/if}} --}}
             </div>
         </div>
     </div>
@@ -432,12 +439,6 @@
                 }
             }
         })
-        // sự kiện click button chat
-        var btnChat = document.getElementById('btn-chat')
-        btnChat.onclick= function(){
-            window.location='/chat'
-        }
-
 
         function cart(){
             var costH3 = document.getElementById('cost-h3')

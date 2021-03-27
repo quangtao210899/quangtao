@@ -7,6 +7,7 @@ class ChatController {
         const password = req.session.password
         Promise.all([User.findOne({username: username, password : password}).lean(), Chat.find({}).lean()])
             .then(([user,chats]) =>{
+                // res.send('đã vào')
                 for(var i = 0; i<chats.length;i++){
                     chats[i].idUser = user._id
                 }

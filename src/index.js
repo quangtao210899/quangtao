@@ -94,11 +94,11 @@ io.on('connection', function(client){
         console.log('Đã kết nối được với client')
     })
 
-    client.on('messages', function(data, idUserFrom, idUserTo, idFood){
+    client.on('messages', function(data, idUserFrom, idUserTo){
         // thông báo cho client
-        client.emit('thread', data, idUserFrom, idUserTo, idFood)
+        client.emit('thread', data, idUserFrom, idUserTo)
         // thông báo cho các client khác
-        client.broadcast.emit('thread', data, idUserFrom, idUserTo, idFood)
+        client.broadcast.emit('thread', data, idUserFrom, idUserTo)
 
         // thông báo cho client
         client.emit('header', idUserTo)
@@ -107,7 +107,7 @@ io.on('connection', function(client){
 
 
         //save chat to the database
-        let chatMessage = new Chat({text: data, idUserFrom: idUserFrom, idUserTo: idUserTo, idFood: idFood});
+        let chatMessage = new Chat({text: data, idUserFrom: idUserFrom, idUserTo: idUserTo});
         chatMessage.save();
 
         // lưu thông báo
@@ -132,8 +132,53 @@ io.on('connection', function(client){
                         .then()
                 }
             })
-
-            // type: 'message', idUser: idUserTo, idUserFrom: idUserFrom, idFood: idFood
+        // lưu lại những người mà user đã nhắn tin
+            // lưu người gửi
+        User.findById(idUserFrom).lean()
+            .then(user=>{
+                var idUserChats = user.idUserChats
+                if(!idUserChats){
+                    var array = []
+                    array.push({idUser: idUserTo})
+                    User.updateOne({_id: idUserFrom}, {idUserChats: array}).then()
+                }
+                else{
+                    var index = idUserChats.findIndex(element=> element.idUser==idUserTo)
+                    if(index==-1){
+                        idUserChats.unshift({idUser: idUserTo})
+                        User.updateOne({_id: idUserFrom}, {idUserChats: idUserChats}).then()
+                    }
+                    else{
+                        var trungGian = idUserChats[index]
+                        idUserChats[index] = idUserChats[0]
+                        idUserChats[0] = trungGian
+                        User.updateOne({_id: idUserFrom}, {idUserChats: idUserChats}).then()
+                    }
+                }
+            })
+            // lưu người nhận
+        User.findById(idUserTo).lean()
+            .then(user=>{
+                var idUserChats = user.idUserChats
+                if(!idUserChats){
+                    var array = []
+                    array.push({idUser: idUserFrom})
+                    User.updateOne({_id: idUserTo}, {idUserChats: array}).then()
+                }
+                else{
+                    var index = idUserChats.findIndex(element=> element.idUser==idUserFrom)
+                    if(index==-1){
+                        idUserChats.unshift({idUser: idUserFrom})
+                        User.updateOne({_id: idUserTo}, {idUserChats: idUserChats}).then()
+                    }
+                    else{
+                        var trungGian = idUserChats[index]
+                        idUserChats[index] = idUserChats[0]
+                        idUserChats[0] = trungGian
+                        User.updateOne({_id: idUserTo}, {idUserChats: idUserChats}).then()
+                    }
+                }
+            })
     })
 
     client.on('changeNotificationMessageToZero',function(idUser){

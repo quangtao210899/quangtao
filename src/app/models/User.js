@@ -19,6 +19,9 @@ const User = new Schema({
     address: [
         {address: String}
     ],
+    idUserChats: [
+        {idUser: String}
+    ]
 }, {
     timestamps: true,
 });
