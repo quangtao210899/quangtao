@@ -92,9 +92,11 @@ background-color: rgba(0,0,0,0.3) !important;
   
   width: 100% !important;
   margin-right: 5px;
-  padding: 16px 8px 0px 8px;
+  padding: 10px 8px 0px 8px;
 }
 .user_img{
+  margin-top: 5px;
+  margin-bottom: 5px;
   height: 40px;
   width: 40px;
   border:1.5px solid #f5f6fa;
@@ -129,8 +131,8 @@ border:1.5px solid white;
 background-color: #c23616 !important;
 }
 .user_info{
-margin-top: auto;
-margin-bottom: auto;
+margin-top: 0px;
+margin-bottom: 0px;
 margin-left: 15px;
 }
 .user_info span{
@@ -140,7 +142,8 @@ color: #050505;
 .user_info p{
 font-size: 12px;
 color:#65676B;
-margin-bottom: 8px;
+margin-bottom: 10px;
+margin-top: 0px;
 }
 .video_cam{
 margin-left: 50px;

@@ -133,7 +133,7 @@
     <div class="wrapper" style="position: fixed;z-index: 105;" >
         <div class="head-text">Let's chat? - Food Online</div>
         <div class="row">
-            <div class="mb-sm-3 mb-md-0 contacts_card" style="height: 460px;   overflow-y: auto;">
+            <div class="mb-sm-3 mb-md-0 contacts_card" style="height: 460px;   overflow-y: auto; border-right: 1px solid #C0C0C0;">
                 <div  style="background-color: #F0F2F5;width: 200px; margin-left:15px" class="div_overflow">
                     {{!-- Hiện danh sách những ng đã chat --}}
                     <div class="card-header">
@@ -146,78 +146,39 @@
 					</div>
                     <div class="card-body contacts_body" style="cursor: pointer;">
                         <ui class="contacts">
-                        <li class="active2 onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Khalid</span>
-                                    <p>Kalid is online</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Khalid</span>
-                                    <p>Kalid is online</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://2.bp.blogspot.com/-8ytYF7cfPkQ/WkPe1-rtrcI/AAAAAAAAGqU/FGfTDVgkcIwmOTtjLka51vineFBExJuSACLcBGAs/s320/31.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon offline"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Taherah Big</span>
-                                    <p>Taherah left 7 mins ago</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://i.pinimg.com/originals/ac/b9/90/acb990190ca1ddbb9b20db303375bb58.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Sami Rafi</span>
-                                    <p>Sami is online</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon offline"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Nargis Hawa</span>
-                                    <p>Nargis left 30 mins ago</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="onActive">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="https://static.turbosquid.com/Preview/001214/650/2V/boy-cartoon-3D-model_D.jpg" class="rounded-circle user_img">
-                                    <span class="online_icon offline"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Rashid Samim</span>
-                                    <p>Rashid left 50 mins ago</p>
-                                </div>
-                            </div>
-                        </li>
+                            {{#each users}}
+                                {{#if @index}}
+                                    <li class="onActive">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="img_cont">
+                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" 
+                                                    class="rounded-circle user_img">
+                                                <span class="online_icon"></span>
+                                            </div>
+                                            <div class="user_info">
+                                                <span>{{this.firstname}} {{this.lastname}}</span>
+                                                <p>Kalid is online</p>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" value='{{this._id}}'>
+                                    </li>
+                                {{else}}
+                                    <li class="onActive active2">
+                                        <div class="d-flex bd-highlight">
+                                            <div class="img_cont">
+                                                <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg" 
+                                                    class="rounded-circle user_img">
+                                                <span class="online_icon"></span>
+                                            </div>
+                                            <div class="user_info">
+                                                <span style="margin-bottom: 10px;">Khalid</span>
+                                                <p>Kalid is online</p>
+                                            </div>
+                                        </div>
+                                        <input type="hidden" value='{{this._id}}'>
+                                    </li>   
+                                {{/if}}                            
+                            {{/each}}
                         </ui>
                     </div>
                 </div>
@@ -237,7 +198,7 @@
                             <i class="fas fa-user"></i>
                         </div>
                         <div class="msg-header">
-                            <p>Quý khách muốn mua <strong>{{food.foodName}}</strong> hay món gì khác của shop chúng tôi?</p>
+                            <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
                         </div>
                     </div>
                     {{#each chats}}
@@ -524,11 +485,6 @@
                 imgclone.animate({'width':0, 'height':0}, function(){ $(this).detach() });
             }
         });
-
-        // xử lý sự kiện click vào danh sách người đã nhắn tin
-        $('.onActive').click(function(){
-            $(this).addClass('active2')
-        })
 
     })
 </script>

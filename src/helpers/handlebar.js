@@ -131,7 +131,6 @@ module.exports = {
     },
     hiddenVote: (userVote)=>{
         var output = ''
-        console.log(userVote)
         if(userVote){
             var vote =  0
             for(var i = 0; i < userVote.length; i++){

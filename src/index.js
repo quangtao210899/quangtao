@@ -268,10 +268,18 @@ io.on('connection', function(client){
                 }
             })
     })
-
-
-
-
+    // lấy tin nhắn từ server để hiển thị
+    client.on('getChat', function(idUserFrom, idUserTo){
+        Chat.find({
+            $or: [
+                {$and: [{idUserFrom: idUserFrom}, {idUserTo: idUserTo},]},
+                {$and: [{idUserFrom: idUserTo}, {idUserTo: idUserFrom},]},
+            ]})
+            .lean()
+            .then(chats=>{
+                client.emit('chatsToUser', chats)
+            })
+    })
 })
 
 

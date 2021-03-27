@@ -53,7 +53,6 @@ class SiteController {
 
     // [POST] /search
     searchPost(req, res) {
-        console.log(req.body);
         res.send('Đã gửi thành công!');
     }
 
@@ -80,7 +79,6 @@ class SiteController {
                             res.cookie('username', req.query.username,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
                             res.cookie('password', req.query.password,{ expires: new Date(Date.now() + 60*60*24*7*1000)})
                         }
-                        // console.log(req.cookie('username'))
                         res.redirect('/')
                     }
                 })

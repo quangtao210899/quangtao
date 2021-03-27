@@ -54,6 +54,11 @@ socket.on('header', function(idUserTo){
     }
 })
 
+// hiển thị tin nhắn lấy về
+socket.on('chatsToUser', function(chats){
+    console.log(chats)
+})
+
 
 
 // chờ đến khi load xong thư viện
@@ -159,6 +164,19 @@ document.addEventListener('DOMContentLoaded', function(){
             socket.emit('userVote', userID, position, foodID)
         }
     })
+
+
+    // xử lý sự kiện click vào danh sách người đã nhắn tin
+    $('.onActive').click(function(){
+        $('.onActive').removeClass('active2')
+        $(this).addClass('active2')
+        var idUserFrom =$('#idUserFrom').val()
+        var children  = $(this).children()[1]
+        var idUserTo = $(children).val()
+        socket.emit('getChat', idUserFrom, idUserTo)
+    })
+
+
 })
 
 

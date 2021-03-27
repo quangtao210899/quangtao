@@ -1,5 +1,4 @@
 
-var socket = io.connect(`http://localhost:3000`)
 var position
 var inputUpdateAddress
 var addressID
@@ -160,8 +159,10 @@ document.addEventListener('DOMContentLoaded', function(){
             }   
         }
     });
+    $('#btn-add-address').click(function(){
+        document.getElementById('error-address').innerHTML='' 
+    })
     $('#btn-add-address-modal').click(function(){
-        document.getElementById('error-address').innerHTML=''
         var inputNewAddress =  $('#input-new-address').val().trim()
         if(inputNewAddress){
             var userID = $('#user-id-profile').val().trim()

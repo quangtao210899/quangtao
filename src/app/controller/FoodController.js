@@ -54,8 +54,9 @@ class FoodController {
             Promise.all([
                 User.findOne({username: username, password : password}).lean(),
                 Food.findOne({slug: req.params.slug}),
+                User.find({}).lean(),
             ])
-                .then(([user1, oldFood]) => {
+                .then(([user1, oldFood, users]) => {
                     user = user1
                     Food.find({idUser: oldFood.idUser})
                         .lean()
@@ -79,8 +80,8 @@ class FoodController {
                         .then(()=>{
                             Chat.find({
                                 $or: [
-                                    {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser}, {idFood: food._id}]},
-                                    {$and: [{idUserFrom: food.idUser}, {idUserTo: user._id}, {idFood: food._id}]},
+                                    {$and: [{idUserFrom: user._id}, {idUserTo: food.idUser},]},
+                                    {$and: [{idUserFrom: food.idUser}, {idUserTo: user._id},]},
                                 ]})
                                 .lean()
                                 .then((chats)=>{
@@ -96,7 +97,7 @@ class FoodController {
                                             }
                                         }
                                     }
-                                    res.render('./foods/showFood',{Foods,food,chats,user, vote})
+                                    res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
                                 })
                                 .catch(next)
                         })
