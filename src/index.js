@@ -104,7 +104,7 @@ io.on('connection', function(client){
         client.emit('header', idUserTo)
         // thông báo cho các client khác
         client.broadcast.emit('header', idUserTo)
-
+        // chào
 
         //save chat to the database
         let chatMessage = new Chat({text: data, idUserFrom: idUserFrom, idUserTo: idUserTo});
