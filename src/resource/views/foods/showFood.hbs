@@ -131,9 +131,9 @@
         <i class="fas fa-times"></i>
     </label>
     <div class="wrapper" style="position: fixed;z-index: 105;" >
-        <div class="head-text">Let's chat? - Food Online</div>
-        <div class="row">
-            <div class="mb-sm-3 mb-md-0 contacts_card" style="max-height: 400px;   overflow-y: auto; border-right: 1px solid #DCDCDC;">
+        <div class="head-text contacts_card">Let's chat? - Food Online</div>
+        <div class="row d-flex displayChatForHidden">
+            <div class="mb-sm-3 mb-md-0 contacts_card" style="overflow-y: auto; border-right: 1px solid #DCDCDC;">
                 <div  style="background-color: #F0F2F5;width: 200px; margin-left:15px" class="div_overflow">
                     {{!-- Hiện danh sách những ng đã chat --}}
                     <div class="card-header">
@@ -181,7 +181,7 @@
                     </div>
                 </div>
             </div>
-            <div style="width:375px; margin-right:15px;">
+            <div style="width: 350px; margin-right:15px;" class="contacts_card">
                 <div class="form" id="form-chat">
                     <div id='chatByStoreFood'>
                         {{{getFirstChat chats user}}}
@@ -192,35 +192,35 @@
                         {{/each}}
                     </div>
                 </div>
-                    <form id="form1" autocomplete="off">
-                        <div class="typing-field">
-                            {{#if chats}}
-                                <div id="checkInputMessage" class="d-flex align-items-center">
-                                        <div class="input-data">
-                                            <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
-                                        </div>
-                                        <a href="" id='a-send-message' style="color: #0084ff">
-                                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
-                                                margin-right: 0px; margin-left: 10px;"></i>
-                                        </a>
-                                </div>
-                            {{else}}
-                                <div id="checkInputMessage" style="visibility: hidden;"class="d-flex align-items-center">
-                                        <div class="input-data">
-                                            <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
-                                        </div>
-                                        <a href="" id='a-send-message' style="color: #0084ff">
-                                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
-                                                margin-right: 0px; margin-left: 10px;"></i>
-                                        </a>
-                                </div>
-                            {{/if}}
-                            <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value='{{user._id}}'/>
-                            <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value='{{returnUser0ID users}}' />
-                            <input type="hidden" id='idFood' class='idFood' name="idFood" value='{{food._id}}'/>
-                            <input type="hidden" id='chatIdUser' class='chatIdUser' name="chatIdUser" value='{{food.idUser}}' />
-                        </div>
-                    </form>
+                <form id="form1" autocomplete="off">
+                    <div class="typing-field">
+                        {{#if chats}}
+                            <div id="checkInputMessage" class="d-flex align-items-center">
+                                    <div class="input-data">
+                                        <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
+                                    </div>
+                                    <a href="" id='a-send-message' style="color: #0084ff">
+                                        <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
+                                            margin-right: 0px; margin-left: 10px;"></i>
+                                    </a>
+                            </div>
+                        {{else}}
+                            <div id="checkInputMessage" style="visibility: hidden;"class="d-flex align-items-center">
+                                    <div class="input-data">
+                                        <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
+                                    </div>
+                                    <a href="" id='a-send-message' style="color: #0084ff">
+                                        <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
+                                            margin-right: 0px; margin-left: 10px;"></i>
+                                    </a>
+                            </div>
+                        {{/if}}
+                        <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value='{{user._id}}'/>
+                        <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value='{{returnUser0ID users}}' />
+                        <input type="hidden" id='idFood' class='idFood' name="idFood" value='{{food._id}}'/>
+                        <input type="hidden" id='chatIdUser' class='chatIdUser' name="chatIdUser" value='{{food.idUser}}' />
+                    </div>
+                </form>
             </div>
         </div>
     </div>
