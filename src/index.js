@@ -18,7 +18,7 @@ const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 
 var  server = require('http').createServer(app)
