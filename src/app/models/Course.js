@@ -18,16 +18,6 @@ const Course = new Schema({
 }, {
     timestamps: true,
 });
-// custom query helpers
-Course.query.sortable = function(req){
-    if(req.query.hasOwnProperty('_sort')){
-        const isValidStyle = ['asc','desc'].includes(req.query.type); 
-        return this.sort({
-            [req.query.column] : isValidStyle ? req.query.type : 'desc',
-        })
-    }
-    return this;
-}
 //add plugin
 mongoose.plugin(slug);
 Course.plugin(mongooseDelete, { 
