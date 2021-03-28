@@ -62,8 +62,8 @@ class CourseController {
             })
     }
     // [GET]  /me/stored/message
-    storedMessage(req,res,next){
-        res.render('./me/storeMessage', {hidden: 'none', layout: false})
+    storedOrder(req,res,next){
+        res.render('./me/storedOrder', {hidden: 'none', layout: false})
     }
 
 
