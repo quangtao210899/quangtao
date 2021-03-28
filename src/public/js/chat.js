@@ -66,12 +66,13 @@ socket.on('thread', function(data, idUserFrom, idUserTo){
     else if(idUserTo==idUserF&&idUserFrom!=idUserT){
         // xử lý tin nhắn sau chat  
         var idUserChats = $('.idUserChats')
+        var kt = -1
         for(var i = 0; i < idUserChats.length; i++){
             if(idUserChats[i].value == idUserFrom){
+                kt=i
                 var children = $('#uiContacts').children()
                 var index = $(children[i])
                 $(index).insertBefore(children[0])
-                //oke
                 // $(this).addClass('active2')
                 var li = $($('.idUserChats')[0]).parent()[0]
                 li = $(li).children()[0]
@@ -83,7 +84,11 @@ socket.on('thread', function(data, idUserFrom, idUserTo){
                 span.innerHTML = '<strong>'+textSpan+'</Strong>'
                 p.innerHTML=data
             }
-        }         
+        } 
+        if(kt==-1){
+            //oke
+            socket.emit('getUserChatForTo', idUserFrom)
+        }        
     }
 })
 
@@ -146,6 +151,118 @@ socket.on('chatsToUser', function(chats){
     }
 })
 
+// hiển thị user được trả về
+    socket.on('userChatForFrom', function(user){
+        var index;
+        // thêm thẻ li vào trong bảng những ng nhắn tin
+        if(user.image){
+            index = `<li class="onActive active2">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="${user.image}" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span style="margin-bottom: 10px;">${user.firstname} ${user.lastname}</span>
+                                <p>Kalid is online</p>
+                            </div>
+                        </div>
+                        <input type="hidden" value='${user._id}' class="idUserChats">
+                    </li> `
+        }
+        else{
+            index = `<li class="onActive active2">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span style="margin-bottom: 10px;">${user.firstname} ${user.lastname}</span>
+                                <p>Kalid is online</p>
+                            </div>
+                        </div>
+                        <input type="hidden" value='${user._id}' class="idUserChats">
+                    </li> `            
+        }
+        var ui = $('#uiContacts')[0]
+        $(ui).append(index)
+        // đưa thẻ li lên đầu
+        var children = $('#uiContacts').children()
+        var n = children.length-1
+        for(var i = 0; i < n; i++){
+            $(children[i]).removeClass('active2')
+        } 
+        var li = $(children[n])
+        $(li).insertBefore(children[0])
+    })
+
+
+    socket.on('userChatForTo', function(user){
+        var index;
+        // thêm thẻ li vào trong bảng những ng nhắn tin
+        if(user.image){
+            index = `<li class="onActive">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="${user.image}" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info user_info2">
+                                <span style="margin-bottom: 10px;"><strong>${user.firstname} ${user.lastname}</strong></span>
+                                <p>Kalid is online</p>
+                            </div>
+                        </div>
+                        <input type="hidden" value='${user._id}' class="idUserChats">
+                    </li> `
+        }
+        else{
+            index = `<li class="onActive">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info user_info2">
+                                <span style="margin-bottom: 10px;"><strong>${user.firstname} ${user.lastname}</strong></span>
+                                <p>Kalid is online</p>
+                            </div>
+                        </div>
+                        <input type="hidden" value='${user._id}' class="idUserChats">
+                    </li> `            
+        }
+        var ui = $('#uiContacts')[0]
+        $(ui).append(index)
+        // đưa thẻ li lên đầu
+        var children = $('#uiContacts').children()
+        var n = children.length-1
+        var li = $(children[n])
+        $(li).insertBefore(children[0])
+
+
+        // chạy lại hàm onActive
+        $('.onActive').click(function(){
+            setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+                document.getElementsByClassName("textInputMessageChat")[0].value.length);
+            $('.onActive').removeClass('active2')
+            $(this).addClass('active2')
+            
+            var li = $(this).children()[0]
+            li = $(li).children()[1]
+            $(li).removeClass('user_info2')
+            var span = $(li).children()[0]
+            var textSpan = $(span).find('strong').text()
+            if(textSpan) span.innerHTML = textSpan
+    
+            var idUserFrom =$('#idUserFrom').val()
+            var children  = $(this).children()[1]
+            var idUserTo = $(children).val()
+            // gán lại idUserTo
+            document.getElementById('idUserTo').value=idUserTo
+            socket.emit('getChat', idUserFrom, idUserTo)
+        })
+    })
+    
 
 
 // chờ đến khi load xong thư viện
@@ -284,8 +401,10 @@ document.addEventListener('DOMContentLoaded', function(){
         var chatIdUser = $('#chatIdUser').val()
         if(!checked){
             var idUserChats = $('.idUserChats')
+            var index = -1
             for(var i = 0; i < idUserChats.length; i++){
                 if(idUserChats[i].value == chatIdUser){
+                    index = i;
                     var children = $('#uiContacts').children()
                     for(var j = 0; j < children.length; j++){
                         if(i!=j) $(children[j]).removeClass('active2')
@@ -299,6 +418,14 @@ document.addEventListener('DOMContentLoaded', function(){
                     socket.emit('getChat', idUserFrom, chatIdUser)
                 }
             } 
+
+            if(index== -1){
+                var idUserFrom =$('#idUserFrom').val()
+                socket.emit('getChat', idUserFrom, chatIdUser)
+                // gán lại idUserTo
+                document.getElementById('idUserTo').value=chatIdUser
+                socket.emit('getUserChatForFrom', chatIdUser)
+            }
         }
         setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
             document.getElementsByClassName("textInputMessageChat")[0].value.length);
@@ -306,6 +433,8 @@ document.addEventListener('DOMContentLoaded', function(){
 
 })
 
+
+// đưa con trỏ đến vị trí bất kì trong thẻ input
 function setSelectionRange(input, selectionStart, selectionEnd) {
     if (input.setSelectionRange) {
       input.focus();

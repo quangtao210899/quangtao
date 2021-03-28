@@ -325,6 +325,21 @@ io.on('connection', function(client){
                 client.emit('chatsToUser', chats)
             })
     })
+
+    // lấy User mới khi người này chưa nhắn tin lần nào
+    client.on('getUserChatForFrom', function(idUser){
+        User.findById(idUser).lean()
+            .then(user=>{
+                client.emit('userChatForFrom', user)
+            })
+    })
+
+    client.on('getUserChatForTo', function(idUser){
+        User.findById(idUser).lean()
+            .then(user=>{
+                client.emit('userChatForTo', user)
+            })
+    })
 })
 
 
