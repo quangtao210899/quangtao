@@ -63,6 +63,7 @@ class FoodController {
                         for(var i = 0; i < user1.idUserChats.length; i++){
                             for(var j = 0; j < users1.length; j++){
                                 if(user1.idUserChats[i].idUser==users1[j]._id){
+                                    users1[j].lastChat = user1.idUserChats[i].lastChat
                                     users.push(users1[j])
                                     break;
                                 }

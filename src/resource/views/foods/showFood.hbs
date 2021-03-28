@@ -156,7 +156,7 @@
                                             </div>
                                             <div class="user_info">
                                                 <span>{{this.firstname}} {{this.lastname}}</span>
-                                                <p>Kalid is online</p>
+                                                <p>{{this.lastChat}}</p>
                                             </div>
                                         </div>
                                         <input type="hidden" value='{{this._id}}' class="idUserChats">
@@ -170,7 +170,7 @@
                                             </div>
                                             <div class="user_info">
                                                 <span style="margin-bottom: 10px;">{{this.firstname}} {{this.lastname}}</span>
-                                                <p>Kalid is online</p>
+                                                <p>{{this.lastChat}}</p>
                                             </div>
                                         </div>
                                         <input type="hidden" value='{{this._id}}' class="idUserChats">
@@ -183,49 +183,44 @@
             </div>
             <div style="width:375px; margin-right:15px;">
                 <div class="form" id="form-chat">
-                    {{!-- {{#if chats}} --}}
-                        <div class="bot-inbox inbox">
-                            <div class="icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="msg-header">
-                                <p>Chào quý khách</p>
-                            </div>
-                        </div>
-                        <div class="bot-inbox inbox">
-                            <div class="icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="msg-header">
-                                <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
-                            </div>
-                        </div>
-                    {{!-- {{else}}
-                        <p style="text-align:center; font-size: 25px">Bạn chưa nhắn tin với ai</p>
-                    {{/if}} --}}
+                    <div id='chatByStoreFood'>
+                        {{{getFirstChat chats user}}}
+                    </div>
                     <div id="chatMessageByUser">
                         {{#each chats}}
                             {{{textChat this}}}
                         {{/each}}
                     </div>
                 </div>
-                {{!-- {{#if chats}} --}}
                     <form id="form1" autocomplete="off">
                         <div class="typing-field">
-                            <div class="input-data">
-                                <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
-                            </div>
-                            <a href="" id='a-send-message' style="color: #0084ff">
-                                <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; margin-right: 20px; margin-left: 20px;"></i>
-                                {{!-- <i id="send-message-i" class="fas fa-paper-plane" style="font-size: 20px"></i> --}}
-                            </a>
+                            {{#if chats}}
+                                <div id="checkInputMessage" class="d-flex align-items-center">
+                                        <div class="input-data">
+                                            <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
+                                        </div>
+                                        <a href="" id='a-send-message' style="color: #0084ff">
+                                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
+                                                margin-right: 0px; margin-left: 10px;"></i>
+                                        </a>
+                                </div>
+                            {{else}}
+                                <div id="checkInputMessage" style="visibility: hidden;"class="d-flex align-items-center">
+                                        <div class="input-data">
+                                            <input id="text" class="textInputMessageChat" type="text" placeholder="Aa">
+                                        </div>
+                                        <a href="" id='a-send-message' style="color: #0084ff">
+                                            <i class="fas fa-thumbs-up" style="color: #0084ff; font-size: 25px; 
+                                                margin-right: 0px; margin-left: 10px;"></i>
+                                        </a>
+                                </div>
+                            {{/if}}
                             <input type="hidden" id='idUserFrom' class='idUserFrom' name="idUserFrom" value='{{user._id}}'/>
                             <input type="hidden" id='idUserTo' class='idUserTo' name="idUserTo" value='{{returnUser0ID users}}' />
                             <input type="hidden" id='idFood' class='idFood' name="idFood" value='{{food._id}}'/>
                             <input type="hidden" id='chatIdUser' class='chatIdUser' name="chatIdUser" value='{{food.idUser}}' />
                         </div>
                     </form>
-                {{!-- {{/if}} --}}
             </div>
         </div>
     </div>

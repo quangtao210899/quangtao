@@ -80,13 +80,17 @@ socket.on('thread', function(data, idUserFrom, idUserTo){
                 $(li).addClass('user_info2')
                 var span = $(li).children()[0]
                 var p = $(li).children()[1]
-                var textSpan = span.innerHTML
-                span.innerHTML = '<strong>'+textSpan+'</Strong>'
+                var textSpan = $(span).find('strong')
+                if(textSpan.length>0){
+                    span.innerHTML = '<strong>'+$(textSpan).text()+'</Strong>'
+                }
+                else{
+                    span.innerHTML = '<strong>'+$(span).text()+'</Strong>'
+                }
                 p.innerHTML=data
             }
         } 
         if(kt==-1){
-            //oke
             socket.emit('getUserChatForTo', idUserFrom)
         }        
     }
@@ -125,6 +129,48 @@ socket.on('chatsToUser', function(chats){
     var chatMessageByUser = $('#chatMessageByUser')
     if(chats){
         var idUserFrom =$('#idUserFrom').val()
+        if(chats.length>0){
+            if(chats[0].idUserFrom==idUserFrom){
+                var chatByStoreFood = $('#chatByStoreFood').children()
+                if(chatByStoreFood.length<2){
+                    if(chatByStoreFood.length==1){
+                        var parent = $('#chatByStoreFood')[0]
+                        parent.removeChild(chatByStoreFood[0])
+                    }
+                    var parent = $('#chatByStoreFood')[0]
+                    var div = ` <div class="bot-inbox inbox">
+                                    <div class="icon">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="msg-header">
+                                        <p>Chào quý khách</p>
+                                    </div>
+                                </div>`
+                    $(parent).append(div)
+                    div =   `<div class="bot-inbox inbox">
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="msg-header">
+                                    <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
+                                </div>
+                            </div>`
+                    $(parent).append(div)    
+                }
+            }
+            else{
+                var chatByStoreFood = $('#chatByStoreFood').children()
+                if(chatByStoreFood.length==1){
+                    var parent = $('#chatByStoreFood')[0]
+                    parent.removeChild(chatByStoreFood[0])
+                }
+                if(chatByStoreFood.length==2){
+                    var parent = $('#chatByStoreFood')[0]
+                    parent.removeChild(chatByStoreFood[0])
+                    parent.removeChild(chatByStoreFood[1])
+                }
+            }
+        }
         for(var i = 0; i < chats.length; i++){
             if(chats[i].idUserFrom==idUserFrom){
                 var div =   `<div class="user-inbox inbox">
@@ -195,12 +241,36 @@ socket.on('chatsToUser', function(chats){
         } 
         var li = $(children[n])
         $(li).insertBefore(children[0])
+
+
+        // chạy lại hàm onActive
+        $('.onActive').click(function(){
+            setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+                document.getElementsByClassName("textInputMessageChat")[0].value.length);
+            $('.onActive').removeClass('active2')
+            $(this).addClass('active2')
+            
+            var li = $(this).children()[0]
+            li = $(li).children()[1]
+            $(li).removeClass('user_info2')
+            var span = $(li).children()[0]
+            var textSpan = $(span).find('strong').text()
+            if(textSpan) span.innerHTML = textSpan
+    
+            var idUserFrom =$('#idUserFrom').val()
+            var children  = $(this).children()[1]
+            var idUserTo = $(children).val()
+            // gán lại idUserTo
+            document.getElementById('idUserTo').value=idUserTo
+            socket.emit('getChat', idUserFrom, idUserTo)
+        })
     })
 
 
     socket.on('userChatForTo', function(user){
         var index;
         // thêm thẻ li vào trong bảng những ng nhắn tin
+        console.log('vào lần 2')
         if(user.image){
             index = `<li class="onActive">
                         <div class="d-flex bd-highlight">
@@ -370,6 +440,11 @@ document.addEventListener('DOMContentLoaded', function(){
 
     // xử lý sự kiện click vào danh sách người đã nhắn tin
     $('.onActive').click(function(){
+        var chatByStoreFood = $('#chatByStoreFood').children()
+        if(chatByStoreFood.length==1){
+            var parent = $('#chatByStoreFood')[0]
+            parent.removeChild(chatByStoreFood[0]) 
+        }
         setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
             document.getElementsByClassName("textInputMessageChat")[0].value.length);
         $('.onActive').removeClass('active2')
@@ -391,11 +466,38 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 
     $('#click').change(function(){
-        setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
-            document.getElementsByClassName("textInputMessageChat")[0].value.length);
+            setCaretToPos(document.getElementsByClassName("textInputMessageChat")[0], 
+                document.getElementsByClassName("textInputMessageChat")[0].value.length);
     })
     // sự kiện click button chat
     $('#btn-chat').click(function(){
+        var chatByStoreFood = $('#chatByStoreFood').children()
+        if(chatByStoreFood.length<2){
+            if(chatByStoreFood.length==1){
+                var parent = $('#chatByStoreFood')[0]
+                parent.removeChild(chatByStoreFood[0])
+            }
+            var parent = $('#chatByStoreFood')[0]
+            var div = ` <div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Chào quý khách</p>
+                            </div>
+                        </div>`
+            $(parent).append(div)
+            div =   `<div class="bot-inbox inbox">
+                        <div class="icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="msg-header">
+                            <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
+                        </div>
+                    </div>`
+            $(parent).append(div)    
+        }
+        $($('#checkInputMessage')[0]).css('visibility', '')
         var checked = $('#click').prop('checked')
         $('#click').prop('checked', !checked)
         var chatIdUser = $('#chatIdUser').val()

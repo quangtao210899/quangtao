@@ -157,5 +157,32 @@ module.exports = {
         else{
             return `<img src="https://bootdey.com/img/Content/avatar/avatar7.png" class="rounded-circle user_img">`
         }
-    }
+    },
+
+    getFirstChat: (chats, user)=>{
+        if(chats.length!=0){
+            if(chats[0].idUserFrom==user._id){
+                return `<div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Chào quý khách</p>
+                            </div>
+                        </div>
+                        <div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
+                            </div>
+                        </div>`
+            }
+            else return;
+        }
+        else{
+            return `<p style="text-align:center; font-size: 25px">Bạn chưa nhắn tin với ai</p>`
+        }
+    },
 }

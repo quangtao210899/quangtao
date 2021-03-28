@@ -20,7 +20,10 @@ const User = new Schema({
         {address: String}
     ],
     idUserChats: [
-        {idUser: String}
+        {
+            idUser: String, 
+            lastChat: String,
+        }
     ]
 }, {
     timestamps: true,

@@ -139,19 +139,20 @@ io.on('connection', function(client){
                 var idUserChats = user.idUserChats
                 if(!idUserChats){
                     var array = []
-                    array.push({idUser: idUserTo})
+                    array.push({idUser: idUserTo, lastChat: data})
                     User.updateOne({_id: idUserFrom}, {idUserChats: array}).then()
                 }
                 else{
                     var index = idUserChats.findIndex(element=> element.idUser==idUserTo)
                     if(index==-1){
-                        idUserChats.unshift({idUser: idUserTo})
+                        idUserChats.unshift({idUser: idUserTo, lastChat: data})
                         User.updateOne({_id: idUserFrom}, {idUserChats: idUserChats}).then()
                     }
                     else{
                         var trungGian = idUserChats[index]
                         idUserChats[index] = idUserChats[0]
                         idUserChats[0] = trungGian
+                        idUserChats[0].lastChat = data
                         User.updateOne({_id: idUserFrom}, {idUserChats: idUserChats}).then()
                     }
                 }
@@ -162,19 +163,20 @@ io.on('connection', function(client){
                 var idUserChats = user.idUserChats
                 if(!idUserChats){
                     var array = []
-                    array.push({idUser: idUserFrom})
+                    array.push({idUser: idUserFrom, lastChat: data})
                     User.updateOne({_id: idUserTo}, {idUserChats: array}).then()
                 }
                 else{
                     var index = idUserChats.findIndex(element=> element.idUser==idUserFrom)
                     if(index==-1){
-                        idUserChats.unshift({idUser: idUserFrom})
+                        idUserChats.unshift({idUser: idUserFrom, lastChat: data})
                         User.updateOne({_id: idUserTo}, {idUserChats: idUserChats}).then()
                     }
                     else{
                         var trungGian = idUserChats[index]
                         idUserChats[index] = idUserChats[0]
                         idUserChats[0] = trungGian
+                        idUserChats[0].lastChat = data
                         User.updateOne({_id: idUserTo}, {idUserChats: idUserChats}).then()
                     }
                 }
