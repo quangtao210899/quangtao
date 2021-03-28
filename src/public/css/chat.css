@@ -47,8 +47,8 @@
 }
 .wrapper .form{
     padding: 20px 15px;
-    min-height: 400px;
-    max-height: 400px;
+    min-height: 350px;
+    max-height: 350px;
     overflow-y: auto;
 }
 .wrapper .form .inbox{
@@ -180,8 +180,8 @@ body{
 }
 label{
   position: absolute;
-  right: 30px;
-  bottom: 20px;
+  right: 20px;
+  bottom: 10px;
   height: 55px;
   width: 55px;
   background: -webkit-linear-gradient(left, #a445b2, #fa4299);
@@ -231,12 +231,12 @@ label i.fas{
   pointer-events: auto;
 }
 .wrapper .head-text{
-  line-height: 60px;
+  line-height: 50px;
   color: #fff;
   border-radius: 15px 15px 0 0;
   padding: 0 20px;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 18px;
   background: -webkit-linear-gradient(left, #a445b2, #fa4299);
 }
 .wrapper .chat-box{

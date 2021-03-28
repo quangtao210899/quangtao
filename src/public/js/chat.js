@@ -471,37 +471,37 @@ document.addEventListener('DOMContentLoaded', function(){
     })
     // sự kiện click button chat
     $('#btn-chat').click(function(){
-        var chatByStoreFood = $('#chatByStoreFood').children()
-        if(chatByStoreFood.length<2){
-            if(chatByStoreFood.length==1){
-                var parent = $('#chatByStoreFood')[0]
-                parent.removeChild(chatByStoreFood[0])
-            }
-            var parent = $('#chatByStoreFood')[0]
-            var div = ` <div class="bot-inbox inbox">
-                            <div class="icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div class="msg-header">
-                                <p>Chào quý khách</p>
-                            </div>
-                        </div>`
-            $(parent).append(div)
-            div =   `<div class="bot-inbox inbox">
-                        <div class="icon">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="msg-header">
-                            <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
-                        </div>
-                    </div>`
-            $(parent).append(div)    
-        }
-        $($('#checkInputMessage')[0]).css('visibility', '')
         var checked = $('#click').prop('checked')
         $('#click').prop('checked', !checked)
         var chatIdUser = $('#chatIdUser').val()
         if(!checked){
+            var chatByStoreFood = $('#chatByStoreFood').children()
+            if(chatByStoreFood.length<2){
+                if(chatByStoreFood.length==1){
+                    var parent = $('#chatByStoreFood')[0]
+                    parent.removeChild(chatByStoreFood[0])
+                }
+                var parent = $('#chatByStoreFood')[0]
+                var div = ` <div class="bot-inbox inbox">
+                                <div class="icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="msg-header">
+                                    <p>Chào quý khách</p>
+                                </div>
+                            </div>`
+                $(parent).append(div)
+                div =   `<div class="bot-inbox inbox">
+                            <div class="icon">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="msg-header">
+                                <p>Quý khách đã chọn được món ăn ưa thích nào chưa?</p>
+                            </div>
+                        </div>`
+                $(parent).append(div)    
+            }
+            $($('#checkInputMessage')[0]).css('visibility', '')
             var idUserChats = $('.idUserChats')
             var index = -1
             for(var i = 0; i < idUserChats.length; i++){
