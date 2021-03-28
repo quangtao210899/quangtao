@@ -1,5 +1,3 @@
-
-const Course = require('../models/course')
 const Food = require('../models/food')
 const User = require('../models/user')
 
