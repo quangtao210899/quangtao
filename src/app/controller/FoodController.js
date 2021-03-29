@@ -281,28 +281,39 @@ class FoodController {
                     var price = req.body.price
                     var quantity1 = req.body.quantity1
                     var id = req.body.id
+                    var image = req.body.image
                     for(var i = 0; i < foodname.length; i++){
                         var newFood = {
                             _id: id[i],
                             foodName: foodname[i],
+                            image: image[i],
                             price: price[i],
                             quantity: quantity1[i], 
                         }
                         foods.push(newFood)
                     }
                 }
-
-                const order = new Order({
-                    idUser: user._id, 
-                    idMainFood: food._id, foodName: food.foodName, 
-                    price: food.price, quantity: req.body.quantity,
-                    cost: req.body.cost, foods: foods,
-                })
-                order.save()
-                    .then(()=>{
-                        req.session.userOrder = 'yes'
-                        res.redirect('back')
+                User.findById(food.idUser).lean()
+                    .then(userAuthorFood=>{
+                        var AuthorFood = {
+                            id: userAuthorFood._id,
+                            fullname: `${userAuthorFood.firstname} ${userAuthorFood.lastname}`,
+                            image: userAuthorFood.image,
+                        }
+                        const order = new Order({
+                            idUser: user._id, imageMainFood: food.image,
+                            idMainFood: food._id, foodName: food.foodName, 
+                            price: food.price, quantity: req.body.quantity,
+                            cost: req.body.cost, foods: foods,
+                            authorFood: AuthorFood,
+                        })
+                        order.save()
+                            .then(()=>{
+                                req.session.userOrder = 'yes'
+                                res.redirect('back')
+                            })
                     })
+
             })
             .catch(next)
     }

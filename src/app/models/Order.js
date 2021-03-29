@@ -11,10 +11,13 @@ const mongooseDelete = require('mongoose-delete');
 const Order = new Schema({
     idUser : {type: String},
     idMainFood: { type: String,},
+    authorFood: {id: String, fullname: String, image: String},
+    imageMainFood:{type:String},
     foodName: { type: String, },
     foods: [{
         idfood: String,
         foodName: String,
+        image: String,
         price: String,
         quantity: String, 
     }],

@@ -1,3 +1,85 @@
-<p>trang order</p>
-<p>chào</p>
-<ch>chào   111</ch>  
+<link rel="stylesheet" href="/css/storedOrder.css">
+
+<div class="container rounded cart">
+    <br><br><br><br>
+    <div class="row no-gutters">
+        <div class="col-md-3">
+            <div>
+                <div class="d-flex flex-row">
+                     <img src="{{{setImageProfile user.image}}}" alt="Admin" class="rounded-circle" width="80"
+                        style="border: 1px solid #EFEFEF">
+                    <div class="ml-3">
+                        <span class="d-block" 
+                            style="color: #333333;font-size: 18px; font-family:Helvetica, sans-serif">
+                            <Strong>{{_fullname}}</Strong>
+                        </span>
+                        <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa hồ sơ</span>
+                    </div>
+                </div>                
+            </div>
+            <hr style="margin-right: 15px;">
+            <div>
+                <ul style="color: black; font-size: 20px;">
+                    <li style="color:#EE4D2D">Tất cả</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đang giao</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đã mua</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đã hủy</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {{#if orders}}
+                <h3 style="font-size: 35px; margin-left: 0px">Tất cả đơn hàng</h3>
+            {{else}}
+                <h3 style="font-size: 35px; margin-left: 0px">Chưa có đơn hàng</h3>
+            {{/if}}
+            {{#each orders}}
+                <div class="product-details mr-2 card" style="margin-bottom: 15px;">
+                    {{!-- Hiển thị chủ shop --}}
+                    <div class="d-flex justify-content-between align-items-center p-2">
+                        <div class="d-flex flex-row">
+                            {{#if this.authorFood.image}}
+                                <img src="{{this.authorFood.image}}" width="30"
+                                    style="border-radius: 15px;border: 1px solid #BDB76B">
+                            {{else}}
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" width="30"
+                                    style="border-radius: 15px; border: 1px solid #BDB76B">
+                            {{/if}}
+                            <div class="ml-1"><span >Shop {{this.authorFood.fullname}}</span></div>
+                        </div>
+                    </div>
+                    <hr style="border: 1px solid #cfcfcf; margin: 8px 0px 0px 0px;">
+                    {{!-- Hiển thị mainFood --}}
+                    <div class="d-flex justify-content-between align-items-center mt-3 p-2">
+                        <div class="d-flex flex-row"><img src="{{this.imageMainFood}}" width="50">
+                            <div class="ml-2"><span class="font-weight-bold d-block">{{this.foodName}}</span><span class="spec" style="font-size: 15px;">x {{this.quantity}}</span></div>
+                        </div>
+                        <div class="d-flex flex-row align-items-center"><span class="d-block"></span><span class="d-block ml-5 font-weight-bold">{{toLocaleString this.price}}đ</span><i class="fa fa-trash-o ml-3 text-black-50"style="visibility: hidden;"></i></div>
+                    </div>
+                    {{!-- Hiển thị food --}}
+                    {{#each this.foods}}
+                        <div class="d-flex justify-content-between align-items-center mt-3 p-2">
+                            <div class="d-flex flex-row"><img class="" src="{{this.image}}" width="50">
+                                <div class="ml-2"><span class="font-weight-bold d-block">{{this.foodName}}</span><span class="spec" style="font-size: 15px;">x {{this.quantity}}</span></div>
+                            </div>
+                            <div class="d-flex flex-row align-items-center"><span class="d-block"></span><span class="d-block ml-5 font-weight-bold">{{toLocaleString this.price}}đ</span><i class="fa fa-trash-o ml-3 text-black-50"style="visibility: hidden;"></i></div>
+                        </div>
+                    {{/each}}
+
+
+                    <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded" style="background-color: #FFFFFB;">
+                        <div class="d-flex flex-row align-items-center ml-auto" style="background-color: #FFFFFB;" >
+                            <span class="d-block">Tổng số tiền:</span>
+                            <span class="d-block ml-5 font-weight-bold" style="color: #EE4D2D;">{{toLocaleString this.cost}}đ</span>
+                            <i class="fa fa-trash-o ml-3 text-black-50" style="visibility: hidden;"></i>
+                        </div>
+                    </div>
+                </div>
+            {{/each}}
+            <br><br><br><br>
+        </div>
+    </div>
+</div>

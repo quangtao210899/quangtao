@@ -105,6 +105,7 @@
                                             <input type="hidden" value="{{this.foodName}}">
                                             <input type="hidden" value="{{this.price}}">
                                             <input type="hidden" value="{{this._id}}">
+                                            <input type="hidden" value="{{this.image}}">
                                         </p class="mb-0">
                                     </div>
                                 </div>
@@ -294,6 +295,8 @@
 <input type="hidden" value="{{food.foodName}}" id='foodNameRow1'>
 <input type="hidden" value="{{food.price}}" id='foodPriceRow1'>
 <input type="hidden" value="{{food._id}}" id='idMainFood'>
+<input type="hidden" value="{{food.image}}" id='foodImageRow1'>
+
 
 <input type="hidden" value="{{vote}}" id='voteByUser'>
 {{{hiddenVote food.userVote}}}
@@ -317,6 +320,7 @@
         var listCartName = [];
         var listCartPrice = [];
         var listCartQuantily =[];
+        var listCartImage =[];
         var listCartID =[];
         var SOLUONG = 1;
         var btnOrder = document.getElementById('btn-order')
@@ -326,7 +330,10 @@
         // thanh toán 
         btnOrderCart.onclick =   function(e){
             e.preventDefault()
+            var idUserFrom = $('#chatIdUser').val()
             $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
+            $('#div-add').append($input)
+            $input = '<input type="hidden" value="'+ idUserFrom+'" name="idUserFrom"></input>'
             $('#div-add').append($input)
             $inputCost = '<input type="hidden" value="'+ costOrderH3 +'" name="cost"></input>'
             $('#div-add').append($inputCost)
@@ -334,13 +341,15 @@
                 $inputFoodName= '<input type="hidden" value="'+ listCartName[i] +'" name="foodname[]"></input>'
                 $inputPrice='<input type="hidden" value="'+ listCartPrice[i] +'" name="price[]"></input>'
                 $inputQuantity='<input type="hidden" value="'+ listCartQuantily[i] +'" name="quantity1[]"></input>'
+                $inputImage='<input type="hidden" value="'+ listCartImage[i] +'" name="image[]"></input>'
                 $inputID='<input type="hidden" value="'+ listCartID[i] +'" name="id[]"></input>'
                 $('#div-add').append($inputFoodName)
                 $('#div-add').append($inputPrice)
                 $('#div-add').append($inputQuantity)
+                $('#div-add').append($inputImage)
                 $('#div-add').append($inputID)
             }
-            orderForm.action = '/foods/' + idMainFood+ '/order'
+            orderForm.action = '/foods/' + idMainFood + '/order'
             orderForm.submit()
         }
         // lấy dữ liệu của row 1 trong giỏ hàng
@@ -351,6 +360,8 @@
         listCartQuantily.push('1')
         var foodID = document.getElementById('idMainFood')
         listCartID.push(foodID.value)
+        var mainFoodImage = document.getElementById('foodImageRow1')
+        listCartImage.push(mainFoodImage.value)
         // xử lý button màu đỏ của order khi giá tiền thay đổi
         var foodPriceRow2 = parseInt(foodPriceRow1.value)
         if(foodPriceRow2<10){
@@ -403,6 +414,7 @@
             var foodName = children[2].value
             var price = children[3].value
             var _idFood = children[4].value
+            var foodImage = children[5].value
             var kt = 1
             for(var i = 0; i < listCartName.length; i++){
                 if(listCartName[i]==foodName){
@@ -417,7 +429,8 @@
                 listCartName.push(foodName)
                 listCartPrice.push(price)
                 listCartID.push(_idFood)
-
+                listCartImage.push(foodImage)
+                
                 // hiển thị vào giỏ hàng
                 var textBtnValueCart = btnValueCart.innerHTML;
                 if(textBtnValueCart==''||textBtnValueCart==null){

@@ -1,6 +1,7 @@
 const Course = require('../models/course')
 const User = require('../models/user')
 const Food = require('../models/food')
+const Order = require('../models/order')
 
 
 class CourseController {
@@ -63,7 +64,16 @@ class CourseController {
     }
     // [GET]  /me/stored/message
     storedOrder(req,res,next){
-        res.render('./me/storedOrder', {hidden: 'none', layout: false})
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idUser: user._id}).lean()
+                    .then(orders=>{
+                        res.render('./me/storedOrder', {user,orders,hidden: 'none'})
+                    })
+            })  
     }
 
 
