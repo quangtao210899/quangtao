@@ -151,7 +151,6 @@ class FoodController {
             // Không có lỗi thì lại render cái file ảnh về cho client.
             // Đồng thời file đã được lưu vào thư mục uploads
             // res.sendFile(`/uploads/${req.file.filename}`);
-
             const username = req.session.username
             const password = req.session.password
             User.findOne({username: username, password : password})
