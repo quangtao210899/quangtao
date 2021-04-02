@@ -4,66 +4,71 @@
 
 {{!-- Header --}}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <img src="/images/logo.png" alt="" />
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbars-rs-food">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="/">Menu</a></li>
-        <li class="nav-item"><a class="nav-link" href="/">About</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Pages</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown-a">
-            <a class="dropdown-item" href="reservation.html">Reservation</a>
-            <a class="dropdown-item" href="stuff.html">Stuff</a>
-            <a class="dropdown-item" href="gallery.html">Gallery</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Blog</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown-a">
-            <a class="dropdown-item" href="blog.html">blog</a>
-            <a class="dropdown-item" href="blog-details.html">blog Single</a>
-          </div>
-        </li>
-        <li class="nav-item"><a class="nav-link" href="/">Contact</a></li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
-            aria-haspopup="true" aria-expanded="false">
-            <img src="https://graph.facebook.com/2825372241055025/picture?width=400&height=400" alt="" class="user-avatar">
-            <span class="header-fullname-profile">{{_fullname}}</span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="/foods/create">Thêm món ăn</a>
-            <a class="dropdown-item" href="/me/stored/foods">Món ăn của tôi</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/profile">Thông tin cá nhân</a>
-            <a class="dropdown-item" href="/me/restaurant">Quản lý nhà hàng</a> 
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="/me/stored/order" id='Message'>Đã mua</a>
-            <a class="dropdown-item" href="#" id='logout'>Đăng xuất</a>
-          </div>
-        </li>  
-        <div id="notification">
-          <li class="nav-item dropdown" >
-              <a class="nav-link" href="/" id="notification-a-header" id="dropdown-a" data-toggle="dropdown">
-                <i class="fas fa-bell" style="font-size: 25px;" id='notification-i-header'>
-                  <span class="badge" id='notification-span-header' style="font-family: 'Times New Roman', Times, serif;">{{countNotification _notificationLocal}}</span>
-                </i>
-              </a>
-            <div class="dropdown-menu" aria-labelledby="dropdown-a">
-              <a class="dropdown-item" id='handle-notification' href="/">{{countMessages _notificationLocal}}</a>
-            </div>
-          </li>
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <img src="/images/logo.png" alt="" />
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbars-rs-food">
+            <ul class="navbar-nav ml-auto" id='fix-active-class'>
+                {{#if home}}
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                {{else}}
+                    <li class="nav-item active"><a class="nav-link" href="/">Home</a></li>
+                {{/if}}
+                <li class="nav-item {{activeFood}}"><a class="nav-link" href="/" id='query-food'>Food</a></li>
+                <li class="nav-item {{activeDrink}}"><a class="nav-link" href="/" id='query-drink'>Drink</a></li>
+                {{!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Pages</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                    <a class="dropdown-item" href="reservation.html">Reservation</a>
+                    <a class="dropdown-item" href="stuff.html">Stuff</a>
+                    <a class="dropdown-item" href="gallery.html">Gallery</a>
+                    </div>
+                </li> --}}
+                {{!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Blog</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                    <a class="dropdown-item" href="blog.html">blog</a>
+                    <a class="dropdown-item" href="blog-details.html">blog Single</a>
+                    </div>
+                </li> --}}
+                <li class="nav-item {{activeDessert}}"><a class="nav-link" href="/" id='query-dessert'>Dessert</a></li>
+                <li class="nav-item {{activeReserve}}"><a class="nav-link" href="/">Reserve</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
+                        aria-haspopup="true" aria-expanded="false">
+                        <img src="https://graph.facebook.com/2825372241055025/picture?width=400&height=400" alt="" class="user-avatar">
+                        <span class="header-fullname-profile">{{_fullname}}</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/foods/create">Thêm món ăn</a>
+                        <a class="dropdown-item" href="/me/stored/foods">Món ăn của tôi</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/me/profile">Thông tin cá nhân</a>
+                        <a class="dropdown-item" href="/me/restaurant">Quản lý nhà hàng</a> 
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/me/stored/order" id='Message'>Đã mua</a>
+                        <a class="dropdown-item" href="#" id='logout'>Đăng xuất</a>
+                    </div>
+                </li>  
+                <div id="notification">
+                    <li class="nav-item dropdown" >
+                        <a class="nav-link" href="/" id="notification-a-header" id="dropdown-a" data-toggle="dropdown">
+                            <i class="fas fa-bell" style="font-size: 25px;" id='notification-i-header'>
+                                <span class="badge" id='notification-span-header' style="font-family: 'Times New Roman', Times, serif;">{{countNotification _notificationLocal}}</span>
+                            </i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                            <a class="dropdown-item" id='handle-notification' href="/">{{countMessages _notificationLocal}}</a>
+                        </div>
+                    </li>
+                </div>
+            </ul>
         </div>
-      </ul>
     </div>
-  </div>
 </nav>
 
 <input type="hidden" id='idUser' class='idUser' name="idUser" value={{_idUserLocal}}>
@@ -71,22 +76,36 @@
 
 
 <script>
-  var logout = document.getElementById('logout')
-  logout.onclick = function(e){
-    e.preventDefault();
-    window.location= '/logout'
-  }
-  var a = document.getElementById('notification-a-header')
-  var b = document.getElementById('notification-span-header')
-  a.onclick = function(e){
-    e.preventDefault();
-  }
+    document.addEventListener('DOMContentLoaded', function(){
+        var logout = document.getElementById('logout')
+        logout.onclick = function(e){
+            e.preventDefault();
+            window.location= '/logout'
+        }
+        var a = document.getElementById('notification-a-header')
+        var b = document.getElementById('notification-span-header')
+        a.onclick = function(e){
+            e.preventDefault();
+        }
 
-  var handleNotification = document.getElementById('handle-notification')
-  handleNotification.onclick = function(e){
-    e.preventDefault()
-    b.innerText=''
-    this.innerText = 'Không có thông báo nào'
-  }
+        var handleNotification = document.getElementById('handle-notification')
+        handleNotification.onclick = function(e){
+            e.preventDefault()
+            b.innerText=''
+            this.innerText = 'Không có thông báo nào'
+        }
+        $('#query-food').click(function(e){
+            e.preventDefault()
+            window.location='/foods?type=food'
+        })
+        $('#query-drink').click(function(e){
+            e.preventDefault()
+            window.location='/foods?type=drink'
+        })
+        $('#query-dessert').click(function(e){
+            e.preventDefault()
+            window.location='/foods?type=dessert'
+        })
+    })
 </script>
 

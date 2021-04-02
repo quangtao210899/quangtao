@@ -8,7 +8,6 @@ const checkSuccessPayOrder = require('../app/middlewares/checkSuccessPayOrder')
 const foodController = require('../app/controller/FoodController');
 
 
-
 router.get('/create', foodController.create);
 router.post('/store', foodController.store);
 router.post('/handle-form-actions-store', foodController.handleFormActionsStore)
@@ -20,6 +19,7 @@ router.delete('/:id/force', foodController.forceDestroy);
 router.put('/:id', foodController.update);
 router.delete('/:id', foodController.destroy);
 router.get('/:slug', checkSuccessPayOrder, foodController.showFood);
+router.get('/',foodController.food)
 
 
 

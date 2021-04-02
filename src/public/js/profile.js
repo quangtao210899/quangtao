@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 
     // preview image ở trang profile
-    $('#file').change(function(){
-        var file = document.getElementById('file').files;
+    $('#fileImageProfile').change(function(){
+        var file = document.getElementById('fileImageProfile').files;
         var filename = $('input[type=file]').val().split('\\').pop();
         // socket.emit('previewFileProfile', file[0])
         // resize(file[0])

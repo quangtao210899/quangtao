@@ -39,7 +39,7 @@ class SiteController {
 
             })
             .then(()=>{
-                res.render('home',{user, foods})
+                res.render('home',{user, foods, activeHome: 'active'})
             })
             .catch(next)
     }

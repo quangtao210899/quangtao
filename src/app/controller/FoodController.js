@@ -318,6 +318,51 @@ class FoodController {
             .catch(next)
     }
 
+    // [GET] /food?param
+    food(req, res, next) {
+        const username = req.session.username
+        const password = req.session.password
+        var user,foods;
+        var query = req.query.type
+        var textH2=''
+        var activeFood=''
+        var activeDrink =''
+        var activeDessert=''
+        if(query=='food') {
+            textH2 = 'Danh sách đồ ăn'
+            activeFood='active'
+        }
+        else if(query=='drink') {
+            textH2 = 'Danh sách đồ uống'
+            activeDrink='active'
+            
+        }
+        else{
+            textH2='Danh sách món tráng miệng'
+            activeDessert='active'
+        } 
+        Promise.all([
+                User.findOne({username: username, password : password}).lean(), 
+                Food.find({type: query}).lean(),
+            ])
+            .then(([user1, foods1]) =>{
+                user = user1
+                foods = foods1
+                for(var i = 0; i < foods.length; i++){
+                    if(!foods[i].resize){
+                        var image = "./src/public/"+ foods[i].image
+                        resize(image)
+                        Food.updateOne({_id: foods[i]._id}, {resize: '1'}).then()
+                    }
+                }
+
+            })
+            .then(()=>{
+                res.render('./foods/typeFood',{user, foods, textH2,activeFood, activeDrink, activeDessert, home: 'fasle' })
+            })
+            .catch(next)
+    }
+
 }
 
 module.exports = new FoodController();

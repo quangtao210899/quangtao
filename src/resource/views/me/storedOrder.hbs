@@ -13,7 +13,9 @@
                             style="color: #333333;font-size: 18px; font-family:Helvetica, sans-serif">
                             <Strong>{{_fullname}}</Strong>
                         </span>
-                        <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa hồ sơ</span>
+                        <div id='div-edit-profile' style="cursor: pointer;">
+                            <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa hồ sơ</span>
+                        </div>
                     </div>
                 </div>                
             </div>
@@ -83,3 +85,13 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        $('#div-edit-profile').click(function(){
+            window.location = '/me/profile'
+        })
+    })
+</script>
