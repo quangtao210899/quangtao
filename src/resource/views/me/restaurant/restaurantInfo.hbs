@@ -1,0 +1,110 @@
+<link rel="stylesheet" href="/css/storedOrder.css">
+
+<div class="container rounded cart">
+    <br><br><br><br>
+    <div class="row no-gutters">
+        <div class="col-md-3">
+            <div>
+                <div class="d-flex flex-row">
+                     <img src="{{{setImageProfile user.image}}}" alt="Admin" class="rounded-circle" width="80"
+                        style="border: 1px solid #EFEFEF">
+                    <div class="ml-3">
+                        <span class="d-block" 
+                            style="color: #333333;font-size: 18px; font-family:Helvetica, sans-serif">
+                            <Strong>Shop {{_fullname}}</Strong>
+                        </span>
+                        <div id='div-edit-profile' style="cursor: pointer;">
+                            <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa món ăn</span>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <hr style="margin-right: 15px;">
+            <div>
+                <ul style="color: black; font-size: 20px;">
+                    <li style="color:#EE4D2D">Thông tin cửa hàng</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đang chuẩn bị</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đang giao</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đã bán</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Đơn hàng đã hủy</li>
+                    <hr style="margin-right: 15px;">
+                    <li>Thống kê</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+                <h3 style="font-size: 35px; margin-left: 0px">Thông tin cửa hàng</h3>
+                <div class="product-details mr-2 card" style="margin-bottom: 15px;">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Tên cửa hàng</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                                style="min-height: 10px; font-size: 15px;" id='first-name-profile' autocomplete="new"/>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Địa chỉ cửa hàng</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                                style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Vote star</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                                style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Số lượng món ăn</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                                style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Món ăn yêu thích</h6>
+                        </div>
+                        <div class="col-sm-9 text-secondary">
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                                style="min-height: 10px; font-size: 15px;" autocomplete="new"/>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 15px;">
+                        <div class="col-sm-12 d-flex">
+                            <button type="button" class="btn btn-primary"
+                                style="padding: 4px 30px; margin-top: 15px; text-transform: none;">
+                                Lưu thay đổi
+                            </button>
+                            <p style="margin: 25px 0px 0px 20px; color:#cf2127; font-size: 16px;" id='text-to-check-data'></p>
+                        </div>
+                    </div>
+                </div>
+            <br><br><br><br>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        $('#div-edit-profile').click(function(){
+            window.location = '/me/stored/foods'
+        })
+    })
+</script>

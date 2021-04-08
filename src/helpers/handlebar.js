@@ -185,4 +185,17 @@ module.exports = {
             return `<p style="text-align:center; font-size: 25px">Bạn chưa nhắn tin với ai</p>`
         }
     },
+
+    getRestaurantName:(fullName, user)=>{
+        if(user.restaurant){
+            if(user.restaurant.restaurantName)
+                return user.restaurant.restaurantName
+            else{
+                return fullName
+            }
+        }
+        else {
+            return fullName
+        }
+    }
 }

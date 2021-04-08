@@ -70,22 +70,30 @@ class CourseController {
             .lean()
             .then(user=>{
                 Order.find({idUser: user._id}).lean()
+                    .sort({createdAt: 'desc'})
                     .then(orders=>{
                         res.render('./me/storedOrder', {user,orders,hidden: 'none'})
                     })
             })  
     }
 
-    // [GET]  /me/info
-    restaurant(req,res,next){
+    // [GET]  /me/stored/restaurant
+    restaurantInfo(req,res,next){
         var usernameSession = req.session.username
         var passwordSession = req.session.password
         User.findOne({username: usernameSession, password: passwordSession})
             .lean()
             .then(user=>{
-                res.render('./me/profile', {user})
-            })  
+                Food.find({idUser: user._id}).lean()
+                    .then(foods=>{
 
+                        // res.render('./me/restaurant/restaurantInfo', {user,foods,hidden: 'none'})
+                    })
+                    .then(foods=>{
+                        res.render('./me/restaurant/restaurantInfo', {user,foods,hidden: 'none'})
+                    })
+            })  
+            .catch(next)
     }
 
 

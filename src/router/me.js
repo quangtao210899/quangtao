@@ -9,7 +9,7 @@ router.get('/stored/order', meController.storedOrder);
 router.get('/trash/courses', meController.getTrashCourse);
 router.get('/trash/foods', meController.getTrashFood);
 router.get('/profile', meController.profile);
-router.get('/restaurant', meController.restaurant);
+router.get('/restaurant/info', meController.restaurantInfo);
 
 
 

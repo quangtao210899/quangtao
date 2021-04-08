@@ -16,6 +16,10 @@ const User = new Schema({
     phone: {type: String},
     gender: {type: String},
     image: {type: String},
+    restaurant: {
+        restaurantName: String,
+        address: String,
+    },
     address: [
         {address: String}
     ],
