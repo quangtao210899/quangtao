@@ -12,8 +12,11 @@ const Order = new Schema({
     idUser : {type: String},
     idMainFood: { type: String,},
     authorFood: {id: String, fullname: String, image: String},
+    userFood: {id: String, fullname: String, image: String},
     imageMainFood:{type:String},
     foodName: { type: String, },
+    idAuthor: {type: String},
+    state: {type: String},
     foods: [{
         idfood: String,
         foodName: String,

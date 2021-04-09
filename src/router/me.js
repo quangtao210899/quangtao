@@ -10,6 +10,7 @@ router.get('/trash/courses', meController.getTrashCourse);
 router.get('/trash/foods', meController.getTrashFood);
 router.get('/profile', meController.profile);
 router.get('/restaurant/info', meController.restaurantInfo);
+router.get('/restaurant/prepare', meController.restaurantPrepare);
 
 
 

@@ -31,4 +31,9 @@ document.addEventListener('DOMContentLoaded', function(){
             $('#text-to-check-data-restaurant-info').text('')
         }
     })
+
+    $('li.rederect').click(function(){
+        var hrefLi = $(this).attr('hrefLi')
+        window.location = '/me/restaurant/' + hrefLi
+    })
 })

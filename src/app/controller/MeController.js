@@ -77,7 +77,7 @@ class CourseController {
             })  
     }
 
-    // [GET]  /me/stored/restaurant
+    // [GET]  /me/restaurant/info
     restaurantInfo(req,res,next){
         var usernameSession = req.session.username
         var passwordSession = req.session.password
@@ -122,6 +122,21 @@ class CourseController {
             .catch(next)
     }
 
+    // [GET]  /me/restaurant/prepare
+    restaurantPrepare(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idAuthor: user._id}).lean()
+                    .sort({createdAt: 'desc'})
+                    .then(orders=>{
+                        var page = 'Đơn hàng đang chuẩn bị'
+                        res.render('./me/restaurant/order', {user,orders,page, hidden: 'none'})
+                    })
+            })  
+    }
 
 }
 

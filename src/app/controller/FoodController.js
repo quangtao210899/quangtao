@@ -281,6 +281,11 @@ class FoodController {
             ])
             .then(([food,user])=>{
                 var foods = [];
+                var userFood = {
+                    id: user._id,
+                    fullname: `${user.firstname} ${user.lastname}`,
+                    image: user.image,
+                }
                 if(req.body.foodname){
                     var foodname = req.body.foodname
                     var price = req.body.price
@@ -309,8 +314,8 @@ class FoodController {
                             idUser: user._id, imageMainFood: food.image,
                             idMainFood: food._id, foodName: food.foodName, 
                             price: food.price, quantity: req.body.quantity,
-                            cost: req.body.cost, foods: foods,
-                            authorFood: AuthorFood,
+                            cost: req.body.cost, foods: foods, userFood: userFood,
+                            authorFood: AuthorFood, idAuthor: userAuthorFood._id,
                         })
                         order.save()
                             .then(()=>{
