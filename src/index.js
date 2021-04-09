@@ -16,6 +16,7 @@ const User = require('./app/models/user')
 const Food = require('./app/models/food')
 const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
+const user = require('./app/models/user');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -341,6 +342,16 @@ io.on('connection', function(client){
             .then(user=>{
                 client.emit('userChatForTo', user)
             })
+    })
+
+
+    // lưu trữ thông tin cửa hàng
+    client.on('saveRestaurantInfo', function(idUser, restaurantName, restaurantAddress){
+        var restaurant = {
+            restaurantName: restaurantName,
+            address : restaurantAddress,
+        }
+        User.updateOne({_id: idUser}, {restaurant: restaurant}).then()
     })
 })
 

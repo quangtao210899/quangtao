@@ -1,4 +1,13 @@
 <link rel="stylesheet" href="/css/storedOrder.css">
+<script src='/js/restaurant.js'></script>
+{{!--  --}}
+
+<div class="row" style="fixed: relative; right: 0px">
+    <div class="alert alert-info " id="success-alert" style="z-index:10; position : fixed; right: 10px; display:none">
+        {{!-- <button type="button" class="close" data-dismiss="alert" style="">x</button> --}}
+        Thay đổi thành công &nbsp;
+    </div>
+</div>  
 
 <div class="container rounded cart">
     <br><br><br><br>
@@ -11,7 +20,7 @@
                     <div class="ml-3">
                         <span class="d-block" 
                             style="color: #333333;font-size: 18px; font-family:Helvetica, sans-serif">
-                            <Strong>Shop {{_fullname}}</Strong>
+                            <Strong id='StrongRestaurantName'>Shop {{getRestaurantName _fullname user}}</Strong>
                         </span>
                         <div id='div-edit-profile' style="cursor: pointer;">
                             <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa món ăn</span>
@@ -44,8 +53,8 @@
                             <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Tên cửa hàng</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
-                                style="min-height: 10px; font-size: 15px;" id='first-name-profile' autocomplete="new"/>
+                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" id='restaurantName'
+                                style="min-height: 10px; font-size: 15px;" autocomplete="new"/>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -53,7 +62,7 @@
                             <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Địa chỉ cửa hàng</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
+                            <input type="text" class="form-control" value="{{user.restaurant.address}}" id='restaurantAddress'
                                 style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
                         </div>
                     </div>
@@ -62,8 +71,13 @@
                             <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Vote star</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
-                                style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
+                            {{#if voteStar}}
+                                <input type="text" class="form-control" value="{{voteStar}}" 
+                                    style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                            {{else}}
+                                <input type="text" class="form-control" value="Chưa có đánh giá nào" 
+                                    style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                            {{/if}}
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -71,8 +85,13 @@
                             <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Số lượng món ăn</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
-                                style="min-height: 10px; font-size: 15px;"  autocomplete="new"/>
+                            {{#if foods}}
+                                <input type="text" class="form-control" value="{{getRestaurantName foods.length}}" 
+                                    style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                            {{else}}
+                                <input type="text" class="form-control" value="Chưa có món ăn nào" 
+                                    style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                            {{/if}}
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -80,17 +99,22 @@
                             <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Món ăn yêu thích</h6>
                         </div>
                         <div class="col-sm-9 text-secondary">
-                            <input type="text" class="form-control" value="{{getRestaurantName _fullname user}}" 
-                                style="min-height: 10px; font-size: 15px;" autocomplete="new"/>
+                            {{#if foodNameMaxVoteStar.length}}
+                                <input type="text" class="form-control" value="{{foodNameMaxVoteStar}}" 
+                                    style="min-height: 10px; font-size: 15px;" autocomplete="new" readonly/>
+                            {{else}}
+                                <input type="text" class="form-control" value="Chưa có món ăn nào được dành giá" 
+                                    style="min-height: 10px; font-size: 15px;" autocomplete="new" readonly/>
+                            {{/if}}
                         </div>
                     </div>
                     <div class="row" style="margin-bottom: 15px;">
                         <div class="col-sm-12 d-flex">
-                            <button type="button" class="btn btn-primary"
-                                style="padding: 4px 30px; margin-top: 15px; text-transform: none;">
+                            <button type="button" class="btn btn-primary" id='btn-save-restaurant-info'
+                                style="padding: 4px 30px 4px 30px; margin-top: 15px; text-transform: none;">
                                 Lưu thay đổi
                             </button>
-                            <p style="margin: 25px 0px 0px 20px; color:#cf2127; font-size: 16px;" id='text-to-check-data'></p>
+                            <p style="margin: 20px 0px 0px 45px; color:#cf2127; font-size: 16px;" id='text-to-check-data-restaurant-info'></p>
                         </div>
                     </div>
                 </div>
@@ -100,11 +124,3 @@
 </div>
 
 
-
-<script>
-    document.addEventListener('DOMContentLoaded', function(){
-        $('#div-edit-profile').click(function(){
-            window.location = '/me/stored/foods'
-        })
-    })
-</script>

@@ -81,16 +81,42 @@ class CourseController {
     restaurantInfo(req,res,next){
         var usernameSession = req.session.username
         var passwordSession = req.session.password
+        var foods;
+        var countUserVote = 0;
+        var countStarVote = 0;
+        var foodNameMaxVoteStar =''
         User.findOne({username: usernameSession, password: passwordSession})
             .lean()
             .then(user=>{
                 Food.find({idUser: user._id}).lean()
-                    .then(foods=>{
-
-                        // res.render('./me/restaurant/restaurantInfo', {user,foods,hidden: 'none'})
+                    .then(Foods=>{
+                        foods=Foods
+                        var maxVoteStarFood = 0
+                        for(var i = 0; i < foods.length; i++){
+                            if(foods[i].userVote){
+                                countUserVote+= foods[i].userVote.length
+                                var countStarFood = 0
+                                for(var j = 0; j < foods[i].userVote.length; j++){
+                                    countStarVote+= parseInt(foods[i].userVote[j].vote)
+                                    countStarFood+= parseInt(foods[i].userVote[j].vote)
+                                }
+                                var voteStarFood=0
+                                if(foods[i].userVote.length>0){
+                                    voteStarFood = countStarFood/foods[i].userVote.length
+                                }
+                                if(voteStarFood>maxVoteStarFood){
+                                    maxVoteStarFood=voteStarFood
+                                    foodNameMaxVoteStar= foods[i].foodName
+                                }
+                            }
+                        }
                     })
-                    .then(foods=>{
-                        res.render('./me/restaurant/restaurantInfo', {user,foods,hidden: 'none'})
+                    .then(()=>{
+                        var voteStar = 0;
+                        if(countUserVote>0){
+                            voteStar = Math.round((countStarVote/countUserVote) * 100) / 100
+                        }
+                        res.render('./me/restaurant/restaurantInfo', {user,foods,voteStar,foodNameMaxVoteStar,hidden: 'none'})
                     })
             })  
             .catch(next)
