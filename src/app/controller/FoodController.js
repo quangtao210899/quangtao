@@ -137,7 +137,13 @@ class FoodController {
 
     // [GET]  /foods/create
     create(req, res, next){
-        res.render('foods/create', {hidden: 'none'})
+        const username = req.session.username
+        const password = req.session.password
+        User.findOne({username: username, password : password})
+            .lean()
+            .then(user=>{
+                res.render('foods/create', {user, hidden: 'none'})
+            })
     }
 
     // [POST]  /foods/store
