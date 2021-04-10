@@ -28,7 +28,8 @@ const User = new Schema({
             idUser: String, 
             lastChat: String,
         }
-    ]
+    ], 
+    numberVisitRestaurant: {type: String,},
 }, {
     timestamps: true,
 });

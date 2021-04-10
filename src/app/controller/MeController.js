@@ -2,6 +2,7 @@ const Course = require('../models/course')
 const User = require('../models/user')
 const Food = require('../models/food')
 const Order = require('../models/order')
+const order = require('../models/order')
 
 
 class CourseController {
@@ -191,6 +192,50 @@ class CourseController {
             })  
     }
 
+    // [GET]  /me/restaurant/Statistical
+    restaurantStatistical(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idAuthor: user._id}).lean()
+                    .then(orders=>{
+                        var countOrderPrepare = 0
+                        var countOrderShipping = 0
+                        var countOrderSold = 0
+                        var countOrderCancelled = 0
+                        var turnover = 0 
+                        var idUserArray=[];
+                        for(var i = 0; i< orders.length; i++){
+                            if(orders[i].state=='prepare'){
+                                countOrderPrepare++
+                            }
+                            else if(orders[i].state=='shipping'){
+                                countOrderShipping++
+                            }
+                            else if(orders[i].state=='sold'){
+                                countOrderSold++
+                                turnover+=parseInt(orders[i].cost)
+                                if(!idUserArray.includes(orders[i].idUser)){
+                                    idUserArray.push(orders[i].idUser)
+                                }
+                            }
+                            else if(orders[i].state=='cancelled'){
+                                countOrderCancelled++
+                            }
+                        }
+                        var countUserOrder = idUserArray.length
+                        res.render('./me/restaurant/statistical', 
+                            {
+                                user,orders, hidden: 'none', turnover,
+                                countOrderPrepare, countOrderShipping,
+                                countOrderSold, countOrderCancelled,
+                                countUserOrder,
+                            })
+                    })
+            })  
+    }
 }
 
 module.exports = new CourseController();

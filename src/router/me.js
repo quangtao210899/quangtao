@@ -16,9 +16,7 @@ router.get('/restaurant/prepare', checkNotificationOrder, meController.restauran
 router.get('/restaurant/shipping', checkNotificationOrder, meController.restaurantShipping);
 router.get('/restaurant/sold', checkNotificationOrder, meController.restaurantSold);
 router.get('/restaurant/cancelled',checkNotificationOrder,  meController.restaurantCancelled);
-
-
-
+router.get('/restaurant/statistical', meController.restaurantStatistical);
 
 
 module.exports = router;

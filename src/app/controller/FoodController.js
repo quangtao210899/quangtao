@@ -9,6 +9,7 @@ const multer = require("multer");
 
 // thư viện xử lý ảnh
 const Jimp = require('jimp');
+const { PromiseProvider } = require('mongoose');
 
 
 async function resize(linkImage) {
@@ -58,6 +59,31 @@ class FoodController {
             ])
                 .then(([user1, oldFood, users1]) => {
                     user = user1
+                    if(!req.session.idUserVitsitRestaurant){
+                        req.session.idUserVitsitRestaurant=[]
+                    }
+                    if(!req.session.idUserVitsitRestaurant.includes(oldFood.idUser)){
+                        req.session.idUserVitsitRestaurant.push(oldFood.idUser)
+                        User.findOne({_id: oldFood.idUser})
+                            .lean()
+                            .then((AuthorFoodOld)=>{
+                                if(AuthorFoodOld.numberVisitRestaurant){
+                                    var numberVisitRestaurant = parseInt(AuthorFoodOld.numberVisitRestaurant) + 1
+                                    User.updateOne(
+                                            {_id:oldFood.idUser}, 
+                                            { numberVisitRestaurant: numberVisitRestaurant},
+                                        )
+                                        .then() 
+                                }
+                                else{
+                                    User.updateOne(
+                                        {_id:oldFood.idUser}, 
+                                        {numberVisitRestaurant: '1',}
+                                    )
+                                    .then()                                     
+                                }
+                            })
+                    }
                     // tìm những user đã nhắn tin vs người dùng
                     if(user1.idUserChats){
                         for(var i = 0; i < user1.idUserChats.length; i++){

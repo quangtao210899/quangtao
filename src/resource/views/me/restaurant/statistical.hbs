@@ -1,0 +1,169 @@
+<link rel="stylesheet" href="/css/storedOrder.css">
+<script src='/js/restaurant.js'></script>
+
+<div class="container rounded cart">
+    <br><br><br><br>
+    <div class="row no-gutters">
+        <div class="col-md-3">
+            <div>
+                <div class="d-flex flex-row">
+                     <img src="{{{setImageProfile user.image}}}" alt="Admin" class="rounded-circle" width="80"
+                        style="border: 1px solid #EFEFEF">
+                    <div class="ml-3">
+                        <span class="d-block" 
+                            style="color: #333333;font-size: 18px; font-family:Helvetica, sans-serif">
+                            <Strong id='StrongRestaurantName'>Shop {{getRestaurantName _fullname user}}</Strong>
+                        </span>
+                        <div id='div-edit-profile' style="cursor: pointer;">
+                            <span class="spec" style="font-size: 15px;"><i class="fas fa-pencil-alt"></i> Sửa món ăn</span>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <hr style="margin-right: 15px;">
+            <div>
+                <ul style="color: black; font-size: 20px;">
+                    <li class='rederect' hrefLi='info'>Thông tin cửa hàng</li>
+                    <hr style="margin-right: 15px;">
+                    <li class='rederect' hrefLi='prepare'>Đơn hàng đang chuẩn bị</li>
+                    <hr style="margin-right: 15px;">
+                    <li class='rederect' hrefLi='shipping'>Đơn hàng đang giao</li>
+                    <hr style="margin-right: 15px;">
+                    <li class='rederect' hrefLi='sold'>Đơn hàng đã bán</li>
+                    <hr style="margin-right: 15px;">
+                    <li class='rederect' hrefLi='cancelled'>Đơn hàng đã hủy</li>
+                    <hr style="margin-right: 15px;">
+                    <li class='rederect' style="color:#EE4D2D" hrefLi='statistical'>Thống kê</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            {{!-- Doanh thu --}}
+            <div class="product-details mr-2 card" style="margin-bottom: 15px;">
+                <h3 style="font-size: 24px; margin-left: 0px">Doanh thu</h3>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Tổng doanh thu</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{toLocaleString turnover}} VNĐ" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Doanh thu/Đơn hàng</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{getTurnover_sold turnover countOrderSold}} VNĐ" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Doanh thu/Người</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{getTurnover_sold turnover countUserOrder}} VNĐ" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Tỷ lệ bán hàng</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{getSalesRate countOrderSold countOrderCancelled}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+            </div>
+            {{!-- Thống kê đơn hàng --}}
+            <div class="product-details mr-2 card" style="margin-bottom: 15px;">
+                <h3 style="font-size: 24px; margin-left: 0px">Thống kê đơn hàng</h3>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Đang chuẩn bị</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{countOrderPrepare}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Đang giao</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{countOrderShipping}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Đã bán</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{countOrderSold}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Đã hủy</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{countOrderCancelled}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+            </div>
+            {{!-- Phân tích bán hàng --}}
+            <div class="product-details mr-2 card" style="margin-bottom: 15px;">
+                <h3 style="font-size: 24px; margin-left: 0px">Phân tích bán hàng</h3>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Số lượt truy cập</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{#if user.numberVisitRestaurant }}
+                            <input type="text" class="form-control" value="{{user.numberVisitRestaurant}}" 
+                                style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                        {{else}}
+                            <input type="text" class="form-control" value="0" 
+                                style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Đơn hàng</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{orders.length}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Tỷ lệ đặt hàng</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{getNumberVisitRestaurant_countOrder  user.numberVisitRestaurant orders.length}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div>
+                {{!-- <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0" style="font-size: 16px; margin-top: 10px;">Lượng chat</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        <input type="text" class="form-control" value="{{countOrderCancelled}}" 
+                            style="min-height: 10px; font-size: 15px;"  autocomplete="new" readonly/>
+                    </div>
+                </div> --}}
+            </div>
+            <br><br><br><br>
+        </div>
+    </div>
+</div>

@@ -220,5 +220,36 @@ module.exports = {
                     </button>`
         }
         else return;
-    }
+    },
+    getTurnover_sold: (turnover, sold)=>{
+        if(turnover==0){
+            return 0;
+        }
+        else {
+            var turnover_sold = turnover/sold
+            turnover_sold = Math.round(turnover_sold)
+            return turnover_sold.toLocaleString()
+        }
+    },
+    getSalesRate: (countOrderSold, countOrderCancelled)=>{
+        if(countOrderSold==0){
+            return 'Chưa bán được đơn hàng nào'
+        }
+        else {
+            var salesRate = (countOrderSold*100)/(countOrderCancelled+countOrderSold)
+            salesRate = Math.round(salesRate * 100) / 100
+            return salesRate+'%'
+        }
+    },
+
+    getNumberVisitRestaurant_countOrder: (numberVisitRestaurant, countOrder)=>{
+        if(countOrder==0){
+            return 'Chưa có đơn hàng nào'
+        }
+        else {
+            var salesRate = (countOrder*100)/(numberVisitRestaurant)
+            salesRate = Math.round(salesRate * 100) / 100
+            return salesRate+'%'
+        }
+    },
 }
