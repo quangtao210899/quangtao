@@ -156,6 +156,41 @@ class CourseController {
             })  
     }
 
+
+    // [GET]  /me/restaurant/sold
+    restaurantSold(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idAuthor: user._id, state:'sold'}).lean()
+                    .sort({createdAt: 'asc'})
+                    .then(orders=>{
+                        var page = 'Đơn hàng đã bán'
+                        var activeSold = 'activeLi'
+                        res.render('./me/restaurant/order', {user,orders,page,activeSold, hidden: 'none'})
+                    })
+            })  
+    }
+
+    // [GET]  /me/restaurant/cancelled
+    restaurantCancelled(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idAuthor: user._id, state:'cancelled'}).lean()
+                    .sort({createdAt: 'asc'})
+                    .then(orders=>{
+                        var page = 'Đơn hàng đã hủy'
+                        var activeCancelled = 'activeLi'
+                        res.render('./me/restaurant/order', {user,orders,page,activeCancelled, hidden: 'none'})
+                    })
+            })  
+    }
+
 }
 
 module.exports = new CourseController();

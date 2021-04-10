@@ -1,7 +1,27 @@
 <link rel="stylesheet" href="/css/storedOrder.css">
 <script src='/js/restaurant.js'></script>
-{{!--  --}}
-
+{{!--Thông báo--}}
+{{!-- thông báo hủy đơn hàng --}}
+<div class="row" style="fixed: relative; right: 0px">
+    <div class="alert alert-info " id="success-alert-delete" style="z-index:10; position : fixed; right: 10px; display:none">
+        {{!-- <button type="button" class="close" data-dismiss="alert" style="">x</button> --}}
+        Đã hủy đơn hàng &nbsp;
+    </div>
+</div>  
+{{!-- Thông báo giao hàng --}}
+<div class="row" style="fixed: relative; right: 0px">
+    <div class="alert alert-info " id="success-alert-shipping" style="z-index:10; position : fixed; right: 10px; display:none">
+        {{!-- <button type="button" class="close" data-dismiss="alert" style="">x</button> --}}
+        Bắt đầu giao hàng &nbsp;
+    </div>
+</div>  
+{{!-- Thông báo đã bán --}}
+<div class="row" style="fixed: relative; right: 0px">
+    <div class="alert alert-info " id="success-alert-sold" style="z-index:10; position : fixed; right: 10px; display:none">
+        {{!-- <button type="button" class="close" data-dismiss="alert" style="">x</button> --}}
+        Giao hàng thành công &nbsp;
+    </div>
+</div>  
 
 <div class="container rounded cart">
     <br><br><br><br>
@@ -27,13 +47,13 @@
                 <ul style="color: black; font-size: 20px;">
                     <li class='rederect' hrefLi='info'>Thông tin cửa hàng</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect {{activePrepare}}' hrefLi='prepare'>Đơn hàng đang chuẩn bị</li>
+                    <li class='rederect {{activePrepare}}' hrefLi='prepare'>Đang chuẩn bị</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect {{activeShipping}}' hrefLi='shipping'>Đơn hàng đang giao</li>
+                    <li class='rederect {{activeShipping}}' hrefLi='shipping'>Đang giao</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect {{activeSold}}' hrefLi='sold'>Đơn hàng đã bán</li>
+                    <li class='rederect {{activeSold}}' hrefLi='sold'>Đã bán</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect {{activeCancelled}}' hrefLi='cancelled'>Đơn hàng đã hủy</li>
+                    <li class='rederect {{activeCancelled}}' hrefLi='cancelled'>Đã hủy</li>
                     <hr style="margin-right: 15px;">
                     <li class='rederect' hrefLi='statistical'>Thống kê</li>
                 </ul>
@@ -60,10 +80,7 @@
                             <div class="ml-1"><span >{{this.userFood.fullname}}</span></div>
                         </div>
                         <div class="d-flex flex-row align-items-center">
-                            <button type="button" class="btn btn-danger" 
-                                data-toggle="modal" data-target="#delete-order" data-id="{{this._id}}"
-                                style="margin-right: 5px; padding: 5px 10px 5px 10px; text-transform:none;">Hủy
-                            </button>
+                            {{{getButtonCancelled this.state this._id}}}
                             {{{getButtonShip this.state}}}
                             <input type="hidden" value="{{this._id}}"/>
                         </div>
@@ -112,7 +129,7 @@
     {{#if activeSold}}
         <input type="hidden" name="inputHidden" value='sold'>
     {{/if}}
-    
+
     {{#if activeCancelled}}
         <input type="hidden" name="inputHidden" value='cancelled'>
     {{/if}}
@@ -143,3 +160,7 @@
         </div>
     </div>
 </div>
+
+
+{{!-- hiển thị thông báo --}}
+<input type="hidden" value="{{notificationType}}" id="notificationType">

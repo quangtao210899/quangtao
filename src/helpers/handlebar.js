@@ -200,14 +200,24 @@ module.exports = {
     },
     getButtonShip: (state)=>{
         if(state=='prepare'){
-            return `<button type="button" class="btn btn-primary" id='btn-ship'
+            return `<button type="button" class="btn btn-primary btn-ship"
                         style="padding: 5px 10px 5px 10px; text-transform:none;">Giao hàng
                     </button>`
         }
         else if(state=='shipping'){
-            return `<button type="button" class="btn btn-primary" id='btn-sold'
+            return `<button type="button" class="btn btn-primary btn-sold"
                         style="padding: 5px 10px 5px 10px; text-transform:none;">Hoàn thành
                     </button>`            
+        }
+        else return;
+    },
+
+    getButtonCancelled: (state, id)=>{
+        if(state=='prepare'||state=='shipping'){
+            return `<button type="button" class="btn btn-danger" 
+                        data-toggle="modal" data-target="#delete-order" data-id="${id}"
+                        style="margin-right: 5px; padding: 5px 10px 5px 10px; text-transform:none;">Hủy
+                    </button>`
         }
         else return;
     }

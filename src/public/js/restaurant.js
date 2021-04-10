@@ -50,11 +50,37 @@ document.addEventListener('DOMContentLoaded', function(){
     })
 
     // sự kiện ấn vào button giao hàng
-    $('#btn-ship').click(function(){
+    $('.btn-ship').click(function(){
         var div = $(this).parent()[0]
         var input = $(div).children()[2]
         var orderIDShip = $(input).val()
         deleteForm.action = '/order/shipping/'+orderIDShip+'?_method=PATCH'
         deleteForm.submit()
     })
+    // sự kiện ấn vào button hoàn thành
+    $('.btn-sold').click(function(){
+        var div = $(this).parent()[0]
+        var input = $(div).children()[2]
+        var orderIDShip = $(input).val()
+        deleteForm.action = '/order/sold/'+orderIDShip+'?_method=PATCH'
+        deleteForm.submit()
+    })
+
+    // thông báo ra màn hình
+    var notificationType = $('#notificationType').val()
+    if(notificationType=='cancelled'){
+        $("#success-alert-delete").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert-delete").slideUp(500);
+        });        
+    }
+    else if(notificationType=='shipping'){
+        $("#success-alert-shipping").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert-shipping").slideUp(500);
+        });       
+    }
+    else if(notificationType=='sold'){
+        $("#success-alert-sold").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert-sold").slideUp(500);
+        });       
+    }
 })
