@@ -9,7 +9,7 @@
         <div class="col-md-3">
             <div>
                 <div class="d-flex flex-row">
-                     <img src="{{{setImageProfile user.image}}}" alt="Admin" class="rounded-circle" width="80"
+                    <img src="{{{setImageProfile user.image}}}" alt="Admin" class="rounded-circle" width="80"
                         style="border: 1px solid #EFEFEF">
                     <div class="ml-3">
                         <span class="d-block" 
@@ -27,13 +27,13 @@
                 <ul style="color: black; font-size: 20px;">
                     <li class='rederect' hrefLi='info'>Thông tin cửa hàng</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect' hrefLi='prepare' style="color:#EE4D2D">Đơn hàng đang chuẩn bị</li>
+                    <li class='rederect {{activePrepare}}' hrefLi='prepare'>Đơn hàng đang chuẩn bị</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect' hrefLi='shipping'>Đơn hàng đang giao</li>
+                    <li class='rederect {{activeShipping}}' hrefLi='shipping'>Đơn hàng đang giao</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect' hrefLi='sold'>Đơn hàng đã bán</li>
+                    <li class='rederect {{activeSold}}' hrefLi='sold'>Đơn hàng đã bán</li>
                     <hr style="margin-right: 15px;">
-                    <li class='rederect' hrefLi='cancelled'>Đơn hàng đã hủy</li>
+                    <li class='rederect {{activeCancelled}}' hrefLi='cancelled'>Đơn hàng đã hủy</li>
                     <hr style="margin-right: 15px;">
                     <li class='rederect' hrefLi='statistical'>Thống kê</li>
                 </ul>
@@ -59,6 +59,14 @@
                             {{/if}}
                             <div class="ml-1"><span >{{this.userFood.fullname}}</span></div>
                         </div>
+                        <div class="d-flex flex-row align-items-center">
+                            <button type="button" class="btn btn-danger" 
+                                data-toggle="modal" data-target="#delete-order" data-id="{{this._id}}"
+                                style="margin-right: 5px; padding: 5px 10px 5px 10px; text-transform:none;">Hủy
+                            </button>
+                            {{{getButtonShip this.state}}}
+                            <input type="hidden" value="{{this._id}}"/>
+                        </div>
                     </div>
                     <hr style="border: 1px solid #cfcfcf; margin: 8px 0px 0px 0px;">
                     {{!-- Hiển thị mainFood --}}
@@ -79,8 +87,8 @@
                     {{/each}}
 
 
-                    <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded" style="background-color: #FFFFFB;">
-                        <div class="d-flex flex-row align-items-center ml-auto" style="background-color: #FFFFFB;" >
+                    <div class="d-flex justify-content-between align-items-center mt-3 p-2 items rounded" style="background-color: #f8f8ec;">
+                        <div class="d-flex flex-row align-items-center ml-auto" style="background-color: #f8f8ec;" >
                             <span class="d-block">Tổng số tiền:</span>
                             <span class="d-block ml-5 font-weight-bold" style="color: #EE4D2D;">{{toLocaleString this.cost}}đ</span>
                             <i class="fa fa-trash-o ml-3 text-black-50" style="visibility: hidden;"></i>
@@ -89,6 +97,49 @@
                 </div>
             {{/each}}
             <br><br><br><br>
+        </div>
+    </div>
+</div>
+<form method="POST" name='order-form-hiden'>
+    {{#if activePrepare}}
+        <input type="hidden" name="inputHidden" value='prepare'>
+    {{/if}}
+
+    {{#if activeShipping}}
+        <input type="hidden" name="inputHidden" value='shipping'>
+    {{/if}}
+
+    {{#if activeSold}}
+        <input type="hidden" name="inputHidden" value='sold'>
+    {{/if}}
+    
+    {{#if activeCancelled}}
+        <input type="hidden" name="inputHidden" value='cancelled'>
+    {{/if}}
+</form>
+<!-- Modal hủy đơn hàng-->
+<div class="modal fade mt-4" id="delete-order" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true"
+    style="margin-top: 20px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Bạn có chắc chắn hủy đơn hàng không?<br>Thao tác này không thể thực hiện lại!</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"
+                    style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                    Quay lại
+                </button>
+                <button id='btn-delete-order' type="button" class="btn btn-danger"
+                    style='padding: 6px 12px; margin: 4px; text-transform: none;'>
+                    Chắc chắn
+                </button>
+            </div>
         </div>
     </div>
 </div>

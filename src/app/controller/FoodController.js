@@ -271,7 +271,7 @@ class FoodController {
         }
     }
 
-    // [POST] /foods/:ID/order   (thanh toán thực đơn)
+    // [POST] /foods/:ID/order   (Đặt hàng)
     order(req,res,next){
         const username = req.session.username
         const password = req.session.password
@@ -313,7 +313,7 @@ class FoodController {
                         const order = new Order({
                             idUser: user._id, imageMainFood: food.image,
                             idMainFood: food._id, foodName: food.foodName, 
-                            price: food.price, quantity: req.body.quantity,
+                            price: food.price, quantity: req.body.quantity, state:'prepare',
                             cost: req.body.cost, foods: foods, userFood: userFood,
                             authorFood: AuthorFood, idAuthor: userAuthorFood._id,
                         })

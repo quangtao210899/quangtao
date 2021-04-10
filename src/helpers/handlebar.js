@@ -197,5 +197,18 @@ module.exports = {
         else {
             return fullName
         }
+    },
+    getButtonShip: (state)=>{
+        if(state=='prepare'){
+            return `<button type="button" class="btn btn-primary" id='btn-ship'
+                        style="padding: 5px 10px 5px 10px; text-transform:none;">Giao hàng
+                    </button>`
+        }
+        else if(state=='shipping'){
+            return `<button type="button" class="btn btn-primary" id='btn-sold'
+                        style="padding: 5px 10px 5px 10px; text-transform:none;">Hoàn thành
+                    </button>`            
+        }
+        else return;
     }
 }

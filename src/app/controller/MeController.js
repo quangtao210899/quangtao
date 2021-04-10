@@ -129,11 +129,29 @@ class CourseController {
         User.findOne({username: usernameSession, password: passwordSession})
             .lean()
             .then(user=>{
-                Order.find({idAuthor: user._id}).lean()
-                    .sort({createdAt: 'desc'})
+                Order.find({idAuthor: user._id, state:'prepare'}).lean()
+                    .sort({createdAt: 'asc'})
                     .then(orders=>{
                         var page = 'Đơn hàng đang chuẩn bị'
-                        res.render('./me/restaurant/order', {user,orders,page, hidden: 'none'})
+                        var activePrepare = 'activeLi'
+                        res.render('./me/restaurant/order', {user,orders,page,activePrepare, hidden: 'none'})
+                    })
+            })  
+    }
+
+    // [GET]  /me/restaurant/shipping
+    restaurantShipping(req,res,next){
+        var usernameSession = req.session.username
+        var passwordSession = req.session.password
+        User.findOne({username: usernameSession, password: passwordSession})
+            .lean()
+            .then(user=>{
+                Order.find({idAuthor: user._id, state:'shipping'}).lean()
+                    .sort({createdAt: 'asc'})
+                    .then(orders=>{
+                        var page = 'Đơn hàng đang giao'
+                        var activeShipping = 'activeLi'
+                        res.render('./me/restaurant/order', {user,orders,page,activeShipping, hidden: 'none'})
                     })
             })  
     }

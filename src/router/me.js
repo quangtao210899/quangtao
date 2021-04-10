@@ -11,6 +11,7 @@ router.get('/trash/foods', meController.getTrashFood);
 router.get('/profile', meController.profile);
 router.get('/restaurant/info', meController.restaurantInfo);
 router.get('/restaurant/prepare', meController.restaurantPrepare);
+router.get('/restaurant/shipping', meController.restaurantShipping);
 
 
 
