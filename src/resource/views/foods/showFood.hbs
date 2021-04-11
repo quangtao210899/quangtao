@@ -330,6 +330,9 @@
         // thanh toán 
         btnOrderCart.onclick = function(e){
             e.preventDefault()
+            var idAuthorFood = $('#chatIdUser').val()
+            var idUser = $('#idUserFrom').val()
+            socket.emit('haveOrder', idAuthorFood, idUser)
             var idUserFrom = $('#chatIdUser').val()
             $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
             $('#div-add').append($input)

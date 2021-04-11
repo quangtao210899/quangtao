@@ -12,7 +12,8 @@ module.exports = function checkSessionCookie(req,res,next){
         .then(user =>{
             // nếu session thỏa mãn
             if(user!=null){
-                Notification.findOne({type: 'message', idUserTo: user._id})
+                Notification.find({idUserTo: user._id})
+                    .sort({updatedAt: 'desc'})
                     .lean()
                     .then(notification=>{
                         res.locals._notificationLocal= notification
@@ -33,7 +34,8 @@ module.exports = function checkSessionCookie(req,res,next){
                     .then(user =>{
                         // Nếu cookie thỏa mãn
                         if(user!=null){
-                            Notification.findOne({type: 'message', idUserTo: user._id})
+                            Notification.find({idUserTo: user._id})
+                                .sort({updatedAt: 'desc'})
                                 .lean()
                                 .then(notification=>{
                                     res.locals._idUserLocal= user._id
@@ -68,7 +70,8 @@ module.exports = function checkSessionCookie(req,res,next){
                 req.session.password = passwordCookie 
                 // nếu cookie thỏa mãn
                 if(user!=null){
-                    Notification.findOne({type: 'message', idUserTo: user._id})
+                    Notification.find({idUserTo: user._id})
+                        .sort({updatedAt: 'desc'})
                         .lean()
                         .then(notification=>{
                             res.locals._idUserLocal= user._id

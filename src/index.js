@@ -189,6 +189,12 @@ io.on('connection', function(client){
             .lean()
             .then()
     })
+    client.on('changeNotificationOrderToZero',function(idUser){
+        Notification.findOneAndDelete({type: 'order', idUserTo: idUser})
+            .lean()
+            .then()
+    })
+
 
 
     //save thông tin profile
@@ -352,6 +358,31 @@ io.on('connection', function(client){
             address : restaurantAddress,
         }
         User.updateOne({_id: idUser}, {restaurant: restaurant}).then()
+    })
+
+    //Xử lý sự kiện có người đặt hàng và Gửi thông báo đến cửa hàng
+    client.on('haveOrder', function(idAuthorFood, idUser){
+        Notification.findOne({type: 'order', idUserTo: idAuthorFood})
+            .lean()
+            .then(notification=>{
+                if(notification==null){
+                    let newNotification= new Notification({
+                        type: 'order', idUserTo: idAuthorFood, content: '1'
+                    })
+                    newNotification.save()
+                }
+                else {
+                    var content = notification.content
+                    content = parseInt(content)
+                    content++
+                    Notification.findOneAndUpdate(
+                        {type: 'order', idUserTo: idAuthorFood},
+                        {content: content}
+                    )
+                        .lean()
+                        .then()
+                }
+            })
     })
 })
 

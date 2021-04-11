@@ -100,25 +100,30 @@ socket.on('header', function(idUserTo){
     // lấy idPerson
     var idUserF = document.getElementById('idUser').value
     if(idUserF==idUserTo){
-        var notificationIHeader = document.getElementById('notification-i-header')
         var notificationSpanHeader = document.getElementById('notification-span-header')
-        var notificationAHeader = document.getElementById('notification-a-header')
         var countNotification = notificationSpanHeader.innerText
-        var handleNotification = document.getElementById('handle-notification')
+        var handleNotification = document.getElementById('handle-notification-message')
         //xử lý số thông báo
         if(countNotification==''||countNotification==null){
             notificationSpanHeader.innerText='+1';
-            handleNotification.innerText = 'Bạn có 1 tin nhắn mới'
         }
         else if(countNotification=='+9'){
-            handleNotification.innerText = 'Bạn có 9 tin nhắn mới'
         }
         else {
             countNotification = parseInt(countNotification)
             countNotification++;
-            handleNotification.innerText='Bạn có ' +countNotification+ ' tin nhắn mới'
             countNotification = '+' + countNotification;
             notificationSpanHeader.innerText = countNotification
+        }
+        //Tăng số lương tin nhắn lên 1
+        if(parseInt(handleNotification.innerHTML)){
+            var countMessage=parseInt(handleNotification.innerHTML)
+            countMessage++
+            if(countMessage>9) countMessage=9
+            handleNotification.innerHTML='+' +countMessage+' tin nhắn mới'
+        } 
+        else {
+            handleNotification.innerHTML='+1 tin nhắn mới'
         }
     }
 })
@@ -370,20 +375,6 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
     // xử lý sự kiện của thẻ header
-    var a = document.getElementById('notification-a-header')
-    var b = document.getElementById('notification-span-header')
-    a.onclick = function(e){
-      e.preventDefault();
-    }
-
-    var handleNotification = document.getElementById('handle-notification')
-    handleNotification.onclick = function(e){
-      e.preventDefault()
-      b.innerText=''
-      this.innerText = 'Không có thông báo nào'
-      var idUser = document.getElementById('idUser').value
-      socket.emit('changeNotificationMessageToZero', idUser)
-    }
     //
     
     $('#form1').submit(function(e){
@@ -557,4 +548,3 @@ function setCaretToPos (input, pos) {
 
 
 /// header
-

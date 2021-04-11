@@ -166,7 +166,7 @@ class CourseController {
             .lean()
             .then(user=>{
                 Order.find({idAuthor: user._id, state:'sold'}).lean()
-                    .sort({createdAt: 'asc'})
+                    .sort({createdAt: 'desc'})
                     .then(orders=>{
                         var page = 'Đơn hàng đã bán'
                         var activeSold = 'activeLi'
@@ -183,7 +183,7 @@ class CourseController {
             .lean()
             .then(user=>{
                 Order.find({idAuthor: user._id, state:'cancelled'}).lean()
-                    .sort({createdAt: 'asc'})
+                    .sort({createdAt: 'desc'})
                     .then(orders=>{
                         var page = 'Đơn hàng đã hủy'
                         var activeCancelled = 'activeLi'

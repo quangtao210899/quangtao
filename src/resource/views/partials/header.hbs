@@ -62,7 +62,7 @@
                             </i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-a">
-                            <a class="dropdown-item" id='handle-notification' href="/">{{countMessages _notificationLocal}}</a>
+                            {{{countMessages _notificationLocal}}}
                         </div>
                     </li>
                 </div>
@@ -88,12 +88,32 @@
             e.preventDefault();
         }
 
-        var handleNotification = document.getElementById('handle-notification')
-        handleNotification.onclick = function(e){
+        $('#handle-notification-message').click(function(e){
             e.preventDefault()
-            b.innerText=''
-            this.innerText = 'Không có thông báo nào'
-        }
+            if(parseInt($('#handle-notification-order').text())){
+                b.innerText='+' + parseInt($('#handle-notification-order').text())
+            }
+            else {
+               b.innerText='' 
+            }
+            this.innerText = 'Không có tin nhắn mới'
+            var idUser = document.getElementById('idUser').value
+            socket.emit('changeNotificationMessageToZero', idUser)
+        })
+        $('#handle-notification-order').click(function(e){
+            e.preventDefault()
+            if(parseInt($('#handle-notification-message').text())){
+                b.innerText='+' + parseInt($('#handle-notification-message').text())
+            }
+            else {
+               b.innerText='' 
+            }
+            this.innerText = 'Không có đơn hàng mới'
+            var idUser = document.getElementById('idUser').value
+            socket.emit('changeNotificationOrderToZero', idUser)
+            window.location = '/me/restaurant/prepare'
+        })
+
         $('#query-food').click(function(e){
             e.preventDefault()
             window.location='/foods?type=food'

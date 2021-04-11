@@ -58,18 +58,35 @@ module.exports = {
         }
     },
     countMessages: (notification) =>{
-        if(notification==null) return "Không có thông báo nào";
+        if(notification.length==0) return `<a class="dropdown-item" id='handle-notification-message' href="/">Không có thông báo nào</a>`
         else {
-            var count = notification.content
-            count = parseInt(count)
-            if(count<=9) return 'Bạn có ' + count + " tin nhắn mới ";
-            else return 'Bạn có 9+ tin nhắn mới'
+            // <a class="dropdown-item" id='handle-notification' href="/"></a>
+            var count = 0;
+            var countMessage = 0
+            var countOrder = 0
+            var output=''
+            for(var i =0; i<notification.length;i++){
+                if(notification[i].type=='message'){
+                    countMessage += parseInt(notification[i].content)
+                    if(countMessage>9) countMessage=9
+                    output+=`<a class="dropdown-item" id='handle-notification-message' href="/">+${countMessage} tin nhắn mới </a>`
+                }
+                else if(notification[i].type=='order'){
+                    countOrder +=parseInt(notification[i].content)
+                    if(countOrder>9) countOrder=9
+                    output+=`<a class="dropdown-item" id='handle-notification-order' href="/">+${countOrder} đơn hàng mới </a>`
+                }
+            }
+            return output
         }
     },
     countNotification: (notification) => {
-        if(notification==null) return ''
+        if(notification.length==0) return ''
         else{
-            var count = notification.content
+            var count = 0;
+            for(var i =0; i<notification.length;i++){
+                count += parseInt(notification[i].content)
+            }
             count = parseInt(count)
             if(count<=9) return "+" + count
             else return '+9'
