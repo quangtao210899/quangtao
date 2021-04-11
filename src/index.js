@@ -383,6 +383,10 @@ io.on('connection', function(client){
                         .then()
                 }
             })
+        // thông báo cho client
+        client.emit('header2', idAuthorFood)
+        // thông báo cho các client khác
+        client.broadcast.emit('header2', idAuthorFood)
     })
 })
 

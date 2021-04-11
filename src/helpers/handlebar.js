@@ -58,7 +58,7 @@ module.exports = {
         }
     },
     countMessages: (notification) =>{
-        if(notification.length==0) return `<a class="dropdown-item" id='handle-notification-message' href="/">Không có thông báo nào</a>`
+        if(notification.length==0) return `<a class="dropdown-item" id='handle-notification-message' href="/">Không có thông báo</a>`
         else {
             // <a class="dropdown-item" id='handle-notification' href="/"></a>
             var count = 0;

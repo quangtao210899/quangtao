@@ -15,8 +15,8 @@ socket.on('connect',function(data){
 // listen thread event
 socket.on('thread', function(data, idUserFrom, idUserTo){
     // lấy idPerson
-    var idUserF = document.getElementById('idUserFrom').value
-    var idUserT = document.getElementById('idUserTo').value
+    var idUserF = $('#idUserFrom').val()
+    var idUserT = $('#idUserTo').val()
     // hiển thị tin nhắn từ server gửi đến
     if(idUserFrom==idUserF&&idUserTo==idUserT){
         $msg = '<div class="user-inbox inbox"><div class="msg-header"><p>'+ data +'</p></div></div>';
@@ -102,7 +102,7 @@ socket.on('header', function(idUserTo){
     if(idUserF==idUserTo){
         var notificationSpanHeader = document.getElementById('notification-span-header')
         var countNotification = notificationSpanHeader.innerText
-        var handleNotification = document.getElementById('handle-notification-message')
+        var countRowNotificationMesage = $('#handle-notification-message').length
         //xử lý số thông báo
         if(countNotification==''||countNotification==null){
             notificationSpanHeader.innerText='+1';
@@ -116,14 +116,121 @@ socket.on('header', function(idUserTo){
             notificationSpanHeader.innerText = countNotification
         }
         //Tăng số lương tin nhắn lên 1
-        if(parseInt(handleNotification.innerHTML)){
-            var countMessage=parseInt(handleNotification.innerHTML)
-            countMessage++
-            if(countMessage>9) countMessage=9
-            handleNotification.innerHTML='+' +countMessage+' tin nhắn mới'
-        } 
+        if(countRowNotificationMesage){
+            var handleNotificationMessage = $('#handle-notification-message')[0]
+            if(parseInt(handleNotificationMessage.innerHTML)){
+                var countMessage=parseInt(handleNotificationMessage.innerHTML)
+                countMessage++
+                if(countMessage>9) countMessage=9
+                handleNotificationMessage.innerHTML='+' +countMessage+' tin nhắn mới'
+            } 
+            else {
+                handleNotificationMessage.innerHTML='+1 tin nhắn mới'
+            }
+        }
         else {
-            handleNotification.innerHTML='+1 tin nhắn mới'
+            var element = `<a class="dropdown-item" id='handle-notification-message' href="/">+1 tin nhắn mới </a>`
+            $('#dropdown-notification').append(element)
+            var countRowNotification =  $('#dropdown-notification').children().length
+            if(countRowNotification==2){
+                var children =  $('#dropdown-notification').children()
+                var dropdownNotificationOrder = children[1] 
+                $(dropdownNotificationOrder).insertBefore(children[0])
+            }
+            //thêm lại sự kiện
+            var a = document.getElementById('notification-a-header')
+            var b = document.getElementById('notification-span-header')
+            a.onclick = function(e){
+                e.preventDefault();
+            }
+    
+            $('#handle-notification-message').click(function(e){
+                e.preventDefault()
+                var countRowNotification =  $('#dropdown-notification').children().length
+                if(parseInt($('#handle-notification-order').text())){
+                    b.innerText='+' + parseInt($('#handle-notification-order').text())
+                }
+                else {
+                   b.innerText='' 
+                }
+                if(countRowNotification==1){
+                    this.innerText = 'Không có thông báo'
+                }
+                else if(countRowNotification==2){
+                    $('#handle-notification-message').remove()
+                }
+                var idUser = document.getElementById('idUser').value
+                socket.emit('changeNotificationMessageToZero', idUser)
+            })
+        }
+    }
+})
+
+
+socket.on('header2', function(idUserTo){
+    // lấy idPerson
+    var idUserF = document.getElementById('idUser').value
+    if(idUserF==idUserTo){
+        var notificationSpanHeader = document.getElementById('notification-span-header')
+        var countNotification = notificationSpanHeader.innerText
+        var countRowNotificationOrder = $('#handle-notification-order').length
+        //xử lý số thông báo
+        if(countNotification==''||countNotification==null){
+            notificationSpanHeader.innerText='+1';
+        }
+        else if(countNotification=='+9'){
+        }
+        else {
+            countNotification = parseInt(countNotification)
+            countNotification++;
+            countNotification = '+' + countNotification;
+            notificationSpanHeader.innerText = countNotification
+        }
+        //Tăng số lương order lên 1
+        if(countRowNotificationOrder){
+            var handleNotificationOrder = $('#handle-notification-order')[0]
+            if(parseInt(handleNotificationOrder.innerHTML)){
+                var countMessage=parseInt(handleNotificationOrder.innerHTML)
+                countMessage++
+                if(countMessage>9) countMessage=9
+                handleNotificationOrder.innerHTML='+' +countMessage+' đơn hàng mới'
+            } 
+            else {
+                handleNotificationOrder.innerHTML='+1 đơn hàng mới'
+            }
+        }
+        else {
+            var element = `<a class="dropdown-item" id='handle-notification-order' href="/">+1 đơn hàng mới </a>`
+            $('#dropdown-notification').append(element)
+            //oke
+            var countRowNotification =  $('#dropdown-notification').children().length
+            if(countRowNotification==2){
+                var children =  $('#dropdown-notification').children()
+                var dropdownNotificationOrder = children[1] 
+                $(dropdownNotificationOrder).insertBefore(children[0])
+            }
+            if(!$('#handle-notification-message')||$('#handle-notification-message').text()=='Không có thông báo'){
+                $('#handle-notification-message').remove()
+            }
+            // thêm lại sự kiện
+            var a = document.getElementById('notification-a-header')
+            var b = document.getElementById('notification-span-header')
+            a.onclick = function(e){
+                e.preventDefault();
+            }
+            $('#handle-notification-order').click(function(e){
+                e.preventDefault()
+                if(parseInt($('#handle-notification-message').text())){
+                    b.innerText='+' + parseInt($('#handle-notification-message').text())
+                }
+                else {
+                   b.innerText='' 
+                }
+                this.innerText = 'Không có đơn hàng mới'
+                var idUser = document.getElementById('idUser').value
+                socket.emit('changeNotificationOrderToZero', idUser)
+                window.location = '/me/restaurant/prepare'
+            })
         }
     }
 })
@@ -275,7 +382,6 @@ socket.on('chatsToUser', function(chats){
     socket.on('userChatForTo', function(user){
         var index;
         // thêm thẻ li vào trong bảng những ng nhắn tin
-        console.log('vào lần 2')
         if(user.image){
             index = `<li class="onActive">
                         <div class="d-flex bd-highlight">

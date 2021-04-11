@@ -61,7 +61,7 @@
                                 <span class="badge" id='notification-span-header' style="font-family: 'Times New Roman', Times, serif;">{{countNotification _notificationLocal}}</span>
                             </i>
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                        <div class="dropdown-menu" aria-labelledby="dropdown-a" id='dropdown-notification'>
                             {{{countMessages _notificationLocal}}}
                         </div>
                     </li>
@@ -90,13 +90,19 @@
 
         $('#handle-notification-message').click(function(e){
             e.preventDefault()
+            var countRowNotification =  $('#dropdown-notification').children().length
             if(parseInt($('#handle-notification-order').text())){
                 b.innerText='+' + parseInt($('#handle-notification-order').text())
             }
             else {
-               b.innerText='' 
+                b.innerText='' 
             }
-            this.innerText = 'Không có tin nhắn mới'
+            if(countRowNotification==1){
+                this.innerText = 'Không có thông báo'
+            }
+            else if(countRowNotification==2){
+                $('#handle-notification-message').remove()
+            }
             var idUser = document.getElementById('idUser').value
             socket.emit('changeNotificationMessageToZero', idUser)
         })
