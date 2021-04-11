@@ -230,7 +230,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="order-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered ">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
 
             <div class="modal-header">
@@ -332,8 +332,8 @@
             e.preventDefault()
             var idAuthorFood = $('#chatIdUser').val()
             var idUser = $('#idUserFrom').val()
-            socket.emit('haveOrder', idAuthorFood, idUser)
             var idUserFrom = $('#chatIdUser').val()
+            socket.emit('haveOrder', idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,costOrderH3)
             $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
             $('#div-add').append($input)
             $input = '<input type="hidden" value="'+ idUserFrom+'" name="idUserFrom"></input>'

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function(){
     $('#div-edit-profile').click(function(){
         window.location = '/me/stored/foods'
     })
-    // lưu dữ liệu của hàng
+    // lưu dữ liệu cửa hàng
     $('#btn-save-restaurant-info').click(function(){
         var checkData = 1;
         var restaurantAddress = $('#restaurantAddress').val().trim()
@@ -83,4 +83,27 @@ document.addEventListener('DOMContentLoaded', function(){
             $("#success-alert-sold").slideUp(500);
         });       
     }
+    // real time trang đơn hàng đang chuẩn bị
+    socket.on('handleOrderInPreparePage',function(fullnameUser,imageUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost){
+        if($('#pageRestaurantPrepare').length){
+            var input = '<p>Chào</p>'
+            // input+=`<div class="product-details mr-2 card" style="margin-bottom: 15px;">
+            //             <div class="d-flex justify-content-between align-items-center p-2">
+            //                 <div class="d-flex flex-row">`
+            // if(imageUser){
+            //     input+=`<img src="${imageUser}" width="30"
+            //                 style="border-radius: 15px;border: 1px solid #BDB76B">`
+            // }
+            // else {
+            //     input+=`<img src="https://bootdey.com/img/Content/avatar/avatar7.png" width="30"
+            //                 style="border-radius: 15px; border: 1px solid #BDB76B">`
+            // }
+            // input +=`<div class="ml-1"><span >${fullnameUser}</span></div>
+            //         </div>
+            //         <div class="d-flex flex-row align-items-center">`
+            
+
+            $('#divHandlePreparePage').append(input)
+        }        
+    })
 })

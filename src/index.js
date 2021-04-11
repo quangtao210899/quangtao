@@ -14,9 +14,9 @@ const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
 const User = require('./app/models/user')
 const Food = require('./app/models/food')
+const Order = require('./app/models/order');
 const Notification = require('./app/models/notification')
 const sortMiddleware = require('./app/middlewares/sortMiddleware');
-const user = require('./app/models/user');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -361,7 +361,7 @@ io.on('connection', function(client){
     })
 
     //Xử lý sự kiện có người đặt hàng và Gửi thông báo đến cửa hàng
-    client.on('haveOrder', function(idAuthorFood, idUser){
+    client.on('haveOrder', function(idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost){
         Notification.findOne({type: 'order', idUserTo: idAuthorFood})
             .lean()
             .then(notification=>{
@@ -383,11 +383,32 @@ io.on('connection', function(client){
                         .then()
                 }
             })
+        Promise.all([
+            User.findById(idUser).lean(),
+        ])
+            .then(([user])=>{
+                var fullnameUser = user.firstname+' '+user.lastname
+                var imageUser = user.image
+                client.broadcast.emit('handleOrderInPreparePage',fullnameUser,imageUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost)
+            })
         // thông báo cho client
-        client.emit('header2', idAuthorFood)
+        // client.emit('header2', idAuthorFood)
         // thông báo cho các client khác
-        client.broadcast.emit('header2', idAuthorFood)
+        client.broadcast.emit('header2', idAuthorFood)      
     })
+
+    // Nhận giở hàng từ client
+    // client.on('cartOrderToHandlePreparePage', function(idUserFrom){
+    //     console.log('đã vào đây')
+    //     // Promise.all([
+    //     //     User.findById({idUserFrom}).lean(),
+    //     // ])
+    //     //     .then(([user])=>{
+    //     //         var fullnameUser = user.firstname+' '+user.lastname
+    //     //         var imageUser = user.image
+    //     //         client.broadcast.emit('handleOrderInPreparePage',fullnameUser,imageUser,listCartName,listCartQuantily,listCartPrice,listCartImage,cost)
+    //     //     })
+    // })
 })
 
 

@@ -59,7 +59,7 @@
                 </ul>
             </div>
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9" id='divHandlePreparePage'>
             {{#if orders}}
                 <h3 style="font-size: 35px; margin-left: 0px">{{page}}</h3>
             {{else}}
@@ -119,7 +119,7 @@
 </div>
 <form method="POST" name='order-form-hiden'>
     {{#if activePrepare}}
-        <input type="hidden" name="inputHidden" value='prepare'>
+        <input type="hidden" name="inputHidden" value='prepare' id='pageRestaurantPrepare'>
     {{/if}}
 
     {{#if activeShipping}}
