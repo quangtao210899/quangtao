@@ -330,14 +330,21 @@
         // thanh toán 
         btnOrderCart.onclick = function(e){
             e.preventDefault()
+            // tạo key random để xác nhận order
+            var time = Date.now()
+            var random =  Math.floor(Math.random() * 1000000);
+            var keyRandom = time +""+ random
+
             var idAuthorFood = $('#chatIdUser').val()
             var idUser = $('#idUserFrom').val()
             var idUserFrom = $('#chatIdUser').val()
-            socket.emit('haveOrder', idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,costOrderH3)
+            socket.emit('haveOrder', idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,costOrderH3,keyRandom)
             $input = '<input type="hidden" value="'+ listCartQuantily[0] +'" name="quantity"></input>'
             $('#div-add').append($input)
             $input = '<input type="hidden" value="'+ idUserFrom+'" name="idUserFrom"></input>'
             $('#div-add').append($input)
+            $inputKeyRandom = '<input type="hidden" value="'+ keyRandom +'" name="keyRandom"></input>'
+            $('#div-add').append($inputKeyRandom)
             $inputCost = '<input type="hidden" value="'+ costOrderH3 +'" name="cost"></input>'
             $('#div-add').append($inputCost)
             for(var i = 1; i< demTruoc; i++){

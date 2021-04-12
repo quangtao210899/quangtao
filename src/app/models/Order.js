@@ -27,6 +27,7 @@ const Order = new Schema({
     price: { type: String,},
     quantity: { type: String,},
     cost: { type: String,},
+    keyRandom: {type: String,},
 }, {
     timestamps: true,
 });

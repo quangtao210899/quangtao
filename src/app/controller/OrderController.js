@@ -32,6 +32,26 @@ class OrderController {
             })
             .catch(next)
     }
+    //[PATCH] /order/shippingRealtime/
+    shippingRealtime(req,res,next){
+        Order.updateOne({idUser: req.body.idUser, idAuthor: req.body.idAuthorFood, keyRandom: req.body.keyRandom}, {state:'shipping'})
+            .lean()
+            .then(()=>{
+                req.session.notificationShip='yes'
+                res.redirect('/me/restaurant/prepare')
+            })
+            .catch(next)
+    }
+    //[PATCH] /order/cancelledRealtime/
+    cancelledRealtime(req,res,next){
+        Order.updateOne({idUser: req.body.idUser, idAuthor: req.body.idAuthorFood, keyRandom: req.body.keyRandom}, {state:'cancelled'})
+            .lean()
+            .then(()=>{
+                req.session.notificationCancelled='yes'
+                res.redirect('/me/restaurant/prepare')
+            })
+            .catch(next)
+    }
 
 }
 

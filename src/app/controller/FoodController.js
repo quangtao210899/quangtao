@@ -337,7 +337,7 @@ class FoodController {
                             image: userAuthorFood.image,
                         }
                         const order = new Order({
-                            idUser: user._id, imageMainFood: food.image,
+                            idUser: user._id, imageMainFood: food.image,keyRandom: req.body.keyRandom,
                             idMainFood: food._id, foodName: food.foodName, 
                             price: food.price, quantity: req.body.quantity, state:'prepare',
                             cost: req.body.cost, foods: foods, userFood: userFood,

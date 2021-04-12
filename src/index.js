@@ -361,7 +361,7 @@ io.on('connection', function(client){
     })
 
     //Xử lý sự kiện có người đặt hàng và Gửi thông báo đến cửa hàng
-    client.on('haveOrder', function(idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost){
+    client.on('haveOrder', function(idAuthorFood,idUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost,keyRandom){
         Notification.findOne({type: 'order', idUserTo: idAuthorFood})
             .lean()
             .then(notification=>{
@@ -383,32 +383,20 @@ io.on('connection', function(client){
                         .then()
                 }
             })
+        //oke
         Promise.all([
             User.findById(idUser).lean(),
         ])
             .then(([user])=>{
                 var fullnameUser = user.firstname+' '+user.lastname
                 var imageUser = user.image
-                client.broadcast.emit('handleOrderInPreparePage',fullnameUser,imageUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost)
+                client.broadcast.emit('handleOrderInPreparePage',fullnameUser,imageUser,listCartName,listCartPrice,listCartQuantily,listCartImage,cost,keyRandom,idAuthorFood,idUser)
             })
         // thông báo cho client
         // client.emit('header2', idAuthorFood)
         // thông báo cho các client khác
         client.broadcast.emit('header2', idAuthorFood)      
     })
-
-    // Nhận giở hàng từ client
-    // client.on('cartOrderToHandlePreparePage', function(idUserFrom){
-    //     console.log('đã vào đây')
-    //     // Promise.all([
-    //     //     User.findById({idUserFrom}).lean(),
-    //     // ])
-    //     //     .then(([user])=>{
-    //     //         var fullnameUser = user.firstname+' '+user.lastname
-    //     //         var imageUser = user.image
-    //     //         client.broadcast.emit('handleOrderInPreparePage',fullnameUser,imageUser,listCartName,listCartQuantily,listCartPrice,listCartImage,cost)
-    //     //     })
-    // })
 })
 
 
