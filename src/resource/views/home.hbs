@@ -1,6 +1,13 @@
+<!-- TweenLite JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.4/plugins/CSSPlugin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.4/easing/EasePack.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.4/TweenMax.min.js"></script>
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/search.css">
+<script src="/js/search.js"></script>     
+
 {{!-- Slide --}}
 <div id="slides" class="cover-slides">
     <ul class="slides-container">
@@ -51,9 +58,17 @@
 </div>
 {{!-- gallery --}}
 <div class="container">
-    <div class="gallery-box">
+    <div class="gallery-box" style="padding:20px 0px;">
         <div class="container">
-            <div class="row">
+            {{!-- search --}}
+            <div class="row"> 
+                <div class="col-lg-12">
+                    <form id="demo-2">
+                        <input type="search" placeholder="Search" id='searchFood'  autocomplete="off">
+                    </form>
+                </div>
+            </div>
+            <div class="row" style="padding-top: 10px;">
                 <div class="col-lg-12">
                     <div class="heading-title text-center">
                         <h2>Danh sách món ăn</h2>
