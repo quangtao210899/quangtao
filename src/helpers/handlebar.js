@@ -1,4 +1,5 @@
 const Handlebars = require('handlebars');
+const { PromiseProvider } = require('mongoose');
 module.exports = {
     sum: (a,b) => a+b,
     sortable: (field, sort) =>{
@@ -269,4 +270,33 @@ module.exports = {
             return salesRate+'%'
         }
     },
+    ShowH2Homepage: (query, countFood)=>{
+        if(query){
+            if(countFood){
+                return `<h2>Danh sách món ăn</h2>`
+            }
+            else {
+                return `<h2 style='margin-bottom: 40%;'>Không có kết quả phù hợp</h2>`
+            }
+        }
+        else{
+            return `<h2>Danh sách món ăn</h2>`
+        }
+    },
+    handleSearch: (query)=>{
+        if(query){
+            return `<div class="col-lg-12" style='margin-top:80px;'>
+                        <form id="seach-homepage">
+                            <input type="search" placeholder="Search" id='searchFood'  autocomplete="off" value="${query}">
+                        </form>
+                    </div>`
+        }
+        else {
+            return `<div class="col-lg-12">
+                        <form id="seach-homepage">
+                            <input type="search" placeholder="Search" id='searchFood'autocomplete="off">
+                        </form>
+                    </div>`
+        }
+    }
 }

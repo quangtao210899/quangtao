@@ -22,7 +22,31 @@ class SiteController {
         const username = req.session.username
         const password = req.session.password
         var user,foods;
-        Promise.all([
+        if(req.query.query){
+            var regex = new RegExp(req.query.query, 'iu');
+            Promise.all([
+                User.findOne({username: username, password : password}).lean(), 
+                Food.find({foodName: regex}).lean(),
+            ])
+            .then(([user1, foods1]) =>{
+                user = user1
+                foods = foods1
+                for(var i = 0; i < foods.length; i++){
+                    if(!foods[i].resize){
+                        var image = "./src/public/"+ foods[i].image
+                        resize(image)
+                        Food.updateOne({_id: foods[i]._id}, {resize: '1'}).then()
+                    }
+                }
+
+            })
+            .then(()=>{
+                res.render('home',{user, foods, activeHome: 'active', query: req.query.query, queryNone:'none' ,})
+            })
+            .catch(next)
+        }
+        else {
+            Promise.all([
                 User.findOne({username: username, password : password}).lean(), 
                 Food.find({}).lean(),
             ])
@@ -39,9 +63,10 @@ class SiteController {
 
             })
             .then(()=>{
-                res.render('home',{user, foods, activeHome: 'active'})
+                res.render('home',{user, foods, activeHome: 'active',queryNone:'block'})
             })
             .catch(next)
+        }
     }
 
     // [GET] /search

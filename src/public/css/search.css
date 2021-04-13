@@ -40,14 +40,13 @@
     color: #D65106;
   }
   
-  /* Demo 2 */
-  #demo-2 input[type=search] {
+  #seach-homepage input[type=search] {
     width: 20px;
     padding-left: 10px;
     color: transparent;
     cursor: pointer;
   }
-  #demo-2 input[type=search]:hover {
+  #seach-homepage input[type=search]:hover {
     background-color: #fff;
   }
 
@@ -64,7 +63,7 @@
     cursor: auto;
   }
 
-  #demo-2 input[type=search]:focus {
+  #seach-homepage input[type=search]:focus {
     
     /* -webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
     -moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
@@ -72,9 +71,9 @@
     padding-left: 32px;
     color: #000;
   }
-  #demo-2 input:-moz-placeholder {
+  #seach-homepage input:-moz-placeholder {
     color: transparent;
   }
-  #demo-2 input::-webkit-input-placeholder {
+  #seach-homepage input::-webkit-input-placeholder {
     color: transparent;
   }

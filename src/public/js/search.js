@@ -1,4 +1,21 @@
 document.addEventListener('DOMContentLoaded', function(){
+
+    $('.card-course-item').click(function(){
+        window.location = '/foods/' + $(this).attr('slug')
+    })
+    if($('#searchFood').val()){
+        var value=$('#searchFood').val()
+
+        $('#searchFood').css('width', '100%')
+        $('#searchFood').css('color', 'black')
+        $('#searchFood').css('border-color', '#66CC75')
+        $('#searchFood').css('background-color', '#fff')
+        $('#searchFood').css('padding-left', '32px')
+        $('#searchFood').css('cursor', 'auto')
+        $('#searchFood').css('cursor', 'auto')
+        $('#searchFood').css('cursor', 'auto')
+        $('#searchFood').css('cursor', 'auto')      
+    }
     $('#searchFood').blur(function(){
         $(this).css('border-color', '#D65106')
         $(this).css('background-color', '#ededed')
@@ -26,9 +43,15 @@ document.addEventListener('DOMContentLoaded', function(){
 
     })
 
-    // $('#searchFood').click(function(){
-    //     $(this).addClass('search-focus')
-    // })
+    $('#seach-homepage').submit(function(e){
+        e.preventDefault()
+        var query = $('#searchFood').val().trim()
+        if(query){
+            // this.action = '/?query='+query
+            // this.submit()
+            window.location= '/?query='+query
+        }
+    })
 
 
 })
