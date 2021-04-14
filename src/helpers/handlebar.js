@@ -1,3 +1,4 @@
+const { query } = require('express');
 const Handlebars = require('handlebars');
 const { PromiseProvider } = require('mongoose');
 module.exports = {
@@ -276,27 +277,48 @@ module.exports = {
                 return `<h2>Danh sách món ăn</h2>`
             }
             else {
-                return `<h2 style='margin-bottom: 40%;'>Không có kết quả phù hợp</h2>`
+                return `<h2 style='margin-bottom: 50%;'>Không có kết quả phù hợp</h2>`
             }
         }
         else{
             return `<h2>Danh sách món ăn</h2>`
         }
     },
+    fixHandleTypeFoodPage:(query, countFood)=>{
+        if(query&&!countFood){
+            return `margin-bottom:25%`
+        }
+    },
     handleSearch: (query)=>{
         if(query){
-            return `<div class="col-lg-12" style='margin-top:80px;'>
+            return `<div class="col-lg-12" style='margin-top:100px;'>
                         <form id="seach-homepage">
                             <input type="search" placeholder="Search" id='searchFood'  autocomplete="off" value="${query}">
                         </form>
                     </div>`
         }
         else {
-            return `<div class="col-lg-12">
+            return `<div class="col-lg-12" style='margin-top:20px;'>
                         <form id="seach-homepage">
                             <input type="search" placeholder="Search" id='searchFood'autocomplete="off">
                         </form>
                     </div>`
         }
-    }
+    },
+    handleSearchTypeFood: (query)=>{
+        if(query){
+            return `<div class="col-lg-12" style='margin-top:0px;'>
+                        <form id="seach-homepage-type">
+                            <input type="search" placeholder="Search" id='searchFood'  autocomplete="off" value="${query}">
+                        </form>
+                    </div>`
+        }
+        else {
+            return `<div class="col-lg-12">
+                        <form id="seach-homepage-type">
+                            <input type="search" placeholder="Search" id='searchFood'autocomplete="off">
+                        </form>
+                    </div>`
+        }
+    },
 }

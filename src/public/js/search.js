@@ -47,9 +47,16 @@ document.addEventListener('DOMContentLoaded', function(){
         e.preventDefault()
         var query = $('#searchFood').val().trim()
         if(query){
-            // this.action = '/?query='+query
-            // this.submit()
             window.location= '/?query='+query
+        }
+    })
+
+    $('#seach-homepage-type').submit(function(e){
+        e.preventDefault()
+        var query = $('#searchFood').val().trim()
+        var typeFood = $('#inputHiddenTypeFood').val()
+        if(query){
+            window.location= '/foods?type='+typeFood+'&&query='+query
         }
     })
 

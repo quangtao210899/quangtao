@@ -377,9 +377,10 @@ class FoodController {
             textH2='Danh sách món tráng miệng'
             activeDessert='active'
         } 
+        var regex = new RegExp(req.query.query, 'iu');
         Promise.all([
                 User.findOne({username: username, password : password}).lean(), 
-                Food.find({type: query}).lean(),
+                Food.find({type: query, foodName: regex,}).lean(),
             ])
             .then(([user1, foods1]) =>{
                 user = user1
@@ -394,7 +395,7 @@ class FoodController {
 
             })
             .then(()=>{
-                res.render('./foods/typeFood',{user, foods, textH2,activeFood, activeDrink, activeDessert, home: 'fasle' })
+                res.render('./foods/typeFood',{user, foods, textH2,activeFood, activeDrink, activeDessert,typeFood: query,query:req.query.query, home: 'fasle' })
             })
             .catch(next)
     }

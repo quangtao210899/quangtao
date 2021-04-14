@@ -1,35 +1,26 @@
 <!-- Site CSS -->
 <link rel="stylesheet" href="/vendor/home/css/style.css"> 
 <link rel="stylesheet" href="/css/home.css">
+<link rel="stylesheet" href="/css/search.css">
+<script src="/js/search.js"></script>   
 {{!-- gallery --}}
 <br><br>
 <div class="container">
     <div class="gallery-box">
         <div class="container">
+            <div class="row"> 
+                {{{handleSearchTypeFood query}}}
+            </div>
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="heading-title text-center">
-                        <h2 id='text-H2'>{{textH2}}</h2>
+                    <div class="heading-title text-center" style="padding-top: 10px;">
+                        <h2 id='text-H2' style="{{fixHandleTypeFoodPage query foods.length}}">{{textH2}}</h2>
                     </div>
                 </div>
             </div>
             <div class="tz-gallery">
                 <div class="row">
                     {{#each foods}}
-                        {{!-- <div class="col-lg-4">
-                            <div class="card card-course-item">
-                                <a class="lightbox" href="/foods/{{this.slug}}">
-                                    <img class="" src="{{this.image}}" alt="Gallery Images" >
-                                </a>
-                                <div style="padding: 10px 20px 0px 20px" class="card-body">
-                                    <h2 style="padding: 0px 0px 3px 0px;">{{this.foodName}}</h2>
-                                    <p style="margin: 0px 0px 5px 0px;">{{this.description}}</p>
-                                    <hr  width="100%" align="center" style="margin: 5px 0px 5px 0px;">
-                                    <p style="color: #187CAA; margin: 0px 0px 0px 0px"><i class="fas fa-tag" style="color: crimson;">&nbsp;</i>{{discount this.discount}}</p>
-                                </div>
-                            </div>
-                        </div> --}}
-
                         <div class="col-lg-4 col-md-6 special-grid drinks">
                             <div class="card card-course-item" style="cursor: pointer;" slug='{{this.slug}}'>
                                 <div class="gallery-single fix href-showFood">
@@ -62,6 +53,7 @@
     </div>
 </div>
 
+<input type="hidden" name="" id="inputHiddenTypeFood" value="{{typeFood}}">
 
 <script>
     document.addEventListener('DOMContentLoaded', function(){
