@@ -633,6 +633,8 @@ document.addEventListener('DOMContentLoaded', function(){
 })
 
 
+
+
 // đưa con trỏ đến vị trí bất kì trong thẻ input
 function setSelectionRange(input, selectionStart, selectionEnd) {
     if (input.setSelectionRange) {
@@ -652,5 +654,69 @@ function setCaretToPos (input, pos) {
     setSelectionRange(input, pos, pos);
 }
 
+$('.textInputMessageChat').keyup(function(){
+    var s = $(this).val();
+    var n = s.length;
+    for(var i=0;i<n-1; i++){
+      // icon buồn
+      if(i<n-1&&s[i]==":"&&s[i+1]=="(") {
+        s = s.substring(0,i) + "😞"+ s.substring(i+2,s.length);
+        i++;
+      }
 
+      // icon fine
+      else if(i<n-1&&s[i]==":"&&s[i+1]==")") {
+        s = s.substring(0,i) + "🙂"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]==":"&&s[i+1]=="D") {
+        s = s.substring(0,i) + "😃"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]==":"&&s[i+1]=="P") {
+        s = s.substring(0,i) + "😛"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]==":"&&s[i+1]=="O") {
+        s = s.substring(0,i) + "😮"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-2&&s[i]=="3"&&s[i+1]==":"&&s[i+2]==")") {
+        s = s.substring(0,i) + "😈"+ s.substring(i+3,s.length);
+        i++;
+      }
+      else if(i<n-2&&s[i]=="T"&&s[i+1]=="_"&&s[i+2]=="T") {
+        s = s.substring(0,i) + "😭"+ s.substring(i+3,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]==":"&&s[i+1]=="*") {
+        s = s.substring(0,i) + "😘"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]=="<"&&s[i+1]=="3") {
+        s = s.substring(0,i) + "❤"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]=="="&&s[i+1]=="b"){
+        s = s.substring(0,i) + "👍"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-1&&s[i]==";"&&s[i+1]==")"){
+        s = s.substring(0,i) + "😉"+ s.substring(i+2,s.length);
+        i++;
+      }
+      // icon ngầu
+      else if(i<n-1&&s[i]=="8"&&s[i+1]=="|"){
+        s = s.substring(0,i) + "😎"+ s.substring(i+2,s.length);
+        i++;
+      }
+      else if(i<n-5&&s[i]==":"&&s[i+1]=="p"&&s[i+2]=="o"&&s[i+3]=="o"&&s[i+4]=="p"&&s[i+5]==":"){
+        s = s.substring(0,i) + "💩"+ s.substring(i+6,s.length);
+        i++;
+      }
+      // code thêm thì làm theo form trên
+    }
+    $(this).val(s);
+    // console.log(s);
+})
 /// header
