@@ -12,6 +12,7 @@ const Jimp = require('jimp');
 const route = require('./router/indexRoute');
 const db    = require('./config/db/indexDB')
 const Chat = require('./app/models/chat')
+const Comment = require('./app/models/comment')
 const User = require('./app/models/user')
 const Food = require('./app/models/food')
 const Order = require('./app/models/order');
@@ -396,6 +397,24 @@ io.on('connection', function(client){
         // client.emit('header2', idAuthorFood)
         // thông báo cho các client khác
         client.broadcast.emit('header2', idAuthorFood)      
+    })
+    client.on('userComment', function(text, idUser, idUserFood){
+        User.findById(idUser).lean()
+            .then((user)=>{
+                const comment = new Comment({
+                    text: text,
+                    idUser: idUser,
+                    image: user.image,
+                    name: user.firstname+" "+user.lastname,
+                    idUserFood: idUserFood,
+                });
+                comment.save().then(()=>{
+                    client.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now())
+                    client.broadcast.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now())
+                });   
+
+            })
+        
     })
 })
 

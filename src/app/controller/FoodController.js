@@ -2,6 +2,8 @@ const Food = require('../models/food')
 const User = require('../models/user')
 const Chat = require('../models/chat')
 const Order = require('../models/order')
+const Comment = require('../models/comment')
+
 
 
 // thư viện xử lý lưu file
@@ -96,6 +98,14 @@ class FoodController {
                             }
                         }
                     }
+                    // tìm comment
+                    var comments;
+                    Comment.find({idUserFood: oldFood.idUser})
+                        .sort({createdAt: 'desc'})
+                        .lean()
+                        .then((comment)=>{
+                            comments = comment;
+                        });
                     // tìm món ăn muốn xem
                     Food.find({idUser: oldFood.idUser})
                         .lean()
@@ -138,7 +148,7 @@ class FoodController {
                                                 }
                                             }
                                         }
-                                        res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
+                                        res.render('./foods/showFood',{Foods,food,chats,user, vote, users,comments})
                                     })
                                     .catch(next)
                             }
@@ -153,7 +163,7 @@ class FoodController {
                                         }
                                     }
                                 }
-                                res.render('./foods/showFood',{Foods,food,chats,user, vote, users})
+                                res.render('./foods/showFood',{Foods,food,chats,user, vote, users,comments})
                             }
                         })
                         .catch(next)

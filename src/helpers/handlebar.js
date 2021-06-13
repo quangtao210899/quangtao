@@ -321,4 +321,29 @@ module.exports = {
                     </div>`
         }
     },
+    getDateAgo: (time)=>{
+        var date = new Date(time);
+        var dateAgo = date.getTime() / 1000;
+        var dateNow = new Date().getTime() / 1000;
+        var second = parseInt((dateNow - dateAgo)/60)
+        if(second==0){
+            second = "Ngay bây giờ"
+        }
+        else if(second<60) {
+            second = second + " phút trước"
+        }
+        else if(second<24*60){
+            second = parseInt(dateAgo/(60*60))
+            second = second + " giờ trước"
+        }
+        else if(second<24*60*30){
+            second = parseInt(dateAgo/(60*60*24))
+            second = second + " ngày trước"
+        }
+        else {
+            second = parseInt(dateAgo/(60*60*30*24))
+            second = second + " tháng trước"        
+        }
+        return second;
+    }
 }

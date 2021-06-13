@@ -444,7 +444,21 @@ socket.on('chatsToUser', function(chats){
         })
     })
     
-
+    // xử lý comment gửi từ serve về
+    socket.on('commentFromServer', function(text, image, name, time){
+        time = getDateAgo(time);
+        var comment = ` <div class="card p-3 mt-2">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="user d-flex flex-row align-items-center"> 
+                                    <img src="${image}" width="50" class="user-img rounded-circle mr-2"> 
+                                    <span><small class="font-weight-bold text-dark" style="font-size: 16px;">${name}</small> </span>
+                                </div> 
+                                <small>${time}</small>
+                            </div>
+                            <p style="padding: 0px; margin: 0px 0px 0px 55px;">${text}</p>
+                        </div>`
+        $('#div-comment').prepend(comment)
+    })
 
 // chờ đến khi load xong thư viện
 document.addEventListener('DOMContentLoaded', function(){
@@ -630,6 +644,33 @@ document.addEventListener('DOMContentLoaded', function(){
             document.getElementsByClassName("textInputMessageChat")[0].value.length);
     })
 
+    // Gửi tin nhắn đến server
+    $('#btn-submit-comment').click(function(){
+        var text = $('#comment').val().trim();
+        var idUser = $('#idUser').val();
+        var idUserFood = $('#chatIdUser').val()
+        // reset text
+        $('#comment').val("");
+        setCaretToPos($(this),0);
+        if(text!=null && text!=""){
+            socket.emit('userComment', text, idUser,idUserFood)
+        }
+    })
+    $('#comment').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            event.preventDefault()
+            var text = $('#comment').val().trim();
+            var idUser = $('#idUser').val();
+            var idUserFood = $('#chatIdUser').val()
+            $('#comment').val("");
+            setCaretToPos($(this),0);
+            if(text!=null && text!=""){
+                socket.emit('userComment', text, idUser,idUserFood)
+            }
+        }
+    });
+
 })
 
 
@@ -652,6 +693,32 @@ function setSelectionRange(input, selectionStart, selectionEnd) {
    
 function setCaretToPos (input, pos) {
     setSelectionRange(input, pos, pos);
+}
+
+function getDateAgo (time){
+    var date = new Date(time);
+    var dateAgo = date.getTime() / 1000;
+    var dateNow = new Date().getTime() / 1000;
+    var second = parseInt((dateNow - dateAgo)/60)
+    if(second==0){
+        second = "Ngay bây giờ"
+    }
+    else if(second<60) {
+        second = second + " phút trước"
+    }
+    else if(second<24*60){
+        second = parseInt(dateAgo/(60*60))
+        second = second + " giờ trước"
+    }
+    else if(second<24*60*30){
+        second = parseInt(dateAgo/(60*60*24))
+        second = second + " ngày trước"
+    }
+    else {
+        second = parseInt(dateAgo/(60*60*30*24))
+        second = second + " tháng trước"        
+    }
+    return second;
 }
 
 $('.textInputMessageChat').keyup(function(){
