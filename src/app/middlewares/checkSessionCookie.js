@@ -5,6 +5,7 @@ module.exports = function checkSessionCookie(req,res,next){
     // lấy dữ liệu trong session
     const usernameSession = req.session.username
     const passwordSession = req.session.password
+    res.locals.isLogin = 0
     // nếu có session
     if(usernameSession!=undefined&&passwordSession!=undefined){
         User.findOne({username : usernameSession, password : passwordSession})
@@ -19,6 +20,12 @@ module.exports = function checkSessionCookie(req,res,next){
                         res.locals._notificationLocal= notification
                         res.locals._idUserLocal= user._id
                         res.locals._fullname = user.firstname +" "+ user.lastname
+                        res.locals.isLogin = 1;
+                        if(req.session.timeLogin==undefined){
+                            var time = new Date().getTime()
+                            req.session.timeLogin = user._id+'_'+time
+                            res.locals.timeLogin = user._id+'_'+time
+                        }
                         next()
                     })
             }
@@ -41,6 +48,12 @@ module.exports = function checkSessionCookie(req,res,next){
                                     res.locals._idUserLocal= user._id
                                     res.locals._notificationLocal= notification
                                     res.locals._fullname = user.firstname +" "+ user.lastname
+                                    res.locals.isLogin = 1;
+                                    if(req.session.timeLogin==undefined){
+                                        var time = new Date().getTime()
+                                        req.session.timeLogin = user._id+'_'+time
+                                        res.locals.timeLogin = user._id+'_'+time
+                                    }
                                     next()
                                 })
                         }
@@ -65,11 +78,17 @@ module.exports = function checkSessionCookie(req,res,next){
             User.findOne({username : usernameCookie, password : passwordCookie})
             .lean()
             .then(user =>{
-                // Lưu lại vào session
-                req.session.username = usernameCookie
-                req.session.password = passwordCookie 
                 // nếu cookie thỏa mãn
                 if(user!=null){
+                    // Lưu lại vào session
+                    req.session.username = usernameCookie
+                    req.session.password = passwordCookie 
+                    if(req.session.timeLogin==undefined){
+                        var time = new Date().getTime()
+                        req.session.timeLogin = user._id+'_'+time
+                        res.locals.timeLogin = user._id+'_'+time
+                    }
+                    req.session.timeLogin = req.query.username+time
                     Notification.find({idUserTo: user._id})
                         .sort({updatedAt: 'desc'})
                         .lean()
@@ -77,6 +96,7 @@ module.exports = function checkSessionCookie(req,res,next){
                             res.locals._idUserLocal= user._id
                             res.locals._notificationLocal= notification
                             res.locals._fullname = user.firstname +" "+ user.lastname
+                            res.locals.isLogin = 1;
                             next()
                         })
                 }

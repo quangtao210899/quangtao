@@ -3,7 +3,6 @@ const User = require('../models/user')
 
 var nodemailer = require('nodemailer');
 
-
 // thư viện xử lý ảnh
 const Jimp = require('jimp');
 
@@ -108,17 +107,29 @@ class SiteController {
                 .catch(next)
         }
         else {
-            res.render('loginLogout/login', {layout: false})
+            if(req.session.logout==1){
+                var messageLogin = 'Tài khoản đã được đăng nhập ở nơi khác'
+                req.session.logout = undefined;
+            }
+            res.render('loginLogout/login', {layout: false, messageLogin})
         }
     }
     // [get] /logout
     logout(req, res, next) {
         //xóa session
-        req.session.username = ''
-        req.session.password = ''
+        req.session.username = undefined
+        req.session.password = undefined
+        req.session.timeLogin = undefined
         //xóa cookie
         res.clearCookie('username')
         res.clearCookie('password')
+
+        if(req.query.hasOwnProperty('_status')){
+            var status = req.query._status
+            if(status==1){
+                req.session.logout = 1
+            }
+        }
         res.redirect('login')
     }
 

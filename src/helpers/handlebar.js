@@ -332,16 +332,16 @@ module.exports = {
         else if(second<60) {
             second = second + " phút trước"
         }
-        else if(second<24*60){
-            second = parseInt(dateAgo/(60*60))
+        else if(second<(24*60)){
+            second = parseInt(second/(60))
             second = second + " giờ trước"
         }
-        else if(second<24*60*30){
-            second = parseInt(dateAgo/(60*60*24))
+        else if(second<(24*60*30)){
+            second = parseInt(second/(60*24))
             second = second + " ngày trước"
         }
         else {
-            second = parseInt(dateAgo/(60*60*30*24))
+            second = parseInt(second/(60*30*24))
             second = second + " tháng trước"        
         }
         return second;

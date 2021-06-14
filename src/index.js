@@ -416,6 +416,10 @@ io.on('connection', function(client){
             })
         
     })
+
+    client.on('userLogin', function(idUser, timeLogin){
+        client.broadcast.emit('userLogin', idUser, timeLogin)
+    })
 })
 
 

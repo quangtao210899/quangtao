@@ -460,6 +460,19 @@ socket.on('chatsToUser', function(chats){
         $('#div-comment').prepend(comment)
     })
 
+
+    // login 
+    socket.on('userLogin', function(idUser, timeLogin){
+        // oke
+        var idUserCurrent = document.getElementById('idUser').value
+        if(idUserCurrent==idUser){
+            var timeLoginCurent = $('#timeLogin').val()
+            if(timeLoginCurent!=timeLogin){
+                window.location = '/logout?_status=1'
+            }
+        }
+    })
+
 // chờ đến khi load xong thư viện
 document.addEventListener('DOMContentLoaded', function(){
     // di thanh chuột xuống dưới cùng
@@ -670,6 +683,18 @@ document.addEventListener('DOMContentLoaded', function(){
             }
         }
     });
+    $('#comment').keyup(function(){
+        var s = $(this).val();
+        $(this).val(emoji(s));
+
+    })
+
+    // login
+    var timeLogin = $('#timeLogin').val()
+    if(timeLogin){
+        var idUser = $('#idUser').val()
+        socket.emit('userLogin', idUser, timeLogin)
+    }
 
 })
 
@@ -706,23 +731,23 @@ function getDateAgo (time){
     else if(second<60) {
         second = second + " phút trước"
     }
-    else if(second<24*60){
-        second = parseInt(dateAgo/(60*60))
+    else if(second<(24*60)){
+        second = parseInt(second/(60))
         second = second + " giờ trước"
     }
-    else if(second<24*60*30){
-        second = parseInt(dateAgo/(60*60*24))
+    else if(second<(24*60*30)){
+        second = parseInt(second/(60*24))
         second = second + " ngày trước"
     }
     else {
-        second = parseInt(dateAgo/(60*60*30*24))
+        second = parseInt(second/(60*30*24))
         second = second + " tháng trước"        
     }
     return second;
 }
 
-$('.textInputMessageChat').keyup(function(){
-    var s = $(this).val();
+function emoji(text){
+    var s = text;
     var n = s.length;
     for(var i=0;i<n-1; i++){
       // icon buồn
@@ -783,7 +808,11 @@ $('.textInputMessageChat').keyup(function(){
       }
       // code thêm thì làm theo form trên
     }
-    $(this).val(s);
+    return s;
     // console.log(s);
+}
+$('.textInputMessageChat').keyup(function(){
+    var s = $(this).val()
+    $(this).val(emoji(s))
 })
 /// header
