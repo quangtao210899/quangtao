@@ -408,9 +408,10 @@ io.on('connection', function(client){
                     name: user.firstname+" "+user.lastname,
                     idUserFood: idUserFood,
                 });
-                comment.save().then(()=>{
-                    client.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now())
-                    client.broadcast.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now())
+                comment.save().then((comment)=>{
+                    commentId = comment._id
+                    client.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now(),commentId)
+                    client.broadcast.emit('commentFromServer', text, user.image, user.firstname+" "+user.lastname, Date.now(),commentId)
                 });   
 
             })
@@ -420,6 +421,47 @@ io.on('connection', function(client){
     client.on('userLogin', function(idUser, timeLogin){
         client.broadcast.emit('userLogin', idUser, timeLogin)
     })
+
+    // save user like comment
+    client.on('likeComment', function(idUser, idUserFood, idComment){
+        Comment.findById(idComment).lean()
+            .then((comment)=>{
+                // console.log(comment)
+                var userLove = comment.userLove;
+                if(userLove){
+                    var kt=0;
+                    for(var i = 0; i < userLove.length; i++){
+                        if(userLove[i].userId==idUser) {
+                            kt=1; 
+                            userLove.splice(i,1);
+                            break;
+                        }
+                    }
+                    if(kt){
+                        Comment.findOneAndUpdate({_id: idComment}, {userLove: userLove})
+                            .then(()=>{
+                                client.broadcast.emit('unLikeComment', idUser, idUserFood, idComment)
+                            })
+                    }
+                    else{
+                        userLove.push({userId: idUser})
+                        Comment.findOneAndUpdate({_id: idComment}, {userLove: userLove})
+                            .then(()=>{
+                                client.broadcast.emit('likeComment', idUser, idUserFood, idComment)
+                            })
+                    }
+                }
+                else{
+                    var userLove = []
+                    userLove.push({userId: idUser})
+                    Comment.findOneAndUpdate({_id: idComment}, {userLove: userLove})
+                        .then(()=>{
+                            client.broadcast.emit('likeComment', idUser, idUserFood, idComment)
+                        })
+                }
+            })
+    })
+    // socket.emit('likeComment', idUser,idUserFood,idComment)
 })
 
 

@@ -315,6 +315,13 @@ form .textarea textarea:focus::placeholder{
   transform: scale(0.97);
 }
 
+.heart-comment:hover{
+  transform: rotate(0) scale(1.3);
+}
+
+.isLove{
+  color: red !important;
+}
 @media screen and (max-width: 600px) {
   .displayChatForHidden{
     display: none;

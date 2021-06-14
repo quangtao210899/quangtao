@@ -12,6 +12,7 @@ const multer = require("multer");
 // thư viện xử lý ảnh
 const Jimp = require('jimp');
 const { PromiseProvider } = require('mongoose');
+const { count } = require('../models/food')
 
 
 async function resize(linkImage) {
@@ -104,6 +105,9 @@ class FoodController {
                         .sort({createdAt: 'desc'})
                         .lean()
                         .then((comment)=>{
+                            for(var i=0; i<comment.length; i++){
+                                comment[i].idUserLove = user._id;
+                            }
                             comments = comment;
                         });
                     // tìm món ăn muốn xem

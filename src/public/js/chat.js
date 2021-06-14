@@ -445,7 +445,7 @@ socket.on('chatsToUser', function(chats){
     })
     
     // xử lý comment gửi từ serve về
-    socket.on('commentFromServer', function(text, image, name, time){
+    socket.on('commentFromServer', function(text, image, name, time, commentId){
         time = getDateAgo(time);
         var comment = ` <div class="card p-3 mt-2">
                             <div class="d-flex justify-content-between align-items-center">
@@ -455,7 +455,22 @@ socket.on('chatsToUser', function(chats){
                                 </div> 
                                 <small>${time}</small>
                             </div>
-                            <p style="padding: 0px; margin: 0px 0px 0px 55px;">${text}</p>
+                            <p style="padding: 0px; margin: 0px 0px 0px 60px;">${text}</p>
+                            <div class="action d-flex justify-content-between align-items-center">
+                                <div class="reply" style="margin: 0px 0px 0px 60px;"> 
+                                    <small>Remove</small> <span class="dots"></span> 
+                                    <small>Reply</small> <span class="dots"></span> 
+                                    <small>Translate</small> 
+                                </div>
+                                <div class="icons align-items-center"> 
+                                    <i class="fas fa-heart heart-comment" style="color:white;font-size:18px;
+                                        -webkit-text-stroke-width: 1px;
+                                        -webkit-text-stroke-color: #000"
+                                        idcomment="${commentId}"
+                                    >&nbsp;</i>
+                                    <small>0</small>
+                                </div>
+                            </div>
                         </div>`
         $('#div-comment').prepend(comment)
     })
@@ -470,6 +485,69 @@ socket.on('chatsToUser', function(chats){
             if(timeLoginCurent!=timeLogin){
                 window.location = '/logout?_status=1'
             }
+        }
+    })
+
+
+    //  tăng giảm số love của comment
+    socket.on('likeComment', function(idUser, idUserFood, idcomment){
+        var idUserCurrent = $('#idUser').val()
+        if(idUser!=idUserCurrent){
+            var elements = $('.heart-comment')
+            for(var i =0; i<elements.length;i++){
+                var idComment =$(elements[i]).attr('idcomment')
+                if(idComment==idcomment){
+                    var parent = $(elements[i]).parent()[0]
+                    var small = $(parent).find('small')
+                    var countLove = parseInt($(small).text())
+                    $(small).text(countLove+1)
+                    break;
+                }
+            }
+        }
+        else {
+            var elements = $('.heart-comment')
+            for(var i =0; i<elements.length;i++){
+                var idComment =$(elements[i]).attr('idcomment')
+                if(idComment==idcomment){
+                    $(elements[i]).addClass('isLove')
+                    var parent = $(elements[i]).parent()[0]
+                    var small = $(parent).find('small')
+                    var countLove = parseInt($(small).text())
+                    $(small).text(countLove+1)
+                    break;
+                }
+            }           
+        }
+    })
+    socket.on('unLikeComment', function(idUser, idUserFood, idcomment){
+        var idUserCurrent = $('#idUser').val()
+        if(idUser!=idUserCurrent){
+            var elements = $('.heart-comment')
+            for(var i =0; i<elements.length;i++){
+                var idComment =$(elements[i]).attr('idcomment')
+                if(idComment==idcomment){
+                    var parent = $(elements[i]).parent()[0]
+                    var small = $(parent).find('small')
+                    var countLove = parseInt($(small).text())
+                    $(small).text(countLove-1)
+                    break;
+                }
+            }
+        }
+        else {
+            var elements = $('.heart-comment')
+            for(var i =0; i<elements.length;i++){
+                var idComment =$(elements[i]).attr('idcomment')
+                if(idComment==idcomment){
+                    $(elements[i]).removeClass('isLove')
+                    var parent = $(elements[i]).parent()[0]
+                    var small = $(parent).find('small')
+                    var countLove = parseInt($(small).text())
+                    $(small).text(countLove-1)
+                    break;
+                }
+            }           
         }
     })
 
@@ -695,6 +773,29 @@ document.addEventListener('DOMContentLoaded', function(){
         var idUser = $('#idUser').val()
         socket.emit('userLogin', idUser, timeLogin)
     }
+
+    // like comment 
+    $('body').on('click', '.heart-comment', function(){
+        // ok
+        var idUser = $('#idUser').val()
+        var idUserFood = $('#chatIdUser').val()
+        var idComment = $(this).attr('idcomment')
+        socket.emit('likeComment', idUser,idUserFood,idComment)
+        if($(this).hasClass('isLove')){
+            $(this).removeClass("isLove")
+            var parent = $(this).parent()[0]
+            var small = $(parent).find('small')
+            var countLove = parseInt($(small).text())
+            $(small).text(countLove-1)
+        }
+        else{
+            $(this).addClass('isLove')
+            var parent = $(this).parent()[0]
+            var small = $(parent).find('small')
+            var countLove = parseInt($(small).text())
+            $(small).text(countLove+1)
+        }
+    }); 
 
 })
 

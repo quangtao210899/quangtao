@@ -21,7 +21,11 @@ const Comment = new Schema(
         },
         idUserFood:{
             type:String
-        }
+        },    
+        userLove:[{
+            userId: String,
+            
+        }],
     },
     {
         timestamps: true

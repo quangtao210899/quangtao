@@ -345,5 +345,30 @@ module.exports = {
             second = second + " tháng trước"        
         }
         return second;
-    }
+    },
+
+    checkUserLoveComment: (userLove, idUserLove) =>{
+        var kt = 0;
+        if(userLove){
+            for(var i = 0; i< userLove.length;i++){
+                if(userLove[i].userId==idUserLove){
+                    kt=1;
+                    break;
+                }
+            }
+        }
+        if(kt==1){
+            return 'isLove'
+        }
+        else {
+            return
+        }
+    },
+
+    countUserLoveComment: (userLove)=>{
+        if(userLove){
+            return userLove.length
+        }
+        else return 0
+    },
 }
