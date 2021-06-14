@@ -231,7 +231,10 @@
         <div class="col-md-9">
             <h4>Viết bình luận... <i class="fas fa-pencil-alt"></i></h4>
             <div class="form-group">
-                <textarea cols="30" rows="3" class="form-control" id="comment"></textarea>
+                <textarea cols="30" rows="3" class="form-control" id="comment" 
+                    >
+
+                </textarea>
             </div>
             <button type="button" class="btn btn-sm btn-primary" id='btn-submit-comment'
                 style="text-transform: none; padding: 5px 20px 5px 20px; font-size: 15px;margin-bottom:20px;">
@@ -253,11 +256,21 @@
                 </div>
                 <p style="padding: 0px; margin: 0px 0px 0px 60px;">{{this.text}}</p>
                 <div class="action d-flex justify-content-between align-items-center">
-                    <div class="reply" style="margin: 0px 0px 0px 60px;"> 
-                        <small>Remove</small> <span class="dots"></span> 
-                        <small>Reply</small> <span class="dots"></span> 
-                        <small>Translate</small> 
+                    <div class="reply" style="margin: 0px 0px 0px 60px"> 
+                        <small style="font-size: 14px;">Remove</small> 
+                        <span class="dots" style="font-size: 14px;"></span> 
+                        <small style="font-size: 14px;">Reply</small>
                     </div>
+                    <div class="icons align-items-center"> 
+                        <i class="fas fa-heart heart-comment {{{checkUserLoveComment this.userLove this.idUserLove}}}" style="color:white;font-size:18px;
+                            -webkit-text-stroke-width: 1px;
+                            -webkit-text-stroke-color: #000"
+                            idcomment="{{this._id}}"
+                        >&nbsp;</i>
+                        <small>{{{countUserLoveComment this.userLove}}}</small>
+                    </div>
+                </div>
+                <div class="action d-flex justify-content-between align-items-center">
                     <div class="icons align-items-center"> 
                         <i class="fas fa-heart heart-comment {{{checkUserLoveComment this.userLove this.idUserLove}}}" style="color:white;font-size:18px;
                             -webkit-text-stroke-width: 1px;

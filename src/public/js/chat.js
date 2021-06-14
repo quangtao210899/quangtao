@@ -458,9 +458,9 @@ socket.on('chatsToUser', function(chats){
                             <p style="padding: 0px; margin: 0px 0px 0px 60px;">${text}</p>
                             <div class="action d-flex justify-content-between align-items-center">
                                 <div class="reply" style="margin: 0px 0px 0px 60px;"> 
-                                    <small>Remove</small> <span class="dots"></span> 
-                                    <small>Reply</small> <span class="dots"></span> 
-                                    <small>Translate</small> 
+                                    <small style="font-size: 14px;">Remove</small> 
+                                    <span class="dots" style="font-size: 14px;"></span> 
+                                    <small style="font-size: 14px;">Reply</small>
                                 </div>
                                 <div class="icons align-items-center"> 
                                     <i class="fas fa-heart heart-comment" style="color:white;font-size:18px;
@@ -745,6 +745,12 @@ document.addEventListener('DOMContentLoaded', function(){
         setCaretToPos($(this),0);
         if(text!=null && text!=""){
             socket.emit('userComment', text, idUser,idUserFood)
+        }
+    })
+    $('#comment').click(function(){
+        var count = $(this).text().trim().length
+        if(count==0){
+            $(this).text('')
         }
     })
     $('#comment').keypress(function(event){
