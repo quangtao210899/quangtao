@@ -16,7 +16,7 @@ class CourseController {
 
     // [GET]  /courses/create
     create(req,res,next){
-        res.render('./courses/create', {hidden: 'none'})
+        res.render('./courses/create', {hidden: 'none',layout: false})
     }
 
     // [POST]  /courses/store

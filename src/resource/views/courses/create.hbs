@@ -1,8 +1,10 @@
-
+<link rel="stylesheet" href="/vendor/open-iconic-master/font/css/open-iconic-bootstrap.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+<link rel="stylesheet" href="/vendor/home/css/bootstrap.min.css">
 <div class="container">
     <div class="mt-4">
         <h3>Đăng khóa học</h3>
-        <form method="POST" action="/courses/store">
+        <form method="POST" action="/courses/store" id='oke'>
             <div class="form-group">
                 <label for="name">Tên khóa học</label>
                 <input type="text" class="form-control" id="name" name='name'>
@@ -13,18 +15,34 @@
                 <textarea  class="form-control" id="description" name='description'></textarea>
             </div>
 
-            <div class="form-group">
+            <div class="form-group abc">
                 <label for="videoID">Video ID</label>
                 <input type="text" class="form-control" id="videoID" name='videoID'>
             </div>
-
-            <div class="form-group">
+            <div class="form-group abc">
                 <label for="level">Level khóa học</label>
-                <input type="text" class="form-control" id="level" name='level'>
+                <div>
+                    <input type="text" class="form-control" id="level" name='level' value='123'>
+                    <p>abc</p>
+                </div>
             </div>
-
             <br>
+            <label for="level">Level khóa học iss </label>
+            <label for="level">Level khóa học is</label>
+            <label for="level">Level khóa học Is</label>
             <button type="submit" class="btn btn-primary">Thêm khóa học</button>
         </form>
     </div>
 </div>
+<script src="https://kit.fontawesome.com/a656ea2bb9.js" crossorigin="anonymous"></script>
+<!-- ALL JS FILES -->
+<script src="/vendor/home/js/jquery-3.2.1.min.js"></script>
+<script src="/vendor/home/js/popper.min.js"></script>
+<script src="/vendor/home/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/vendor/jquery/jquery_easing.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function(){
+        var a = $(":input")
+        console.log(a)
+    })
+</script>
